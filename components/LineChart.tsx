@@ -4,7 +4,6 @@ import {
     VictoryChartProps,
     VictoryLine,
     VictoryLineProps,
-    VictoryTheme,
 } from 'victory'
 
 import { makeStyles } from '@material-ui/core/styles'
