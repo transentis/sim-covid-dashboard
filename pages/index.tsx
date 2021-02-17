@@ -38,6 +38,7 @@ const Home = (props: Props) => {
                         },
                         data: data.contact_rate,
                     }}
+                    domain={[0, 40]}
                 ></LineChart>
             </main>
         </Box>
