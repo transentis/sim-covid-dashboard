@@ -1,147 +1,178 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import {
-    Box,
-    Button,
-    Container,
-    makeStyles,
-    Paper,
-    Typography,
+	Box,
+	Button,
+	Container,
+	Divider,
+	makeStyles,
+	Paper,
+	Typography,
 } from '@material-ui/core/'
-import { JsonInput, LineChart } from '../components'
-import { VictoryBrushContainer, VictoryTheme } from 'victory'
+import { JsonInput, LineChart, LoadingOverlay } from '../components'
+import { VictoryTheme } from 'victory'
+import {
+	chartifyData,
+	requestModel,
+	RequestBody,
+} from '../helpers/data.helpers'
 
 const useStyles = makeStyles((theme) => ({
-    root: {},
+	root: {
+		paddingBottom: theme.spacing(4),
+	},
 }))
 
 interface Props {
-    data: {
-        contact_rate: [{ x: number; y: number }]
-        reproduction_rate: [{ x: number; y: number }]
-    }
+	data: {
+		contact_rate: [{ x: number; y: number }]
+		reproduction_rate: [{ x: number; y: number }]
+	}
 }
 
 const Home = (props: Props) => {
-    const { data } = props
+	const { data } = props
 
-    const createGraphs = (data: any): ReactNode[] => {
-        let graphs: ReactNode[] = []
-        Object.keys(data).forEach((name: string, index: number) => {
-            graphs.push(
-                <Paper key={index} style={{ margin: '2rem', padding: '2rem' }}>
-                    <Typography variant='h4' align='center'>
-                        {name.toUpperCase()}
-                    </Typography>
-                    <LineChart
-                        theme={VictoryTheme.material}
-                        line={{
-                            animate: {
-                                duration: 2000,
-                                onLoad: { duration: 1000 },
-                            },
-                            data: data[name],
-                        }}
-                        domain={[0, 40]}
-                    ></LineChart>
-                </Paper>,
-            )
-        })
-        return graphs
-    }
+	const [graphData, setGraphData] = useState<{}>(data)
 
-    const classes = useStyles()
-    return (
-        <Box className={classes.root}>
-            <Head>
-                <title>BPTK Widgets</title>
-                <link rel='icon' href='/favicon.ico' />
-            </Head>
+	const [requestBody, setRequestBody] = useState('')
 
-            <main>
-                <Box
-                    display='flex'
-                    justifyContent='center'
-                    flexDirection='column'
-                >
-                    <Box
-                        display='flex'
-                        justifyContent='center'
-                        flexWrap='wrap'
-                        flexDirection='row'
-                    >
-                        {createGraphs(data)}
-                    </Box>
+	const requestData = async () => {
+		let requestedData
+		if (requestBody !== '') {
+			requestedData = await requestModel(requestBody)
+		}
 
-                    <JsonInput></JsonInput>
-                    <Box
-                        display='flex'
-                        justifyContent='center'
-                        alignItems='center'
-                    >
-                        <Button variant='contained'>Load Data</Button>
-                        <Button variant='contained'>Refresh</Button>
-                    </Box>
-                </Box>
-            </main>
-        </Box>
-    )
+		if (!requestedData) {
+			return
+		}
+
+		const data = chartifyData(requestedData)
+
+		setGraphData(data)
+	}
+
+	const onNewJsonInput = (input) => {
+		console.log(input)
+		setRequestBody(input.jsObject)
+	}
+
+	const createGraphs = (data: any): ReactNode[] => {
+		let graphs: ReactNode[] = []
+		Object.keys(graphData).forEach((name: string, index: number) => {
+			graphs.push(
+				<Paper key={index} style={{ margin: '2rem', padding: '2rem' }}>
+					<Typography variant='h4' align='center'>
+						{name.toUpperCase()}
+					</Typography>
+					<LineChart
+						theme={VictoryTheme.material}
+						line={{
+							animate: {
+								duration: 2000,
+								onLoad: { duration: 1000 },
+							},
+							data: data[name],
+						}}
+						domain={[0, 40]}
+					></LineChart>
+				</Paper>
+			)
+		})
+		return graphs
+	}
+
+	const classes = useStyles()
+	return (
+		<Box className={classes.root}>
+			<Head>
+				<title>BPTK Widgets</title>
+				<link rel='icon' href='/favicon.ico' />
+			</Head>
+
+			<main>
+				<LoadingOverlay loading={false}></LoadingOverlay>
+				<Box width='100%'>
+					<Typography variant='h1' align='center'>
+						Cool Dashboard
+					</Typography>
+				</Box>
+				<Divider></Divider>
+				<Box
+					display='flex'
+					justifyContent='center'
+					flexDirection='column'
+				>
+					<Box
+						display='flex'
+						justifyContent='center'
+						flexWrap='wrap'
+						flexDirection='row'
+					>
+						{createGraphs(data)}
+					</Box>
+					<Divider></Divider>
+					<Box display='flex' flexDirection='column'>
+						<JsonInput onChange={onNewJsonInput}></JsonInput>
+					</Box>
+					<Box
+						display='grid'
+						gridGap='1rem'
+						gridAutoFlow='column'
+						justifyContent='center'
+						alignItems='center'
+						marginTop={'2rem'}
+					>
+						<Button
+							variant='contained'
+							onClick={() => requestData()}
+						>
+							Load Data
+						</Button>
+						<Button variant='contained'>Refresh</Button>
+					</Box>
+				</Box>
+			</main>
+		</Box>
+	)
 }
 
 export const getStaticProps = async () => {
-    const requestBody = {
-        scenario_managers: ['smSir'],
-        scenarios: ['dashboard'],
-        equations: ['contact_rate', 'reproduction_rate'],
-        settings: {
-            smSir: {
-                dashboard: {
-                    constants: {
-                        normal_contact_rate: 20.0,
-                        distancing_contact_rate: 5.0,
-                        distancing_begin: 50.0,
-                        distancing_duration: 500.0,
-                        distancing_on: 0.0,
-                        dashboard_on: 1.0,
-                    },
-                },
-            },
-        },
-    }
-    const res = await fetch(
-        `http://sim-covid-api-dev.eu-central-1.elasticbeanstalk.com/run`,
-        {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody),
-        },
-    )
-    const responseData = await res.json()
-    const data = {}
+	const requestBody = {
+		scenario_managers: ['smSir'],
+		scenarios: ['dashboard'],
+		equations: ['contact_rate', 'reproduction_rate'],
+		settings: {
+			smSir: {
+				dashboard: {
+					constants: {
+						normal_contact_rate: 20.0,
+						distancing_contact_rate: 5.0,
+						distancing_begin: 50.0,
+						distancing_duration: 500.0,
+						distancing_on: 0.0,
+						dashboard_on: 1.0,
+					},
+				},
+			},
+		},
+	}
+	const requestedData = await requestModel(requestBody)
 
-    if (!responseData) {
-        return {
-            notFound: true,
-        }
-    } else {
-        for (const attributes in responseData) {
-            data[attributes] = Object.values(responseData[attributes]).map(
-                (value: number, index: number) => {
-                    return { x: index, y: value }
-                },
-            )
-        }
-    }
+	if (!requestedData) {
+		return {
+			notFound: true,
+		}
+	}
 
-    return {
-        props: {
-            data: data,
-        },
-    }
+	const data = await chartifyData(requestedData)
+
+	return {
+		props: {
+			data: data,
+		},
+	}
 }
 
 export default Home
