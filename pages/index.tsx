@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import Head from 'next/head'
 
-import { Box, makeStyles } from '@material-ui/core/'
-import { LineChart } from '../components'
+import {
+    Box,
+    Button,
+    Container,
+    makeStyles,
+    Paper,
+    Typography,
+} from '@material-ui/core/'
+import { JsonInput, LineChart } from '../components'
 import { VictoryBrushContainer, VictoryTheme } from 'victory'
 
 const useStyles = makeStyles((theme) => ({
@@ -18,7 +25,31 @@ interface Props {
 
 const Home = (props: Props) => {
     const { data } = props
-    console.log(data.contact_rate)
+
+    const createGraphs = (data: any): ReactNode[] => {
+        let graphs: ReactNode[] = []
+        Object.keys(data).forEach((name: string, index: number) => {
+            graphs.push(
+                <Paper key={index} style={{ margin: '2rem', padding: '2rem' }}>
+                    <Typography variant='h4' align='center'>
+                        {name.toUpperCase()}
+                    </Typography>
+                    <LineChart
+                        theme={VictoryTheme.material}
+                        line={{
+                            animate: {
+                                duration: 2000,
+                                onLoad: { duration: 1000 },
+                            },
+                            data: data[name],
+                        }}
+                        domain={[0, 40]}
+                    ></LineChart>
+                </Paper>,
+            )
+        })
+        return graphs
+    }
 
     const classes = useStyles()
     return (
@@ -29,17 +60,30 @@ const Home = (props: Props) => {
             </Head>
 
             <main>
-                <LineChart
-                    theme={VictoryTheme.material}
-                    line={{
-                        animate: {
-                            duration: 2000,
-                            onLoad: { duration: 1000 },
-                        },
-                        data: data.contact_rate,
-                    }}
-                    domain={[0, 40]}
-                ></LineChart>
+                <Box
+                    display='flex'
+                    justifyContent='center'
+                    flexDirection='column'
+                >
+                    <Box
+                        display='flex'
+                        justifyContent='center'
+                        flexWrap='wrap'
+                        flexDirection='row'
+                    >
+                        {createGraphs(data)}
+                    </Box>
+
+                    <JsonInput></JsonInput>
+                    <Box
+                        display='flex'
+                        justifyContent='center'
+                        alignItems='center'
+                    >
+                        <Button variant='contained'>Load Data</Button>
+                        <Button variant='contained'>Refresh</Button>
+                    </Box>
+                </Box>
             </main>
         </Box>
     )

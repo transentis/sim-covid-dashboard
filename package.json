@@ -12,6 +12,7 @@
     "next": "10.0.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-json-editor-ajrm": "^2.5.13",
     "victory": "^35.4.9"
   },
   "devDependencies": {
