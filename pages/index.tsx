@@ -10,7 +10,7 @@ import {
 	Paper,
 	Typography,
 } from '@material-ui/core/'
-import { JsonInput, LineChart, LoadingOverlay } from '../components'
+import { Chart, JsonInput, LineChart, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
 import {
 	chartifyData,
@@ -66,9 +66,9 @@ const Home = (props: Props) => {
 					<Typography variant='h4' align='center'>
 						{name.toUpperCase()}
 					</Typography>
-					<LineChart
+					<Chart
 						theme={VictoryTheme.material}
-						line={{
+						lineProps={{
 							animate: {
 								duration: 2000,
 								onLoad: { duration: 1000 },
@@ -76,7 +76,8 @@ const Home = (props: Props) => {
 							data: data[name],
 						}}
 						domain={[0, 40]}
-					></LineChart>
+						area
+					></Chart>
 				</Paper>
 			)
 		})
@@ -130,7 +131,12 @@ const Home = (props: Props) => {
 						>
 							Load Data
 						</Button>
-						<Button variant='contained'>Refresh</Button>
+						<Button
+							variant='contained'
+							onClick={() => window.location.reload()}
+						>
+							Refresh
+						</Button>
 					</Box>
 				</Box>
 			</main>
@@ -142,7 +148,7 @@ export const getStaticProps = async () => {
 	const requestBody = {
 		scenario_managers: ['smSir'],
 		scenarios: ['dashboard'],
-		equations: ['contact_rate', 'reproduction_rate'],
+		equations: ['contact_rate', 'reproduction_rate', 'population'],
 		settings: {
 			smSir: {
 				dashboard: {
