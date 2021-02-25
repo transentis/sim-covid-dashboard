@@ -1,22 +1,11 @@
-import React, { ReactNode, useEffect, useState } from 'react'
-import Head from 'next/head'
+import React, { ReactNode, useState } from 'react';
+import Head from 'next/head';
 
-import {
-	Box,
-	Button,
-	Container,
-	Divider,
-	makeStyles,
-	Paper,
-	Typography,
-} from '@material-ui/core/'
-import { Chart, JsonInput, LineChart, LoadingOverlay } from '../components'
-import { VictoryTheme } from 'victory'
-import {
-	chartifyData,
-	requestModel,
-	RequestBody,
-} from '../helpers/data.helpers'
+import { Box, Button, Divider, makeStyles, Paper, Typography } from '@material-ui/core/';
+import { Chart, JsonInput, LoadingOverlay } from '../components';
+import { VictoryTheme } from 'victory';
+import { chartifyData, requestModel } from '../helpers/data.helpers';
+import { Y } from '../lib/constants/data.consts';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -75,9 +64,8 @@ const Home = (props: Props) => {
 							},
 							data: data[name],
 						}}
-<<<<<<< HEAD
 						highlighting={{
-							type: 'y',
+							type: Y,
 							areas: [
 								{ start: 0, end: 3, color: 'red' },
 								{ start: 3, end: 6, color: 'blue' },
@@ -85,12 +73,8 @@ const Home = (props: Props) => {
 							],
 						}}
 						domain={{ x: [0, 10], y: [0, 10] }}
-					></LineChart>
-=======
-						domain={[0, 40]}
-						area
+						line
 					></Chart>
->>>>>>> 3ce435fb1f65f5a49f31ff3eea76942aa4398ce4
 				</Paper>
 			);
 		});
@@ -132,16 +116,9 @@ const Home = (props: Props) => {
 						<Button variant="contained" onClick={() => requestData()}>
 							Load Data
 						</Button>
-<<<<<<< HEAD
-						<Button variant="contained">Refresh</Button>
-=======
-						<Button
-							variant='contained'
-							onClick={() => window.location.reload()}
-						>
+						<Button variant="contained" onClick={() => window.location.reload()}>
 							Refresh
 						</Button>
->>>>>>> 3ce435fb1f65f5a49f31ff3eea76942aa4398ce4
 					</Box>
 				</Box>
 			</main>

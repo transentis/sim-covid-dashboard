@@ -1,5 +1,5 @@
-import React, { ReactElement, ReactNode } from 'react';
-import { VictoryLine, VictoryArea, VictoryChart, VictoryChartProps, VictoryLineProps } from 'victory';
+import React, { ReactElement } from 'react';
+import { VictoryLine, VictoryArea, VictoryChart, VictoryChartProps, VictoryLineProps, VictoryAreaProps } from 'victory';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -12,7 +12,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface Props extends VictoryChartProps {
-	line?: VictoryLineProps;
+	line?: boolean;
+	area?: boolean;
+	lineProps?: VictoryLineProps;
+	areaProps?: VictoryAreaProps;
 	highlighting?: {
 		type: axes;
 		areas: { start: number; end: number; color: string }[];
@@ -21,7 +24,7 @@ interface Props extends VictoryChartProps {
 
 const YHighlightedLineChart = (props: Props): ReactElement => {
 	const classes = useStyles();
-	const { line, highlighting, ...rest } = props;
+	const { line = true, area = false, lineProps, areaProps, highlighting, ...rest } = props;
 
 	const CustomClip = ({ ...props }) => {
 		return (
@@ -69,13 +72,13 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 						},
 					}}
 					animate={
-						line?.animate || {
+						lineProps?.animate || {
 							duration: 2000,
 							onLoad: { duration: 1000 },
 						}
 					}
-					categories={line?.categories}
-					data={line.data}
+					categories={lineProps?.categories}
+					data={lineProps.data}
 				/>
 				{highlighting.areas.map((area, index: number) => (
 					<VictoryArea
@@ -89,13 +92,13 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 							},
 						}}
 						animate={
-							line?.animate || {
+							lineProps?.animate || {
 								duration: 2000,
 								onLoad: { duration: 1000 },
 							}
 						}
-						categories={line?.categories}
-						data={line.data}
+						categories={lineProps?.categories}
+						data={lineProps.data}
 					/>
 				))}
 				<CustomClip />
