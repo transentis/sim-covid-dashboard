@@ -1,10 +1,22 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import Head from 'next/head';
+import React, { ReactNode, useEffect, useState } from 'react'
+import Head from 'next/head'
 
-import { Box, Button, Container, Divider, makeStyles, Paper, Typography } from '@material-ui/core/';
-import { JsonInput, LineChart, LoadingOverlay } from '../components';
-import { VictoryTheme } from 'victory';
-import { chartifyData, requestModel, RequestBody } from '../helpers/data.helpers';
+import {
+	Box,
+	Button,
+	Container,
+	Divider,
+	makeStyles,
+	Paper,
+	Typography,
+} from '@material-ui/core/'
+import { Chart, JsonInput, LineChart, LoadingOverlay } from '../components'
+import { VictoryTheme } from 'victory'
+import {
+	chartifyData,
+	requestModel,
+	RequestBody,
+} from '../helpers/data.helpers'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -54,15 +66,16 @@ const Home = (props: Props) => {
 					<Typography variant="h4" align="center">
 						{name.toUpperCase()}
 					</Typography>
-					<LineChart
+					<Chart
 						theme={VictoryTheme.material}
-						line={{
+						lineProps={{
 							animate: {
 								duration: 2000,
 								onLoad: { duration: 1000 },
 							},
 							data: data[name],
 						}}
+<<<<<<< HEAD
 						highlighting={{
 							type: 'y',
 							areas: [
@@ -73,6 +86,11 @@ const Home = (props: Props) => {
 						}}
 						domain={{ x: [0, 10], y: [0, 10] }}
 					></LineChart>
+=======
+						domain={[0, 40]}
+						area
+					></Chart>
+>>>>>>> 3ce435fb1f65f5a49f31ff3eea76942aa4398ce4
 				</Paper>
 			);
 		});
@@ -114,7 +132,16 @@ const Home = (props: Props) => {
 						<Button variant="contained" onClick={() => requestData()}>
 							Load Data
 						</Button>
+<<<<<<< HEAD
 						<Button variant="contained">Refresh</Button>
+=======
+						<Button
+							variant='contained'
+							onClick={() => window.location.reload()}
+						>
+							Refresh
+						</Button>
+>>>>>>> 3ce435fb1f65f5a49f31ff3eea76942aa4398ce4
 					</Box>
 				</Box>
 			</main>
@@ -126,7 +153,7 @@ export const getStaticProps = async () => {
 	const requestBody = {
 		scenario_managers: ['smSir'],
 		scenarios: ['dashboard'],
-		equations: ['contact_rate', 'reproduction_rate'],
+		equations: ['contact_rate', 'reproduction_rate', 'population'],
 		settings: {
 			smSir: {
 				dashboard: {
