@@ -26,6 +26,7 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 	const classes = useStyles();
 	const { line = true, area = false, lineProps, areaProps, highlighting, ...rest } = props;
 
+	console.log(lineProps.data);
 	const CustomClip = ({ ...props }) => {
 		return (
 			<defs key="clips">

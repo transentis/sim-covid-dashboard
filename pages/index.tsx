@@ -72,7 +72,7 @@ const Home = (props: Props) => {
 								{ start: 6, end: 10, color: 'green' },
 							],
 						}}
-						domain={{ x: [0, 10], y: [0, 10] }}
+						domain={{ x: [0, 40], y: [0, 40] }}
 						line
 					></Chart>
 				</Paper>
