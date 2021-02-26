@@ -51,12 +51,34 @@ export const filterByColor = (data) => {
 	return filteredArray;
 };
 
-export const addStandardAreas = (
-	highlighting: { type: axes; areas: { start: number; end: number; color: string }[] },
+export const fixStandardAreas = (
+	highlighting: { type: axes; areas: { start?: number; end?: number; color: string }[] },
 	standardColor: string,
 	lineOrAreaProps: VictoryLineProps | VictoryAreaProps
-): { start: number; end: number; color: string }[] => {
-	let allAreas = [];
+): { start?: number; end?: number; color: string }[] => {
+	const allAreas = [];
+	const maximum = lineOrAreaProps.domain
+		? extractDataFromDomain(lineOrAreaProps.domain, highlighting.type, MAX)
+		: extractDataFromData(lineOrAreaProps.data, highlighting.type, MAX);
+
+	for (let i = 0; i < highlighting.areas.length; i++) {
+		if (i === 0) {
+			!highlighting.areas[i].start && (highlighting.areas[i].start = 0);
+			if (!highlighting.areas[i].end) {
+				throw new Error('First Highlighting Area needs to have a sepcified end');
+			}
+		} else if (i === highlighting.areas.length - 1) {
+			!highlighting.areas[i].end && (highlighting.areas[i].end = maximum);
+			if (!highlighting.areas[i].start) {
+				throw new Error('Last Highlighting Area needs to have a sepcified start');
+			}
+		} else {
+			if (!highlighting.areas[i].start || !highlighting.areas[i].end) {
+				throw new Error('Highlighting areas in the middle need to have a specified start and end');
+			}
+		}
+	}
+
 	for (let i = 0; i < highlighting.areas.length; i++) {
 		// most left area
 		if (i === 0) {
@@ -75,9 +97,6 @@ export const addStandardAreas = (
 		}
 		// most right area
 		else {
-			const maximum = lineOrAreaProps.domain
-				? extractDataFromDomain(lineOrAreaProps.domain, highlighting.type, MAX)
-				: extractDataFromData(lineOrAreaProps.data, highlighting.type, MAX);
 			!(highlighting.areas[i].start === highlighting.areas[i - 1].end) &&
 				allAreas.push({
 					start: highlighting.areas[i - 1].end,

@@ -5,7 +5,7 @@ import { Box, Button, Divider, makeStyles, Paper, Typography } from '@material-u
 import { Chart, JsonInput, LoadingOverlay } from '../components';
 import { VictoryTheme } from 'victory';
 import { chartifyData, requestModel } from '../helpers/data.helpers';
-import { Y } from '../lib/constants/data.consts';
+import { AREA, LINE, X, Y } from '../lib/constants/data.consts';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -56,8 +56,9 @@ const Home = (props: Props) => {
 						{name.toUpperCase()}
 					</Typography>
 					<Chart
+						type={AREA}
 						theme={VictoryTheme.material}
-						lineProps={{
+						chartProps={{
 							animate: {
 								duration: 2000,
 								onLoad: { duration: 1000 },
@@ -65,15 +66,14 @@ const Home = (props: Props) => {
 							data: data[name],
 						}}
 						highlighting={{
-							type: Y,
+							type: X,
 							areas: [
-								{ start: 1, end: 2, color: 'red' },
-								{ start: 4, end: 5, color: 'blue' },
-								{ start: 8, end: 9, color: 'green' },
+								{ end: 4, color: '#e9c46a' },
+								{ start: 4, end: 7, color: '#f4a261' },
+								{ start: 7, color: '#e76f51' },
 							],
 						}}
-						domain={{ x: [0, 10], y: [0, 10] }}
-						line
+						domain={{ x: [0, 40], y: [0, 40] }}
 					></Chart>
 				</Paper>
 			);

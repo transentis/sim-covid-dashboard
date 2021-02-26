@@ -4,6 +4,8 @@ import { VictoryArea, VictoryAreaProps, VictoryChart, VictoryChartProps, Victory
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Box } from '@material-ui/core';
+import { axes, lineOrArea } from '../../lib/types/data.types';
+import { LINE } from '../../lib/constants/data.consts';
 
 const useStyles = makeStyles(() => ({
 	root: {},
@@ -11,25 +13,22 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface Props extends VictoryChartProps {
-	line?: boolean;
-	area?: boolean;
-	lineProps?: VictoryLineProps;
-	areaProps?: VictoryAreaProps;
+	type: lineOrArea;
+	chartProps?: VictoryLineProps | VictoryAreaProps;
 }
 
 const LineChart = (props: Props): ReactElement => {
 	const classes = useStyles();
-	const { line = true, area = false, lineProps, areaProps, ...rest } = props;
+	const { type, chartProps, ...rest } = props;
 
-	const chartType = area ? false : true;
 	return (
 		<Box className={classes.root}>
 			<VictoryChart {...rest}>
-				{chartType ? (
+				{type === LINE ? (
 					<VictoryLine
 						interpolation="natural"
 						style={
-							lineProps.style || {
+							chartProps.style || {
 								data: {
 									stroke: 'rgb(106, 237, 199)',
 									strokeWidth: '2.5px',
@@ -37,19 +36,19 @@ const LineChart = (props: Props): ReactElement => {
 							}
 						}
 						animate={
-							lineProps?.animate || {
+							chartProps?.animate || {
 								duration: 2000,
 								onLoad: { duration: 1000 },
 							}
 						}
-						data={lineProps?.data}
-						categories={lineProps?.categories}
+						data={chartProps?.data}
+						categories={chartProps?.categories}
 					></VictoryLine>
 				) : (
 					<VictoryArea
 						interpolation="natural"
 						style={
-							lineProps.style || {
+							chartProps.style || {
 								data: {
 									stroke: 'rgb(106, 237, 199)',
 									strokeWidth: '4px',
@@ -59,18 +58,18 @@ const LineChart = (props: Props): ReactElement => {
 							}
 						}
 						animate={
-							lineProps?.animate || {
+							chartProps?.animate || {
 								duration: 2000,
 								onLoad: { duration: 1000 },
 							}
 						}
-						data={lineProps?.data}
-						categories={lineProps?.categories}
+						data={chartProps?.data}
+						categories={chartProps?.categories}
 					></VictoryArea>
 				)}
 				<VictoryLine
 					style={
-						lineProps.style || {
+						chartProps.style || {
 							data: {
 								stroke: 'rgb(106, 237, 199)',
 								strokeWidth: '2.5px',
@@ -78,13 +77,13 @@ const LineChart = (props: Props): ReactElement => {
 						}
 					}
 					animate={
-						lineProps?.animate || {
+						chartProps?.animate || {
 							duration: 2000,
 							onLoad: { duration: 1000 },
 						}
 					}
-					data={lineProps?.data}
-					categories={lineProps?.categories}
+					data={chartProps?.data}
+					categories={chartProps?.categories}
 				></VictoryLine>
 			</VictoryChart>
 		</Box>

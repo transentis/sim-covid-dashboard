@@ -4,9 +4,8 @@ import { VictoryChartProps, VictoryLineProps, VictoryAreaProps } from 'victory';
 import { makeStyles } from '@material-ui/core/styles';
 
 import StandardChart from './StandardChart';
-import XHighlightedChart from './XHighlightedChart';
-import YHighlightedChart from './YHighlightedChart';
-import { axes } from '../../lib/types/data.types';
+import HighlightedChart from './HighlightedChart';
+import { axes, lineOrArea } from '../../lib/types/data.types';
 import { X } from '../../lib/constants/data.consts';
 
 const useStyles = makeStyles(() => ({
@@ -15,13 +14,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface Props extends VictoryChartProps {
-	line?: boolean;
-	area?: boolean;
-	lineProps?: VictoryLineProps;
-	areaProps?: VictoryAreaProps;
+	type: lineOrArea;
+	chartProps?: VictoryLineProps | VictoryAreaProps;
 	highlighting?: {
 		type: axes;
-		areas: { start: number; end: number; color: string }[];
+		areas: { start?: number; end?: number; color: string }[];
 	};
 }
 
@@ -29,13 +26,7 @@ const LineChart = (props: Props): ReactElement => {
 	const classes = useStyles();
 	const { highlighting, ...rest } = props;
 
-	return !highlighting ? (
-		<StandardChart {...rest} />
-	) : highlighting.type === X ? (
-		<XHighlightedChart highlighting={highlighting} {...rest} />
-	) : (
-		<YHighlightedChart highlighting={highlighting} {...rest} />
-	);
+	return !highlighting ? <StandardChart {...rest} /> : <HighlightedChart highlighting={highlighting} {...rest} />;
 };
 
 export default LineChart;
