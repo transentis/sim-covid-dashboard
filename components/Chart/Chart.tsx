@@ -4,6 +4,7 @@ import {
 	VictoryAreaProps,
 	VictoryChart,
 	VictoryChartProps,
+	VictoryLegend,
 	VictoryLine,
 	VictoryLineProps,
 } from 'victory'
@@ -93,6 +94,16 @@ const LineChart = (props: Props): ReactElement => {
 					data={lineProps?.data}
 					categories={lineProps?.categories}
 				></VictoryLine>
+				<VictoryLegend
+					x={50}
+					y={200}
+					orientation='vertical'
+					style={{
+						title: { fontSize: 20, fill: 'white' },
+						labels: { fill: 'white' },
+					}}
+					data={[{ name: 'One' }, { name: 'Two' }, { name: 'Three' }]}
+				/>
 			</VictoryChart>
 		</Box>
 	)

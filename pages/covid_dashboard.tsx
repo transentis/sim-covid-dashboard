@@ -1,30 +1,17 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import Head from 'next/head'
 
 import {
-	BottomNavigation,
-	BottomNavigationAction,
 	Box,
 	Button,
-	Container,
 	Divider,
 	makeStyles,
 	Paper,
-	Slider,
-	TextField,
 	Typography,
 } from '@material-ui/core/'
-import { Chart, JsonInput, LineChart, LoadingOverlay } from '../components'
+import { Chart, DragChart, JsonInput, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
-import {
-	chartifyData,
-	requestModel,
-	RequestBody,
-} from '../helpers/data.helpers'
-
-import RestoreIcon from '@material-ui/icons/Restore'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import LocationOnIcon from '@material-ui/icons/LocationOn'
+import { chartifyData, requestModel } from '../helpers/data.helpers'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -45,8 +32,6 @@ interface Props {
 const Home = (props: Props) => {
 	const { data } = props
 
-	const [graphData, setGraphData] = useState<{}>(data)
-
 	const [requestBody, setRequestBody] = useState('')
 
 	const requestData = async () => {
@@ -58,41 +43,10 @@ const Home = (props: Props) => {
 		if (!requestedData) {
 			return
 		}
-
-		const data = chartifyData(requestedData)
-
-		setGraphData(data)
 	}
 
 	const onNewJsonInput = (input) => {
-		console.log(input)
 		setRequestBody(input.jsObject)
-	}
-
-	const createGraphs = (data: any): ReactNode[] => {
-		let graphs: ReactNode[] = []
-		Object.keys(graphData).forEach((name: string, index: number) => {
-			graphs.push(
-				<Paper key={index} style={{ margin: '2rem', padding: '2rem' }}>
-					<Typography variant='h4' align='center'>
-						{name.toUpperCase()}
-					</Typography>
-					<Chart
-						theme={VictoryTheme.material}
-						lineProps={{
-							animate: {
-								duration: 2000,
-								onLoad: { duration: 1000 },
-							},
-							data: data[name],
-						}}
-						domain={[0, 40]}
-						area
-					></Chart>
-				</Paper>
-			)
-		})
-		return graphs
 	}
 
 	const classes = useStyles()
@@ -101,7 +55,7 @@ const Home = (props: Props) => {
 		<>
 			<Box className={classes.root}>
 				<Head>
-					<title>BPTK Widgets</title>
+					<title>Covid Dashboard</title>
 					<link rel='icon' href='/favicon.ico' />
 				</Head>
 
@@ -109,7 +63,7 @@ const Home = (props: Props) => {
 					<LoadingOverlay loading={false}></LoadingOverlay>
 					<Box width='100%'>
 						<Typography variant='h1' align='center'>
-							Cool Dashboard
+							Covid Dashboard
 						</Typography>
 					</Box>
 					<Divider></Divider>
@@ -124,7 +78,23 @@ const Home = (props: Props) => {
 							flexWrap='wrap'
 							flexDirection='row'
 						>
-							{createGraphs(data)}
+							<Paper style={{ margin: '2rem', padding: '2rem' }}>
+								<Typography variant='h4' align='center'>
+									Contact Rate
+								</Typography>
+								<Chart
+									theme={VictoryTheme.material}
+									lineProps={{
+										animate: {
+											duration: 2000,
+											onLoad: { duration: 1000 },
+										},
+										data: data['contact_rate'],
+									}}
+									domain={[0, 40]}
+									area
+								></Chart>
+							</Paper>
 						</Box>
 						<Divider></Divider>
 						<Box display='flex' flexDirection='column'>
@@ -150,6 +120,24 @@ const Home = (props: Props) => {
 							>
 								Refresh
 							</Button>
+							<DragChart
+								data={[10, 10, 15, 10, 10, 5, 0, 20, 10]}
+								colorTheme={[
+									'#ff8200',
+									'#FF9055',
+									'#FFA58C',
+									'#FFBFBE',
+								]}
+								changeData={(newData) => console.log(newData)}
+								width={400}
+								height={400}
+								margin={{
+									top: 20,
+									right: 20,
+									bottom: -20,
+									left: 20,
+								}}
+							/>
 						</Box>
 					</Box>
 				</main>
@@ -162,7 +150,7 @@ export const getStaticProps = async () => {
 	const requestBody = {
 		scenario_managers: ['smSir'],
 		scenarios: ['dashboard'],
-		equations: ['contact_rate', 'reproduction_rate', 'population'],
+		equations: ['contact_rate', 'reproduction_rate'],
 		settings: {
 			smSir: {
 				dashboard: {
