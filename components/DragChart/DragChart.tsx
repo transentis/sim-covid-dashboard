@@ -1,27 +1,34 @@
 import React, { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-
-let x
-let y
-let focus
-let line
-
-let drag
+import _ from 'lodash'
 
 interface Props {
-	data: any
+	data: Array<number>
 	height: number
 	width: number
 	margin: any
 	colorTheme: any
-	changeData: (data) => void
+	maxValue?: number
+	changeData: (data: Array<number>) => void
 }
 
 const DragChart = (props: Props) => {
 	const ref = useRef(null)
-	const { data, height, width, margin, colorTheme, changeData } = props
+	const {
+		data,
+		height,
+		width,
+		margin,
+		colorTheme,
+		changeData,
+		maxValue = _.max(data),
+	} = props
 
 	let mappedData
+	let x
+	let y
+	let focus
+	let line
 
 	useEffect(() => {
 		mappedData = data.map((value: number, index: number) => {
@@ -42,8 +49,8 @@ const DragChart = (props: Props) => {
 		width = width - margin.left - margin.right
 		height = height - margin.top - margin.bottom
 		const points = mappedData
-		x = d3.scaleLinear().range([0, width]).domain([0, 10])
-		y = d3.scaleLinear().range([height, 0]).domain([0, 40])
+		x = d3.scaleLinear().range([0, width]).domain([0, data.length])
+		y = d3.scaleLinear().range([height, 0]).domain([0, maxValue])
 		let xAxis = d3.axisBottom(x),
 			yAxis = d3.axisLeft(y).ticks(5)
 
@@ -56,7 +63,7 @@ const DragChart = (props: Props) => {
 				return y(d[1])
 			})
 
-		drag = d3
+		const drag = d3
 			.drag()
 			.on('start', dragstarted)
 			.on('drag', dragged)
@@ -91,7 +98,7 @@ const DragChart = (props: Props) => {
 			.enter()
 			.append('circle')
 			.attr('r', 5.0)
-			.attr('cx', (d, i) => {
+			.attr('cx', (d, i: number) => {
 				return x(i)
 			})
 			.attr('cy', (d) => {
@@ -116,9 +123,9 @@ const DragChart = (props: Props) => {
 	}
 
 	function dragged(event, datum: number) {
-		if (datum[1] < 0 || datum[1] > 40) return
+		if (datum[1] < 0 || datum[1] > maxValue) return
 		datum[1] = y.invert(event.y)
-		datum[1] = datum[1] > 40 ? 40 : datum[1] < 0 ? 0 : datum[1]
+		datum[1] = datum[1] > maxValue ? maxValue : datum[1] < 0 ? 0 : datum[1]
 		d3.select(this).attr('cx', x(datum[0])).attr('cy', y(datum[1]))
 		focus.select('path').attr('d', line)
 	}

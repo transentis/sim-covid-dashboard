@@ -137,6 +137,7 @@ const Home = (props: Props) => {
 									bottom: -20,
 									left: 20,
 								}}
+								maxValue={40}
 							/>
 						</Box>
 					</Box>
