@@ -67,12 +67,12 @@ const Home = (props: Props) => {
 						highlighting={{
 							type: Y,
 							areas: [
-								{ start: 0, end: 3, color: 'red' },
-								{ start: 3, end: 6, color: 'blue' },
-								{ start: 6, end: 10, color: 'green' },
+								{ start: 1, end: 2, color: 'red' },
+								{ start: 4, end: 5, color: 'blue' },
+								{ start: 8, end: 9, color: 'green' },
 							],
 						}}
-						domain={{ x: [0, 40], y: [0, 40] }}
+						domain={{ x: [0, 10], y: [0, 10] }}
 						line
 					></Chart>
 				</Paper>

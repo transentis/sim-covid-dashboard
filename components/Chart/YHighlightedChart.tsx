@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { Box } from '@material-ui/core';
 import { axes } from '../../lib/types/data.types';
+import { addStandardAreas } from '../../helpers/data.helpers';
 
 const useStyles = makeStyles(() => ({
 	root: {},
@@ -26,11 +27,26 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 	const classes = useStyles();
 	const { line = true, area = false, lineProps, areaProps, highlighting, ...rest } = props;
 
-	console.log(lineProps.data);
+	const mockData = [
+		{ x: 0, y: 0 },
+		{ x: 1, y: 10 },
+		{ x: 2, y: 0 },
+		{ x: 3, y: 10 },
+		{ x: 4, y: 0 },
+		{ x: 5, y: 10 },
+		{ x: 6, y: 0 },
+		{ x: 7, y: 10 },
+		{ x: 8, y: 0 },
+		{ x: 9, y: 10 },
+		{ x: 10, y: 0 },
+	];
+
+	const allAreas = addStandardAreas(highlighting, '#c43a31', lineProps);
+
 	const CustomClip = ({ ...props }) => {
 		return (
 			<defs key="clips">
-				{highlighting.areas.map((area: { start: number; end: number; color: string }, index: number) => (
+				{allAreas.map((area: { start: number; end: number; color: string }, index: number) => (
 					<clipPath key={index} id={`clip-path-${index}`}>
 						<rect
 							x="0"
@@ -40,48 +56,25 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 						/>
 					</clipPath>
 				))}
-				<clipPath key={highlighting.areas.length} id={`clip-path-g`}>
-					<rect x="0" y={0} width="100%" height={'100%'} />
-				</clipPath>
 			</defs>
 		);
 	};
 
 	const GradientFill = () => (
 		<defs>
-			{highlighting.areas.map((area, index: number) => (
+			{allAreas.map((area, index: number) => (
 				<linearGradient key={index} id={`${index}Gradient`} x1="0%" x2="0%" y1="0%" y2="100%">
-					<stop offset="100%" stopColor={highlighting.areas[index].color} stopOpacity="0" />
-					<stop offset="0%" stopColor={highlighting.areas[index].color} stopOpacity="0.5" />
+					<stop offset="100%" stopColor={allAreas[index].color} stopOpacity="1" />
+					<stop offset="0%" stopColor={allAreas[index].color} stopOpacity="1" />
 				</linearGradient>
 			))}
-			<linearGradient key={highlighting.areas.length} id={`gGradient`} x1="0%" x2="0%" y1="0%" y2="100%">
-				<stop offset="100%" stopColor={'#c43a31'} stopOpacity="0" />
-				<stop offset="0%" stopColor={'#c43a31'} stopOpacity="0.5" />
-			</linearGradient>
 		</defs>
 	);
 
 	return (
 		<Box className={classes.root}>
 			<VictoryChart {...rest}>
-				<VictoryLine
-					style={{
-						data: {
-							stroke: '#c43a31',
-							strokeWidth: 2,
-						},
-					}}
-					animate={
-						lineProps?.animate || {
-							duration: 2000,
-							onLoad: { duration: 1000 },
-						}
-					}
-					categories={lineProps?.categories}
-					data={lineProps.data}
-				/>
-				{highlighting.areas.map((area, index: number) => (
+				{allAreas.map((area, index: number) => (
 					<VictoryArea
 						key={index}
 						style={{
@@ -99,7 +92,7 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 							}
 						}
 						categories={lineProps?.categories}
-						data={lineProps.data}
+						data={mockData}
 					/>
 				))}
 				<CustomClip />
