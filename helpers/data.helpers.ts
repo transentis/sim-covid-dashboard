@@ -94,8 +94,10 @@ export const fixStandardAreas = (
 					color: standardColor,
 				});
 			allAreas.push(highlighting.areas[i]);
+			highlighting.areas[i].end < maximum &&
+				allAreas.push({ start: highlighting.areas[i].end, end: maximum, color: standardColor });
 		}
-		// most right area
+		// middle areas
 		else {
 			!(highlighting.areas[i].start === highlighting.areas[i - 1].end) &&
 				allAreas.push({
@@ -104,8 +106,6 @@ export const fixStandardAreas = (
 					color: standardColor,
 				});
 			allAreas.push(highlighting.areas[i]);
-			highlighting.areas[i].end < maximum &&
-				allAreas.push({ start: highlighting.areas[i].end, end: maximum, color: standardColor });
 		}
 	}
 	return allAreas;

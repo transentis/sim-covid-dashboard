@@ -75,12 +75,12 @@ const Home = (props: Props) => {
 						highlighting={{
 							type: X,
 							areas: [
-								{ end: 4, color: '#e9c46a' },
-								{ start: 4, end: 7, color: '#f4a261' },
-								{ start: 7, color: '#e76f51' },
+								{ end: 200, color: '#e9c46a' },
+								{ start: 300, end: 400, color: '#f4a261' },
+								{ start: 500, color: '#e76f51' },
 							],
 						}}
-						domain={{ x: [0, 40], y: [0, 40] }}
+						// domain={{ x: [0, 600], y: [0, 600] }}
 					></Chart>
 				</Paper>
 			);
