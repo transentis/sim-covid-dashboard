@@ -95,6 +95,23 @@ const Home = (props: Props) => {
 									area
 								></Chart>
 							</Paper>
+							<Paper style={{ margin: '2rem', padding: '2rem' }}>
+								<Typography variant='h4' align='center'>
+									Reproduction Rate
+								</Typography>
+								<Chart
+									theme={VictoryTheme.material}
+									lineProps={{
+										animate: {
+											duration: 2000,
+											onLoad: { duration: 1000 },
+										},
+										data: data['reproduction_rate'],
+									}}
+									domain={[0, 40]}
+									area
+								></Chart>
+							</Paper>
 						</Box>
 						<Divider></Divider>
 						<Box display='flex' flexDirection='column'>

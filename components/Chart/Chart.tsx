@@ -23,6 +23,12 @@ interface Props extends VictoryChartProps {
 	area?: boolean
 	lineProps?: VictoryLineProps
 	areaProps?: VictoryAreaProps
+	legend: Array<Legend>
+}
+
+interface Legend {
+	name: string
+	color: string
 }
 
 const LineChart = (props: Props): ReactElement => {
