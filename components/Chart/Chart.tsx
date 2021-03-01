@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import StandardChart from './StandardChart'
 import HighlightedChart from './HighlightedChart'
 import { axes, lineOrArea } from '../../lib/types/data.types'
-import { X } from '../../lib/constants/data.consts'
 
 const useStyles = makeStyles(() => ({
 	root: {},
@@ -20,7 +19,7 @@ interface Props extends VictoryChartProps {
 		type: axes
 		areas: { start?: number; end?: number; color: string }[]
 	}
-	legend: Array<Legend>
+	legend?: Array<Legend>
 }
 
 interface Legend {

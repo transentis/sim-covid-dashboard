@@ -49,7 +49,10 @@ const DragChart = (props: Props) => {
 		width = width - margin.left - margin.right
 		height = height - margin.top - margin.bottom
 		const points = mappedData
-		x = d3.scaleLinear().range([0, width]).domain([0, data.length])
+		x = d3
+			.scaleLinear()
+			.range([0, width])
+			.domain([0, data.length - 1])
 		y = d3.scaleLinear().range([height, 0]).domain([0, maxValue])
 		let xAxis = d3.axisBottom(x),
 			yAxis = d3.axisLeft(y).ticks(5)

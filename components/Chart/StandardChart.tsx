@@ -1,34 +1,43 @@
-import React, { ReactElement } from 'react';
-import { VictoryArea, VictoryAreaProps, VictoryChart, VictoryChartProps, VictoryLine, VictoryLineProps } from 'victory';
+import React, { ReactElement } from 'react'
+import {
+	VictoryArea,
+	VictoryAreaProps,
+	VictoryChart,
+	VictoryChartProps,
+	VictoryLine,
+	VictoryLineProps,
+} from 'victory'
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 
-import { Box } from '@material-ui/core';
-import { axes, lineOrArea } from '../../lib/types/data.types';
-import { LINE } from '../../lib/constants/data.consts';
+import { Box } from '@material-ui/core'
+import { lineOrArea } from '../../lib/types/data.types'
+import { LINE } from '../../lib/constants/data.consts'
 
 const useStyles = makeStyles(() => ({
-	root: {},
+	root: {
+		height: '100%',
+	},
 	line: {},
-}));
+}))
 
 interface Props extends VictoryChartProps {
-	type: lineOrArea;
-	chartProps?: VictoryLineProps | VictoryAreaProps;
+	type: lineOrArea
+	chartProps?: VictoryLineProps | VictoryAreaProps
 }
 
 const LineChart = (props: Props): ReactElement => {
-	const classes = useStyles();
-	const { type, chartProps, ...rest } = props;
+	const classes = useStyles()
+	const { type, chartProps, ...rest } = props
 
 	return (
 		<Box className={classes.root}>
 			<VictoryChart {...rest}>
 				{type === LINE ? (
 					<VictoryLine
-						interpolation="natural"
+						interpolation='natural'
 						style={
-							chartProps.style || {
+							chartProps?.style || {
 								data: {
 									stroke: 'rgb(106, 237, 199)',
 									strokeWidth: '2.5px',
@@ -46,9 +55,9 @@ const LineChart = (props: Props): ReactElement => {
 					></VictoryLine>
 				) : (
 					<VictoryArea
-						interpolation="natural"
+						interpolation='natural'
 						style={
-							chartProps.style || {
+							chartProps?.style || {
 								data: {
 									stroke: 'rgb(106, 237, 199)',
 									strokeWidth: '4px',
@@ -69,7 +78,7 @@ const LineChart = (props: Props): ReactElement => {
 				)}
 				<VictoryLine
 					style={
-						chartProps.style || {
+						chartProps?.style || {
 							data: {
 								stroke: 'rgb(106, 237, 199)',
 								strokeWidth: '2.5px',
@@ -87,7 +96,7 @@ const LineChart = (props: Props): ReactElement => {
 				></VictoryLine>
 			</VictoryChart>
 		</Box>
-	);
-};
+	)
+}
 
-export default LineChart;
+export default LineChart

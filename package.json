@@ -16,6 +16,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-json-editor-ajrm": "^2.5.13",
+    "react-resize-detector": "^6.6.1",
     "victory": "^35.4.9"
   },
   "devDependencies": {
