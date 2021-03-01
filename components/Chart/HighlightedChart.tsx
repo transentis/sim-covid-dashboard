@@ -51,7 +51,6 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 		);
 	};
 
-	console.log(CustomClip);
 	const GradientFill = () => (
 		<defs>
 			{allAreas.map((area, index: number) => (
