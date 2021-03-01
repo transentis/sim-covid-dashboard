@@ -1,4 +1,4 @@
-image: node:10.15.0
+image: 14.16.0-alpine3.12
 
 pipelines:
     default:
@@ -7,9 +7,8 @@ pipelines:
               script:
                   - yarn
                   - yarn build
-              # Define an artifact to pass the zip file to the next step
               artifacts:
-                  - application.zip
+                  - .next
         - step:
               name: 'Deploy to Production'
               # Track production environments builds using deployments.
