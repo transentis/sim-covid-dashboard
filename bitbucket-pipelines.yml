@@ -8,7 +8,7 @@ pipelines:
                   - yarn
                   - yarn build
               artifacts:
-                  - .next
+                  - .next/**
         - step:
               name: 'Deploy to Production'
               # Track production environments builds using deployments.
@@ -21,4 +21,4 @@ pipelines:
                         AWS_DEFAULT_REGION: '$AWS_DEFAULT_REGION'
                         APPLICATION_NAME: '$APPLICATION_NAME'
                         ENVIRONMENT_NAME: 'dev'
-                        ZIP_FILE: 'application.zip'
+                        LOCAL_PATH: '.next'
