@@ -9,7 +9,7 @@ pipelines:
                   - yarn build
                   - apt-get update && apt-get install -y
                   - apt-get install zip
-                  - zip application.zip .next
+                  - zip application.zip .next package.json
               artifacts:
                   - application.zip
         - step:
