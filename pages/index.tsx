@@ -18,7 +18,8 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 
 import BPTKApi from '../lib/apiMiddlewear'
-import BptkAPI from '../lib/apiMiddlewear'
+
+const bptkApi = new BPTKApi('YOUR API KEY')
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -46,14 +47,14 @@ const Home = (props: Props) => {
 	const requestData = async () => {
 		let requestedData
 		if (requestBody !== '') {
-			requestedData = await requestModel(requestBody)
+			requestedData = await bptkApi.requestModel(requestBody)
 		}
 
 		if (!requestedData) {
 			return
 		}
 
-		const data = chartifyData(requestedData)
+		const data = bptkApi.chartifyData(requestedData)
 
 		setGraphData(data)
 	}
@@ -180,7 +181,6 @@ export const getStaticProps = async () => {
 		},
 	}
 
-	const bptkApi = new BptkAPI('YOUR API KEY')
 	const requestedData = await bptkApi.requestModel(requestBody)
 
 	if (!requestedData) {
