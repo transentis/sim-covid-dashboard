@@ -22,6 +22,8 @@ import ReactResizeDetector from 'react-resize-detector'
 
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
+import BPTKApi from '../lib/apiMiddlewear'
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 		paddingBottom: theme.spacing(4),
@@ -345,7 +347,8 @@ export const getStaticProps = async () => {
 			},
 		},
 	}
-	const requestedData = await requestModel(requestBody)
+	const bptkApi = new BPTKApi('MY API KEY')
+	const requestedData = await bptkApi.requestModel(requestBody)
 
 	if (!requestedData) {
 		return {
@@ -353,7 +356,7 @@ export const getStaticProps = async () => {
 		}
 	}
 
-	const data = await chartifyData(requestedData)
+	const data = bptkApi.chartifyData(requestedData)
 
 	return {
 		props: {

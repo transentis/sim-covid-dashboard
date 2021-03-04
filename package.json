@@ -10,6 +10,8 @@
 	"dependencies": {
 		"@material-ui/core": "^4.11.3",
 		"@material-ui/icons": "^4.11.2",
+		"axios": "^0.21.1",
+		"axios-cache-adapter": "^2.7.3",
 		"d3": "^6.5.0",
 		"lodash": "^4.17.21",
 		"next": "10.0.6",
