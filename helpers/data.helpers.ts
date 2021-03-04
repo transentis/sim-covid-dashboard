@@ -2,41 +2,6 @@ import { MIN, MAX } from './../lib/constants/data.consts'
 import { axes, min_or_max } from '../lib/types/data.types'
 import { DomainPropType } from 'victory-core'
 import { VictoryLineProps, VictoryAreaProps } from 'victory'
-import { RequestBody } from '../lib/apiMiddlewear/types.constants'
-/**
- * @param  {RequestBody|string} requestBody
- * @returns Promise
- */
-export const requestModel = async (
-	requestBody: RequestBody | string
-): Promise<any> => {
-	const res = await fetch(
-		`http://sim-covid-api-dev.eu-central-1.elasticbeanstalk.com/run`,
-		{
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(requestBody),
-		}
-	)
-	const responseData = await res.json()
-
-	return responseData
-}
-
-export const chartifyData = (data) => {
-	const temp = {}
-	for (const attributes in data) {
-		temp[attributes] = Object.values(data[attributes]).map(
-			(value: number, index: number) => {
-				return { x: index, y: value }
-			}
-		)
-	}
-	return temp
-}
 
 export const filterByColor = (data) => {
 	const allUsedColors = []

@@ -11,12 +11,14 @@ import {
 } from '@material-ui/core/'
 import { Chart, JsonInput, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
-import { chartifyData, requestModel } from '../helpers/data.helpers'
 import { AREA, LINE, X, Y } from '../lib/constants/data.consts'
 
 import RestoreIcon from '@material-ui/icons/Restore'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
+
+import BPTKApi from '../lib/apiMiddlewear'
+import BptkAPI from '../lib/apiMiddlewear'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -177,7 +179,9 @@ export const getStaticProps = async () => {
 			},
 		},
 	}
-	const requestedData = await requestModel(requestBody)
+
+	const bptkApi = new BptkAPI('YOUR API KEY')
+	const requestedData = await bptkApi.requestModel(requestBody)
 
 	if (!requestedData) {
 		return {
@@ -185,7 +189,7 @@ export const getStaticProps = async () => {
 		}
 	}
 
-	const data = await chartifyData(requestedData)
+	const data = bptkApi.chartifyData(requestedData)
 
 	return {
 		props: {

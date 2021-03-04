@@ -15,7 +15,6 @@ import {
 } from '@material-ui/core/'
 import { Chart, DragChart, LoadingOverlay, Tabs } from '../components'
 import { VictoryTheme } from 'victory'
-import { chartifyData, requestModel } from '../helpers/data.helpers'
 import { AREA, LINE, X } from '../lib/constants/data.consts'
 
 import ReactResizeDetector from 'react-resize-detector'
