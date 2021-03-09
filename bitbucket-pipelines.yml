@@ -23,5 +23,6 @@ pipelines:
                         AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                         AWS_DEFAULT_REGION: '$AWS_DEFAULT_REGION'
                         APPLICATION_NAME: '$APPLICATION_NAME'
+                        ENVIRONMENT_NAME: 'Bptk-dashboard-showcase-env'
                         ZIP_FILE: 'application.zip'
                         WAIT: 'true'
