@@ -14,7 +14,7 @@ class BptkAPI {
 		this.apiKey = apiKey
 
 		this.api = setup({
-			baseURL: 'https://httpbin.org',
+			baseURL: 'http://api.transentis.com/bptk/transentis/covid-sim',
 
 			cache: {
 				maxAge: 15 * 60 * 1000,
@@ -32,7 +32,7 @@ class BptkAPI {
 	requestModel = async (requestBody: RequestBody | string): Promise<any> => {
 		try {
 			const response = await this.api.post(
-				`http://sim-covid-api-dev.eu-central-1.elasticbeanstalk.com/run`,
+				`http://api.transentis.com/bptk/transentis/covid-sim/run`,
 				requestBody
 			)
 			console.log(response.request.fromCache)
