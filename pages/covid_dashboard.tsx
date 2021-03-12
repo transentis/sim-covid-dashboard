@@ -32,6 +32,28 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
+const bptkApi = new BPTKApi('MY API KEY')
+
+const defaultModel = {
+	scenario_managers: ['smSir'],
+	scenarios: ['dashboard'],
+	equations: ['contact_rate', 'reproduction_rate'],
+	settings: {
+		smSir: {
+			dashboard: {
+				constants: {
+					normal_contact_rate: 20.0,
+					distancing_contact_rate: 5.0,
+					distancing_begin: 50.0,
+					distancing_duration: 500.0,
+					distancing_on: 0.0,
+					dashboard_on: 1.0,
+				},
+			},
+		},
+	},
+}
+
 interface Props {
 	data: {
 		contact_rate: [{ x: number; y: number }]
@@ -50,6 +72,32 @@ const Home = (props: Props) => {
 	const [loading, setLoading] = useState(false)
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([0, 50])
 	const [selectedGraph, setSelectedGraph] = useState<string>(graphs[0])
+
+	const [graphData, setGraphData] = useState<any>(data)
+	const [dragChartData, setDragChartData] = useState([
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+	])
+	const [requestBody, setRequestBody] = useState(defaultModel)
+
+	const requestData = async () => {
+		let requestedData: any
+		requestedData = await bptkApi.requestModel(requestBody)
+
+		if (!requestedData) {
+			return
+		}
+
+		setGraphData(bptkApi.chartifyData(requestedData))
+	}
 
 	const handleSliderChange = (event: any, newValue: number | number[]) => {
 		setRangeSliderRange(newValue as number[])
@@ -123,7 +171,9 @@ const Home = (props: Props) => {
 						<Paper>
 							<Box padding={3} height={'500px'}>
 								<Typography variant='h4' align='center'>
-									Recovered Population vs. Deaths
+									{selectedGraph
+										.toUpperCase()
+										.replace('_', ' ')}
 								</Typography>
 								<Chart
 									type={AREA}
@@ -133,21 +183,8 @@ const Home = (props: Props) => {
 											duration: 2000,
 											onLoad: { duration: 1000 },
 										},
-										data: data[selectedGraph],
+										data: graphData[selectedGraph],
 									}}
-									// highlighting={{
-									// 	type: X,
-									// 	areas: [
-									// 		{ end: 4, color: '#e9c46a' },
-									// 		{
-									// 			start: 4,
-									// 			end: 7,
-									// 			color: '#f4a261',
-									// 		},
-									// 		{ start: 7, color: '#e76f51' },
-									// 	],
-									// }}
-									// domain={{ x: [0, 40], y: [0, 40] }}
 								></Chart>
 							</Box>
 						</Paper>
@@ -266,20 +303,7 @@ const Home = (props: Props) => {
 											{({ width }) => (
 												<Box>
 													<DragChart
-														data={[
-															10,
-															10,
-															15,
-															10,
-															10,
-															5,
-															0,
-															20,
-															10,
-															10,
-															10,
-															10,
-														]}
+														data={dragChartData}
 														colorTheme={[
 															'#ff8200',
 															'#FF9055',
@@ -287,7 +311,9 @@ const Home = (props: Props) => {
 															'#FFBFBE',
 														]}
 														changeData={(newData) =>
-															console.log(newData)
+															setDragChartData(
+																newData
+															)
 														}
 														width={
 															width
@@ -327,27 +353,7 @@ const Home = (props: Props) => {
 }
 
 export const getStaticProps = async () => {
-	const requestBody = {
-		scenario_managers: ['smSir'],
-		scenarios: ['dashboard'],
-		equations: ['contact_rate', 'reproduction_rate', 'total_population'],
-		settings: {
-			smSir: {
-				dashboard: {
-					constants: {
-						normal_contact_rate: 20.0,
-						distancing_contact_rate: 5.0,
-						distancing_begin: 50.0,
-						distancing_duration: 500.0,
-						distancing_on: 0.0,
-						dashboard_on: 1.0,
-					},
-				},
-			},
-		},
-	}
-	const bptkApi = new BPTKApi('MY API KEY')
-	const requestedData = await bptkApi.requestModel(requestBody)
+	const requestedData = await bptkApi.requestModel(defaultModel)
 
 	if (!requestedData) {
 		return {

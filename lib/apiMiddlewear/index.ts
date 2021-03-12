@@ -32,7 +32,7 @@ class BptkAPI {
 	requestModel = async (requestBody: RequestBody | string): Promise<any> => {
 		try {
 			const response = await this.api.post(
-				`http://api.transentis.com/bptk/transentis/covid-sim/run`,
+				`http://api.transentis.com/bptk/transentis/covid-sim/run/`,
 				requestBody
 			)
 			console.log(response.request.fromCache)

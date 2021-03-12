@@ -11,11 +11,7 @@ import {
 } from '@material-ui/core/'
 import { Chart, JsonInput, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
-import { AREA, LINE, X, Y } from '../lib/constants/data.consts'
-
-import RestoreIcon from '@material-ui/icons/Restore'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import LocationOnIcon from '@material-ui/icons/LocationOn'
+import { AREA } from '../lib/constants/data.consts'
 
 import BPTKApi from '../lib/apiMiddlewear'
 
@@ -45,7 +41,7 @@ const Home = (props: Props) => {
 	const [requestBody, setRequestBody] = useState('')
 
 	const requestData = async () => {
-		let requestedData
+		let requestedData: any
 		if (requestBody !== '') {
 			requestedData = await bptkApi.requestModel(requestBody)
 		}
@@ -81,14 +77,7 @@ const Home = (props: Props) => {
 							},
 							data: data[name],
 						}}
-						highlighting={{
-							type: X,
-							areas: [
-								{ end: 200, color: '#e9c46a' },
-								{ start: 300, end: 400, color: '#f4a261' },
-								{ start: 500, color: '#e76f51' },
-							],
-						}}
+
 						// domain={{ x: [0, 600], y: [0, 600] }}
 					></Chart>
 				</Paper>

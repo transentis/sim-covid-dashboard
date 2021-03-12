@@ -24,6 +24,8 @@ const DragChart = (props: Props) => {
 		maxValue = _.max(data),
 	} = props
 
+	console.log(width)
+
 	let mappedData
 	let x
 	let y
@@ -38,7 +40,7 @@ const DragChart = (props: Props) => {
 			d3.select(ref.current).select('svg').remove()
 			drawChart(width, height)
 		}
-	}, [data])
+	}, [data, width])
 
 	const drawChart = (width: number, height: number) => {
 		const svg = d3
