@@ -37,17 +37,27 @@ const bptkApi = new BPTKApi('MY API KEY')
 const defaultModel = {
 	scenario_managers: ['smSir'],
 	scenarios: ['dashboard'],
-	equations: ['contact_rate', 'reproduction_rate'],
+	equations: [
+		'normal_contact_rate',
+		'distancing_contact_rate',
+		'infectious',
+		'total_population',
+		'recovered',
+		'deceased',
+	],
 	settings: {
 		smSir: {
 			dashboard: {
 				constants: {
-					normal_contact_rate: 20.0,
 					distancing_contact_rate: 5.0,
-					distancing_begin: 50.0,
-					distancing_duration: 500.0,
 					distancing_on: 0.0,
-					dashboard_on: 1.0,
+					dashboard_on: 0.0,
+				},
+				points: {
+					variable_contact_rate: [
+						[0, 20.0],
+						[1500, 20.0],
+					],
 				},
 			},
 		},
@@ -67,13 +77,14 @@ const Home = (props: Props) => {
 
 	const classes = useStyles()
 
-	const graphs = ['total_population', 'contact_rate', 'reproduction_rate']
+	const graphs = ['total_population', 'normal_contact_rate', 'infectious']
 
 	const [loading, setLoading] = useState(false)
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([0, 50])
 	const [selectedGraph, setSelectedGraph] = useState<string>(graphs[0])
 
 	const [graphData, setGraphData] = useState<any>(data)
+
 	const [dragChartData, setDragChartData] = useState([
 		20,
 		20,
@@ -85,12 +96,21 @@ const Home = (props: Props) => {
 		20,
 		20,
 		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
 	])
+
 	const [requestBody, setRequestBody] = useState(defaultModel)
 
 	const requestData = async () => {
 		let requestedData: any
 		requestedData = await bptkApi.requestModel(requestBody)
+
+		console.log(requestedData)
 
 		if (!requestedData) {
 			return
@@ -183,7 +203,10 @@ const Home = (props: Props) => {
 											duration: 2000,
 											onLoad: { duration: 1000 },
 										},
-										data: graphData[selectedGraph],
+										data: graphData[selectedGraph].slice(
+											rangeSliderRange[0],
+											rangeSliderRange[1]
+										),
 									}}
 								></Chart>
 							</Box>
@@ -259,7 +282,7 @@ const Home = (props: Props) => {
 											onChange={handleSliderChange}
 											valueLabelDisplay='auto'
 											min={0}
-											max={100}
+											max={1499}
 										/>
 									</Box>
 
@@ -289,32 +312,52 @@ const Home = (props: Props) => {
 												}
 											>
 												<IconButton
-													// onClick={() =>
-													// 	this.rerunWithContactRate()
-													// }
+													onClick={() =>
+														requestData()
+													}
 													aria-label='run'
 												>
 													<PlayArrow />
 												</IconButton>
 											</Tooltip>
 										</div>
-										<Typography>Dragchart</Typography>
+										<Typography>Contact Rate</Typography>
 										<ReactResizeDetector handleWidth>
 											{({ width }) => (
 												<Box>
 													<DragChart
 														data={dragChartData}
 														colorTheme={[
-															'#ff8200',
-															'#FF9055',
-															'#FFA58C',
-															'#FFBFBE',
+															'#6aedc7',
+															'#5ce6be',
 														]}
-														changeData={(newData) =>
+														onChangeData={(
+															newData,
+															tupleData
+														) => {
+															setRequestBody({
+																...requestBody,
+																settings: {
+																	smSir: {
+																		dashboard: {
+																			constants: {
+																				...requestBody
+																					.settings
+																					.smSir
+																					.dashboard
+																					.constants,
+																			},
+																			points: {
+																				variable_contact_rate: tupleData,
+																			},
+																		},
+																	},
+																},
+															})
 															setDragChartData(
 																newData
 															)
-														}
+														}}
 														width={
 															width
 																? width - 50
@@ -328,6 +371,7 @@ const Home = (props: Props) => {
 															left: 20,
 														}}
 														maxValue={40}
+														xSteps={100}
 													/>
 												</Box>
 											)}

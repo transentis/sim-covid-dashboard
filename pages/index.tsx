@@ -45,7 +45,6 @@ const Home = (props: Props) => {
 		if (requestBody !== '') {
 			requestedData = await bptkApi.requestModel(requestBody)
 		}
-
 		if (!requestedData) {
 			return
 		}
