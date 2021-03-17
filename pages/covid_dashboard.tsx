@@ -21,7 +21,7 @@ import ReactResizeDetector from 'react-resize-detector'
 
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
-import BPTKApi from '../lib/apiMiddlewear'
+import BPTKApi from '@transentis/bptk-connector'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
