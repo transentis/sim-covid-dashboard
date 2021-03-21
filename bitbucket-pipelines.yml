@@ -23,6 +23,7 @@ pipelines:
                         AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                         AWS_DEFAULT_REGION: '$AWS_DEFAULT_REGION'
                         APPLICATION_NAME: '$APPLICATION_NAME'
+                        NPM_TOKEN: '$NPM_TOKEN'
                         ENVIRONMENT_NAME: 'Bptk-dashboard-showcase-env'
                         S3_BUCKET: 'elasticbeanstalk-eu-central-1-729621526906'
                         ZIP_FILE: 'application.zip'
