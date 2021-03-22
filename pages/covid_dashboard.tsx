@@ -6,21 +6,16 @@ import {
 	Button,
 	ButtonGroup,
 	Grid,
-	IconButton,
 	makeStyles,
 	Paper,
-	Slider,
-	Tooltip,
 	Typography,
 } from '@material-ui/core/'
-import { Chart, DragChart, LoadingOverlay, Tabs } from '../components'
+import { Chart, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
 import { chartifyData, requestModel } from '../helpers/data.helpers'
 import { AREA, LINE, X } from '../lib/constants/data.consts'
 
-import ReactResizeDetector from 'react-resize-detector'
-
-import { PlayArrow, Refresh } from '@material-ui/icons'
+import Inputs from '../components/Inputs'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -47,12 +42,8 @@ const Home = (props: Props) => {
 	const graphs = ['total_population', 'contact_rate', 'reproduction_rate']
 
 	const [loading, setLoading] = useState(false)
-	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([0, 50])
-	const [selectedGraph, setSelectedGraph] = useState<string>(graphs[0])
 
-	const handleSliderChange = (event: any, newValue: number | number[]) => {
-		setRangeSliderRange(newValue as number[])
-	}
+	const [selectedGraph, setSelectedGraph] = useState<string>(graphs[0])
 
 	const handleGraphChange = (index: number) => {
 		setSelectedGraph(graphs[index])
@@ -207,113 +198,47 @@ const Home = (props: Props) => {
 					<Grid item xs={8}>
 						<Paper>
 							<Box
-								height={'200px'}
+								height={'300px'}
 								padding={3}
 								position='relative'
 							>
-								<Tabs>
-									<Box>
-										<Typography gutterBottom>
-											Visualization Range
-										</Typography>
-										<Slider
-											value={rangeSliderRange}
-											onChange={handleSliderChange}
-											valueLabelDisplay='auto'
-											min={0}
-											max={100}
-										/>
-									</Box>
-
-									<div>
-										<div
-											style={{
-												position: 'absolute',
-												right: '1%',
-											}}
-										>
-											<Tooltip
-												title={'Resets the dragchart'}
-											>
-												<IconButton
-													// onClick={() =>
-													// 	// resetDragData()
-													// }
-													aria-label='delete'
-												>
-													<Refresh />
-												</IconButton>
-											</Tooltip>
-
-											<Tooltip
-												title={
-													'Runs the Model with the new dragchart data'
-												}
-											>
-												<IconButton
-													// onClick={() =>
-													// 	this.rerunWithContactRate()
-													// }
-													aria-label='run'
-												>
-													<PlayArrow />
-												</IconButton>
-											</Tooltip>
-										</div>
-										<Typography>Dragchart</Typography>
-										<ReactResizeDetector handleWidth>
-											{({ width }) => (
-												<Box>
-													<DragChart
-														data={[
-															10,
-															10,
-															15,
-															10,
-															10,
-															5,
-															0,
-															20,
-															10,
-															10,
-															10,
-															10,
-														]}
-														colorTheme={[
-															'#ff8200',
-															'#FF9055',
-															'#FFA58C',
-															'#FFBFBE',
-														]}
-														changeData={(newData) =>
-															console.log(newData)
-														}
-														width={
-															width
-																? width - 50
-																: 100
-														}
-														height={100}
-														margin={{
-															top: 20,
-															right: 20,
-															bottom: -20,
-															left: 20,
-														}}
-														maxValue={40}
-													/>
-												</Box>
-											)}
-										</ReactResizeDetector>
-									</div>
-								</Tabs>
+								<Inputs
+									scheme={{
+										scenarios: ['dashboard'],
+										equations: [
+											'contact_rate',
+											'reproduction_rate',
+											'total_population',
+										],
+										normal_contact_rate: [20, 20, 20],
+										numberVar1: 5.0,
+										numberVar2: 50.0,
+										numberVar3: 50.0,
+										numberVar4: 50.0,
+										numberVar5: 50.0,
+										numberVar6: 50.0,
+										numberVar7: 50.0,
+										numberVar8: 50.0,
+										numberVar9: 50.0,
+										numberVar10: 50.0,
+										numberVar11: 50.0,
+										numberVar12: 50.0,
+										numberVar13: 50.0,
+										stringVar1: 'negative',
+										stringVar2: 'negative',
+										stringVar3: 'negative',
+										stringVar4: 'negative',
+										stringVar5: 'negative',
+										stringVar6: 'negative',
+									}}
+								/>
 							</Box>
 						</Paper>
 					</Grid>
 					<Grid item xs={4}>
 						<Paper>
 							<Box
-								height={'200px'}
+								height={'300px'}
 								padding={3}
 								width='100%'
 							></Box>
