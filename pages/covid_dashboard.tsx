@@ -12,10 +12,11 @@ import {
 } from '@material-ui/core/'
 import { Chart, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
-import { chartifyData, requestModel } from '../helpers/data.helpers'
 import { AREA, LINE, X } from '../lib/constants/data.consts'
 
 import Inputs from '../components/Inputs'
+
+import BPTKApi from '@transentis/bptk-connector'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -25,6 +26,38 @@ const useStyles = makeStyles((theme) => ({
 		width: 500,
 	},
 }))
+
+const bptkApi = new BPTKApi('MY API KEY')
+
+const defaultModel = {
+	scenario_managers: ['smSir'],
+	scenarios: ['dashboard'],
+	equations: [
+		'normal_contact_rate',
+		'distancing_contact_rate',
+		'infectious',
+		'total_population',
+		'recovered',
+		'deceased',
+	],
+	settings: {
+		smSir: {
+			dashboard: {
+				constants: {
+					distancing_contact_rate: 5.0,
+					distancing_on: 0.0,
+					dashboard_on: 0.0,
+				},
+				points: {
+					variable_contact_rate: [
+						[0, 20.0],
+						[1500, 20.0],
+					],
+				},
+			},
+		},
+	},
+}
 
 interface Props {
 	data: {
@@ -39,11 +72,46 @@ const Home = (props: Props) => {
 
 	const classes = useStyles()
 
-	const graphs = ['total_population', 'contact_rate', 'reproduction_rate']
+	const graphs = ['total_population', 'normal_contact_rate', 'infectious']
 
 	const [loading, setLoading] = useState(false)
 
 	const [selectedGraph, setSelectedGraph] = useState<string>(graphs[0])
+	const [graphData, setGraphData] = useState<any>(data)
+
+	const [dragChartData, setDragChartData] = useState([
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+		20,
+	])
+
+	const [requestBody, setRequestBody] = useState(defaultModel)
+
+	const requestData = async () => {
+		let requestedData: any
+		requestedData = await bptkApi.requestModel(requestBody)
+
+		console.log(requestedData)
+
+		if (!requestedData) {
+			return
+		}
+
+		setGraphData(bptkApi.chartifyData(requestedData))
+	}
 
 	const handleGraphChange = (index: number) => {
 		setSelectedGraph(graphs[index])
@@ -113,7 +181,9 @@ const Home = (props: Props) => {
 						<Paper>
 							<Box padding={3} height={'500px'}>
 								<Typography variant='h4' align='center'>
-									Recovered Population vs. Deaths
+									{selectedGraph
+										.toUpperCase()
+										.replace('_', ' ')}
 								</Typography>
 								<Chart
 									type={AREA}
@@ -123,21 +193,8 @@ const Home = (props: Props) => {
 											duration: 2000,
 											onLoad: { duration: 1000 },
 										},
-										data: data[selectedGraph],
+										data: graphData[selectedGraph],
 									}}
-									// highlighting={{
-									// 	type: X,
-									// 	areas: [
-									// 		{ end: 4, color: '#e9c46a' },
-									// 		{
-									// 			start: 4,
-									// 			end: 7,
-									// 			color: '#f4a261',
-									// 		},
-									// 		{ start: 7, color: '#e76f51' },
-									// 	],
-									// }}
-									// domain={{ x: [0, 40], y: [0, 40] }}
 								></Chart>
 							</Box>
 						</Paper>
@@ -251,26 +308,7 @@ const Home = (props: Props) => {
 }
 
 export const getStaticProps = async () => {
-	const requestBody = {
-		scenario_managers: ['smSir'],
-		scenarios: ['dashboard'],
-		equations: ['contact_rate', 'reproduction_rate', 'total_population'],
-		settings: {
-			smSir: {
-				dashboard: {
-					constants: {
-						normal_contact_rate: 20.0,
-						distancing_contact_rate: 5.0,
-						distancing_begin: 50.0,
-						distancing_duration: 500.0,
-						distancing_on: 0.0,
-						dashboard_on: 1.0,
-					},
-				},
-			},
-		},
-	}
-	const requestedData = await requestModel(requestBody)
+	const requestedData = await bptkApi.requestModel(defaultModel)
 
 	if (!requestedData) {
 		return {
@@ -278,7 +316,7 @@ export const getStaticProps = async () => {
 		}
 	}
 
-	const data = await chartifyData(requestedData)
+	const data = bptkApi.chartifyData(requestedData)
 
 	return {
 		props: {

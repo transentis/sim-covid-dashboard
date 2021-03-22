@@ -11,13 +11,12 @@ import {
 } from '@material-ui/core/'
 import { Chart, JsonInput, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
-import { chartifyData, requestModel } from '../helpers/data.helpers'
-import { AREA, LINE, X, Y } from '../lib/constants/data.consts'
+import { AREA } from '../lib/constants/data.consts'
 
-import RestoreIcon from '@material-ui/icons/Restore'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import LocationOnIcon from '@material-ui/icons/LocationOn'
+import BPTKApi from '../lib/apiMiddlewear'
 import Inputs from '../components/Inputs'
+
+const bptkApi = new BPTKApi('YOUR API KEY')
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -43,22 +42,20 @@ const Home = (props: Props) => {
 	const [requestBody, setRequestBody] = useState('')
 
 	const requestData = async () => {
-		let requestedData
+		let requestedData: any
 		if (requestBody !== '') {
-			requestedData = await requestModel(requestBody)
+			requestedData = await bptkApi.requestModel(requestBody)
 		}
-
 		if (!requestedData) {
 			return
 		}
 
-		const data = chartifyData(requestedData)
+		const data = bptkApi.chartifyData(requestedData)
 
 		setGraphData(data)
 	}
 
 	const onNewJsonInput = (input) => {
-		console.log(input)
 		setRequestBody(input.jsObject)
 	}
 
@@ -80,14 +77,7 @@ const Home = (props: Props) => {
 							},
 							data: data[name],
 						}}
-						highlighting={{
-							type: X,
-							areas: [
-								{ end: 200, color: '#e9c46a' },
-								{ start: 300, end: 400, color: '#f4a261' },
-								{ start: 500, color: '#e76f51' },
-							],
-						}}
+
 						// domain={{ x: [0, 600], y: [0, 600] }}
 					></Chart>
 				</Paper>,
@@ -202,7 +192,8 @@ export const getStaticProps = async () => {
 			},
 		},
 	}
-	const requestedData = await requestModel(requestBody)
+
+	const requestedData = await bptkApi.requestModel(requestBody)
 
 	if (!requestedData) {
 		return {
@@ -210,7 +201,7 @@ export const getStaticProps = async () => {
 		}
 	}
 
-	const data = await chartifyData(requestedData)
+	const data = bptkApi.chartifyData(requestedData)
 
 	return {
 		props: {

@@ -9,7 +9,7 @@ pipelines:
                   - yarn build
                   - apt-get update && apt-get install -y
                   - apt-get install zip
-                  - zip application.zip .next package.json
+                  - zip -r application.zip .next package.json
               artifacts:
                   - application.zip
         - step:
@@ -23,5 +23,8 @@ pipelines:
                         AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                         AWS_DEFAULT_REGION: '$AWS_DEFAULT_REGION'
                         APPLICATION_NAME: '$APPLICATION_NAME'
-                        ENVIRONMENT_NAME: 'dev'
+                        NPM_TOKEN: '$NPM_TOKEN'
+                        ENVIRONMENT_NAME: 'Bptk-dashboard-showcase-env'
+                        S3_BUCKET: 'elasticbeanstalk-eu-central-1-729621526906'
                         ZIP_FILE: 'application.zip'
+                        WAIT: 'true'

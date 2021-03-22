@@ -9,7 +9,11 @@ interface Props {
 	margin: any
 	colorTheme: any
 	maxValue?: number
-	changeData: (data: Array<number>) => void
+	xSteps?: number
+	onChangeData: (
+		data: Array<number>,
+		tupleData: Array<[number, number]>
+	) => void
 }
 
 const DragChart = (props: Props) => {
@@ -20,8 +24,9 @@ const DragChart = (props: Props) => {
 		width,
 		margin,
 		colorTheme,
-		changeData,
+		onChangeData,
 		maxValue = _.max(data),
+		xSteps = 1,
 	} = props
 
 	let mappedData
@@ -32,13 +37,13 @@ const DragChart = (props: Props) => {
 
 	useEffect(() => {
 		mappedData = data.map((value: number, index: number) => {
-			return [index, value]
+			return [index * xSteps, value]
 		})
 		if (ref) {
 			d3.select(ref.current).select('svg').remove()
 			drawChart(width, height)
 		}
-	}, [data])
+	}, [data, width])
 
 	const drawChart = (width: number, height: number) => {
 		const svg = d3
@@ -52,7 +57,7 @@ const DragChart = (props: Props) => {
 		x = d3
 			.scaleLinear()
 			.range([0, width])
-			.domain([0, data.length - 1])
+			.domain([0, (data.length - 1) * xSteps])
 		y = d3.scaleLinear().range([height, 0]).domain([0, maxValue])
 		let xAxis = d3.axisBottom(x),
 			yAxis = d3.axisLeft(y).ticks(5)
@@ -60,7 +65,7 @@ const DragChart = (props: Props) => {
 		line = d3
 			.line()
 			.x((d, i) => {
-				return x(i)
+				return x(d[0])
 			})
 			.y((d) => {
 				return y(d[1])
@@ -102,7 +107,7 @@ const DragChart = (props: Props) => {
 			.append('circle')
 			.attr('r', 5.0)
 			.attr('cx', (d, i: number) => {
-				return x(i)
+				return x(d[0])
 			})
 			.attr('cy', (d) => {
 				return y(d[1])
@@ -134,8 +139,8 @@ const DragChart = (props: Props) => {
 	}
 
 	function dragended(e, d) {
-		data[d[0]] = d[1]
-		changeData(data)
+		data[d[0] / xSteps] = d[1]
+		onChangeData(data, mappedData)
 		d3.select(this).classed('active', false)
 	}
 
