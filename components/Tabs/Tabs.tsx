@@ -4,10 +4,11 @@ import { makeStyles, Radio, Tooltip } from '@material-ui/core'
 const useStyles = makeStyles((theme) => ({
 	root: {},
 	tabs: {
-		position: 'absolute',
-		bottom: '10%',
-		right: '0px',
+		display: 'flex',
+		justifyContent: 'center',
+		flexDirection: 'row',
 	},
+	tabsButtons: { position: 'absolute', bottom: 0, right: '15px' },
 }))
 
 interface Props {
@@ -34,7 +35,7 @@ const Tabs: FC<Props> = (props) => {
 					value={i}
 					key={i}
 					name='radio-button'
-				/>
+				/>,
 			)
 		}
 		return buttons
@@ -42,12 +43,12 @@ const Tabs: FC<Props> = (props) => {
 
 	return (
 		<div>
+			<div className={classes.tabs}>{children[selectedValue]}</div>
 			<Tooltip title={'Click here to change tabs'} arrow>
-				<div className={classes.tabs}>
+				<div className={classes.tabsButtons}>
 					{getTabButtons(children.length)}
 				</div>
 			</Tooltip>
-			{children[selectedValue]}
 		</div>
 	)
 }

@@ -14,8 +14,9 @@ const useStyles = makeStyles((theme) => ({
 	root: {},
 	simpleInput: { marginTop: '10px' },
 	textField: {},
+	tab: { position: 'relative', width: '100%' },
 	block: { float: 'left', marginLeft: '15px' },
-	stringSelectionInput: {},
+	playButton: { float: 'right', marginRight: '15px' },
 	formControl: {},
 }))
 
@@ -176,13 +177,13 @@ const Inputs = (props: Props): ReactElement => {
 	// create tabs out of all blocks
 	for (let j = 0; j < blocks.length; j = j + maxBlocksPerTab) {
 		tabs.push(
-			<div>
-				<div
-					style={{
-						position: 'absolute',
-						right: '1%',
-					}}
-				>
+			<div className={classes.tab}>
+				{blocks
+					.slice(j, j + maxBlocksPerTab)
+					.map((block, index: number) => {
+						return block
+					})}
+				<div className={classes.playButton}>
 					<Tooltip title={'Runs the Model with the new data'}>
 						<IconButton
 							onClick={() => {
@@ -195,11 +196,6 @@ const Inputs = (props: Props): ReactElement => {
 						</IconButton>
 					</Tooltip>
 				</div>
-				{blocks
-					.slice(j, j + maxBlocksPerTab)
-					.map((block, index: number) => {
-						return block
-					})}
 			</div>,
 		)
 	}
