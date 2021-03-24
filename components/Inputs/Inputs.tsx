@@ -14,9 +14,9 @@ const useStyles = makeStyles((theme) => ({
 	root: {},
 	simpleInput: { marginTop: '10px' },
 	textField: {},
-	tab: { position: 'relative', width: '100%' },
+	tab: { display: 'flex', justifyContent: 'center', flexDirection: 'row' },
 	block: { float: 'left', marginLeft: '15px' },
-	playButton: { float: 'right', marginRight: '15px' },
+	playButton: { position: 'absolute', top: '5%', right: '15px' },
 	formControl: {},
 }))
 
