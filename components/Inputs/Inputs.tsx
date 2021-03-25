@@ -9,6 +9,7 @@ import {
 } from '../../lib/constants/data.consts'
 import { parsedType } from '../../lib/types/data.types'
 import { SingleSimpleInput } from './components'
+import StringArraySelector from './components/StringArraySelector'
 
 const useStyles = makeStyles((theme) => ({
 	root: {},
@@ -52,28 +53,43 @@ const Inputs = (props: Props): ReactElement => {
 			)
 			simpleNumberAndstringInputs.push(component)
 			parentObject[propKey] = {
+				startValue: parentObject[propKey],
 				value: parentObject[propKey],
 				type: typeof parentObject[propKey],
-				component: component,
+				// component: component,
 			}
 		} else if (Array.isArray(parentObject[propKey])) {
 			if (typeof parentObject[propKey][0] === 'string') {
+				const component = (
+					<StringArraySelector
+						label={propKey}
+						parentObj={parentObject}
+						prop={propKey}
+						key={stringArrayInputs.length}
+					/>
+				)
+				stringArrayInputs.push(component)
 				parentObject[propKey] = {
+					startValue: parentObject[propKey],
 					value: parentObject[propKey],
 					type: stringArray,
+					// component: component
 				}
 			} else if (typeof parentObject[propKey][0] === 'number') {
 				parentObject[propKey] = {
+					startValue: parentObject[propKey],
 					value: parentObject[propKey],
 					type: numberArray,
 				}
-			} else if (Array.isArray(parentObject[propKey][0])) {
+			}
+			/* else if (Array.isArray(parentObject[propKey][0])) {
 				parentObject[propKey] = {
+					startValue: parentObject[propKey],
 					value: parentObject[propKey],
 					type: arrayArray,
 				}
 			}
-			/*else {
+			else {
 				parentObject[propKey] = {
 					value: parentObject[propKey],
 					type: 'arrayOfUnknownType',
@@ -170,6 +186,14 @@ const Inputs = (props: Props): ReactElement => {
 					.map((input, index: number) => {
 						return input
 					})}
+			</div>,
+		)
+	}
+
+	for (let j = 0; j < stringArrayInputs.length; j++) {
+		blocks.push(
+			<div key={j} className={classes.block}>
+				{stringArrayInputs[j]}
 			</div>,
 		)
 	}
