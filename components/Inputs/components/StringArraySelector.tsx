@@ -32,11 +32,7 @@ const StringArraySelector = (props: Props): ReactElement => {
 
 	useEffect(() => {
 		const arr = []
-		parentObj[prop].startValue.forEach((str) => {
-			if (state[str]) {
-				arr.push(str)
-			}
-		})
+		parentObj[prop].startValue.forEach((str) => state[str] && arr.push(str))
 		parentObj[prop].value = arr
 	}, [state])
 
