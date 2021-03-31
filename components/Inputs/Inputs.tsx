@@ -1,4 +1,10 @@
-import { makeStyles, Checkbox, Tooltip, IconButton } from '@material-ui/core'
+import {
+	makeStyles,
+	Checkbox,
+	Tooltip,
+	IconButton,
+	Box,
+} from '@material-ui/core'
 import { PlayArrow, Refresh } from '@material-ui/icons'
 import React, { ReactElement, ReactNode, useState } from 'react'
 import { Tabs } from '..'
@@ -7,9 +13,13 @@ import {
 	numberArray,
 	stringArray,
 } from '../../lib/constants/data.consts'
+import ReactResizeDetector from 'react-resize-detector'
 import { parsedType } from '../../lib/types/data.types'
-import { SingleSimpleInput } from './components'
-import StringArraySelector from './components/StringArraySelector'
+import {
+	SingleSimpleInput,
+	StringArraySelector,
+	DragChartInput,
+} from './components'
 
 const useStyles = makeStyles((theme) => ({
 	root: {},
@@ -19,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 	block: { float: 'left', marginLeft: '15px' },
 	playButton: { position: 'absolute', top: '5%', right: '15px' },
 	formControl: {},
+	dragChart: { width: '90%' },
 }))
 
 interface Props {
@@ -76,10 +87,48 @@ const Inputs = (props: Props): ReactElement => {
 					// component: component
 				}
 			} else if (typeof parentObject[propKey][0] === 'number') {
+				const component = (
+					<div className={classes.dragChart}>
+						<ReactResizeDetector handleWidth>
+							{({ width }) => {
+								return (
+									<Box>
+										<DragChartInput
+											parentObj={parentObject}
+											prop={propKey}
+											colorTheme={['#6aedc7', '#5ce6be']}
+											width={
+												width
+													? width > 50
+														? width
+														: 100
+													: 100
+											}
+											height={100}
+											margin={{
+												top: 20,
+												right: 20,
+												bottom: -20,
+												left: 20,
+											}}
+											xSteps={1}
+											onChangeData={(
+												newData,
+												tupleData,
+											) => {}}
+										/>
+									</Box>
+								)
+							}}
+						</ReactResizeDetector>
+					</div>
+				)
+				numberArrayInputs.push(component)
 				parentObject[propKey] = {
 					startValue: parentObject[propKey],
 					value: parentObject[propKey],
 					type: numberArray,
+					// component: component
 				}
 			}
 			/* else if (Array.isArray(parentObject[propKey][0])) {
@@ -207,6 +256,28 @@ const Inputs = (props: Props): ReactElement => {
 					.map((block, index: number) => {
 						return block
 					})}
+				<div className={classes.playButton}>
+					<Tooltip title={'Runs the Model with the new data'}>
+						<IconButton
+							onClick={() => {
+								unparse(unparsedJson, parsedJson)
+								console.log(unparsedJson)
+							}}
+							aria-label='run'
+						>
+							<PlayArrow />
+						</IconButton>
+					</Tooltip>
+				</div>
+			</div>,
+		)
+	}
+
+	// create tabs out of dragchartInputs
+	for (let k = 0; k < numberArrayInputs.length; k++) {
+		tabs.push(
+			<div className={classes.tab}>
+				{numberArrayInputs[k]}
 				<div className={classes.playButton}>
 					<Tooltip title={'Runs the Model with the new data'}>
 						<IconButton
