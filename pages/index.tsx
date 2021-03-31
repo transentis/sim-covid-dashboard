@@ -80,7 +80,10 @@ const Home = (props: Props) => {
 	const graphs = ['total_population', 'normal_contact_rate', 'infectious']
 
 	const [loading, setLoading] = useState(false)
-	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([0, 50])
+	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
+		0,
+		1499,
+	])
 	const [selectedGraph, setSelectedGraph] = useState<string>(graphs[0])
 
 	const [graphData, setGraphData] = useState<any>(data)
@@ -208,6 +211,7 @@ const Home = (props: Props) => {
 											rangeSliderRange[1],
 										),
 									}}
+									size={{ width: 600, height: 300 }}
 								></Chart>
 							</Box>
 						</Paper>
@@ -292,11 +296,17 @@ const Home = (props: Props) => {
 					</Grid>
 					<Grid item xs={8}>
 						<Paper>
-							<Tabs>
-								<Box
-									height={'200px'}
-									padding={3}
-									position='relative'
+							<Box
+								height={'200px'}
+								padding={3}
+								position='relative'
+							>
+								<div
+									style={{
+										float: 'left',
+										width: '45%',
+										marginLeft: '30px',
+									}}
 								>
 									<Box>
 										<Typography gutterBottom>
@@ -310,105 +320,99 @@ const Home = (props: Props) => {
 											max={1499}
 										/>
 									</Box>
-								</Box>
-								<Box
-									height={'200px'}
-									padding={3}
-									position='relative'
+								</div>
+								<div
+									style={{
+										float: 'left',
+										width: '45%',
+										marginLeft: '30px',
+									}}
 								>
-									<div>
-										<div
-											style={{
-												position: 'absolute',
-												right: '1%',
-											}}
-										>
-											<Tooltip
-												title={'Resets the dragchart'}
+									<div
+										style={{
+											position: 'absolute',
+											right: '1%',
+										}}
+									>
+										<Tooltip title={'Resets the dragchart'}>
+											<IconButton
+												// onClick={() =>
+												// 	// resetDragData()
+												// }
+												aria-label='delete'
 											>
-												<IconButton
-													// onClick={() =>
-													// 	// resetDragData()
-													// }
-													aria-label='delete'
-												>
-													<Refresh />
-												</IconButton>
-											</Tooltip>
+												<Refresh />
+											</IconButton>
+										</Tooltip>
 
-											<Tooltip
-												title={
-													'Runs the Model with the new dragchart data'
-												}
+										<Tooltip
+											title={
+												'Runs the Model with the new dragchart data'
+											}
+										>
+											<IconButton
+												onClick={() => requestData()}
+												aria-label='run'
 											>
-												<IconButton
-													onClick={() =>
-														requestData()
-													}
-													aria-label='run'
-												>
-													<PlayArrow />
-												</IconButton>
-											</Tooltip>
-										</div>
-										<Typography>Contact Rate</Typography>
-										<ReactResizeDetector handleWidth>
-											{({ width }) => (
-												<Box>
-													<DragChart
-														data={dragChartData}
-														colorTheme={[
-															'#6aedc7',
-															'#5ce6be',
-														]}
-														onChangeData={(
-															newData,
-															tupleData,
-														) => {
-															setRequestBody({
-																...requestBody,
-																settings: {
-																	smSir: {
-																		dashboard: {
-																			constants: {
-																				...requestBody
-																					.settings
-																					.smSir
-																					.dashboard
-																					.constants,
-																			},
-																			points: {
-																				variable_contact_rate: tupleData,
-																			},
+												<PlayArrow />
+											</IconButton>
+										</Tooltip>
+									</div>
+									<Typography>Contact Rate</Typography>
+									<ReactResizeDetector handleWidth>
+										{({ width }) => (
+											<Box>
+												<DragChart
+													data={dragChartData}
+													colorTheme={[
+														'#6aedc7',
+														'#5ce6be',
+													]}
+													onChangeData={(
+														newData,
+														tupleData,
+													) => {
+														setRequestBody({
+															...requestBody,
+															settings: {
+																smSir: {
+																	dashboard: {
+																		constants: {
+																			...requestBody
+																				.settings
+																				.smSir
+																				.dashboard
+																				.constants,
+																		},
+																		points: {
+																			variable_contact_rate: tupleData,
 																		},
 																	},
 																},
-															})
-															setDragChartData(
-																newData,
-															)
-														}}
-														width={
-															width
-																? width - 50
-																: 100
-														}
-														height={100}
-														margin={{
-															top: 20,
-															right: 20,
-															bottom: -20,
-															left: 20,
-														}}
-														maxValue={40}
-														xSteps={100}
-													/>
-												</Box>
-											)}
-										</ReactResizeDetector>
-									</div>
-								</Box>
-							</Tabs>
+															},
+														})
+														setDragChartData(
+															newData,
+														)
+													}}
+													width={
+														width ? width - 50 : 100
+													}
+													height={100}
+													margin={{
+														top: 20,
+														right: 20,
+														bottom: -20,
+														left: 20,
+													}}
+													maxValue={40}
+													xSteps={100}
+												/>
+											</Box>
+										)}
+									</ReactResizeDetector>
+								</div>
+							</Box>
 						</Paper>
 					</Grid>
 					<Grid item xs={4}>
