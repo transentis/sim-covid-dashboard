@@ -24,15 +24,16 @@ const useStyles = makeStyles(() => ({
 interface Props extends VictoryChartProps {
 	type: lineOrArea
 	chartProps?: VictoryLineProps | VictoryAreaProps
+	size?: { width?: number; height?: number }
 }
 
 const LineChart = (props: Props): ReactElement => {
 	const classes = useStyles()
-	const { type, chartProps, ...rest } = props
+	const { type, chartProps, size, ...rest } = props
 
 	return (
 		<Box className={classes.root}>
-			<VictoryChart {...rest}>
+			<VictoryChart {...rest} height={size?.height} width={size?.width}>
 				{type === LINE ? (
 					<VictoryLine
 						interpolation='natural'
