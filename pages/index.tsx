@@ -131,7 +131,7 @@ const Home = (props: Props) => {
 		<>
 			<Box className={classes.root}>
 				<Head>
-					<title>Covid Dashboard</title>
+					<title>COVID-19 Simulation</title>
 					<link rel='icon' href='/favicon.ico' />
 				</Head>
 				<LoadingOverlay loading={loading}></LoadingOverlay>
@@ -140,7 +140,7 @@ const Home = (props: Props) => {
 						<Paper>
 							<Box padding={1}>
 								<Typography variant='h1' align='center'>
-									Covid Dashboard
+									COVID-19 Simulation
 								</Typography>
 							</Box>
 						</Paper>
@@ -214,65 +214,90 @@ const Home = (props: Props) => {
 					</Grid>
 					<Grid item xs={4}>
 						<Paper>
-							<Box padding={3} height={'500px'}>
-								<Typography>
-									The implementation here is roughly
-									calibrated to the current situation in
-									Germany (as of 27.3.2020). It illustrates
-									the effects of social distancing in
-									achieving the objective of keeping the
-									strain on the health care system as small as
-									possible.
-									<br />
-									<ul>
-										<li>
-											<b>Contact Rate:</b> 20 persons.
-											Defines how many people a person
-											encounters per day in average.
-										</li>
-										<li>
-											<b>Infectivity:</b> 2%. Defines the
-											probability that a person becomes
-											infected after contact with an
-											infectious person.
-										</li>
-										<li>
-											<b>Duration.</b> Defines how long an
-											infective person remains contagious
-										</li>
-										<li>
-											<b>Population.</b> The susceptible
-											population starts at 80 Mio., the
-											infectious population starts at 120
-											persons.
-										</li>
-										<li>
-											<b>Intensive Care Needed:</b> 0.2%.
-											Measures the number of infected
-											people who need intensive care.
-										</li>
-										<li>
-											<b>Intensive Care Available:</b>{' '}
-											30,000 units. The number of
-											intensive care units available.
-										</li>
-									</ul>
-									With the above settings, this means we have
-									a contact number of 8 in the base settings.
-									The contact number is the product of contact
-									rate, infectivity and duration.
-								</Typography>
-							</Box>
+							<Tabs>
+								<Box
+									padding={3}
+									height={'500px'}
+									position='relative'
+								>
+									<Typography>
+										Whenever you need to make predictions
+										about complex situations you have little
+										prior experience with, models and
+										simulations are a good starting point to
+										explore the situation and to make
+										qualitative and quantitative predictions
+										about how the situation may develop.
+										Play with our COVID-19 simulation and
+										see how social distancing can slow the
+										spreading of the virus.
+									</Typography>
+								</Box>
+								<Box padding={3} height={'500px'}>
+									<Typography>
+										The implementation here is roughly
+										calibrated to the situation in Germany
+										at the beginning of the pandemic, around
+										the end of March 2020. It illustrates
+										the effects of social distancing in
+										achieving the objective of keeping the
+										strain on the health care system as
+										small as possible.
+										<br />
+										<ul>
+											<li>
+												<b>Contact Rate:</b> 20 persons.
+												Defines how many people a person
+												encounters per day in average.
+											</li>
+											<li>
+												<b>Infectivity:</b> 2%. Defines
+												the probability that a person
+												becomes infected after contact
+												with an infectious person.
+											</li>
+											<li>
+												<b>Duration.</b> Defines how
+												long an infective person remains
+												contagious
+											</li>
+											<li>
+												<b>Population.</b> The
+												susceptible population starts at
+												80 Mio., the infectious
+												population starts at 120
+												persons.
+											</li>
+											<li>
+												<b>Intensive Care Needed:</b>{' '}
+												0.2%. Measures the number of
+												infected people who need
+												intensive care.
+											</li>
+											<li>
+												<b>Intensive Care Available:</b>{' '}
+												30,000 units. The number of
+												intensive care units available.
+											</li>
+										</ul>
+										With the above settings, this means we
+										have a contact number of 8 in the base
+										settings. The contact number is the
+										product of contact rate, infectivity and
+										duration.
+									</Typography>
+								</Box>
+							</Tabs>
 						</Paper>
 					</Grid>
 					<Grid item xs={8}>
 						<Paper>
-							<Box
-								height={'200px'}
-								padding={3}
-								position='relative'
-							>
-								<Tabs>
+							<Tabs>
+								<Box
+									height={'200px'}
+									padding={3}
+									position='relative'
+								>
 									<Box>
 										<Typography gutterBottom>
 											Visualization Range
@@ -285,7 +310,12 @@ const Home = (props: Props) => {
 											max={1499}
 										/>
 									</Box>
-
+								</Box>
+								<Box
+									height={'200px'}
+									padding={3}
+									position='relative'
+								>
 									<div>
 										<div
 											style={{
@@ -377,8 +407,8 @@ const Home = (props: Props) => {
 											)}
 										</ReactResizeDetector>
 									</div>
-								</Tabs>
-							</Box>
+								</Box>
+							</Tabs>
 						</Paper>
 					</Grid>
 					<Grid item xs={4}>
