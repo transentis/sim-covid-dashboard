@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import Head from 'next/head'
 
 import {
@@ -12,8 +12,11 @@ import {
 	Slider,
 	Tooltip,
 	Typography,
+	Tabs,
+	Tab,
+	AppBar,
 } from '@material-ui/core/'
-import { Chart, DragChart, LoadingOverlay, Tabs } from '../components'
+import { Chart, DragChart, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
 import { AREA, LINE, X } from '../lib/constants/data.consts'
 
@@ -26,6 +29,12 @@ import BPTKApi from '@transentis/bptk-connector'
 const useStyles = makeStyles((theme) => ({
 	root: {
 		paddingBottom: theme.spacing(4),
+	},
+	main: {
+		overflow: 'hidden',
+	},
+	tabs: {
+		marginBottom: '10px',
 	},
 	bottomNavigation: {
 		width: 500,
@@ -79,13 +88,13 @@ const Home = (props: Props) => {
 
 	const graphs = ['total_population', 'normal_contact_rate', 'infectious']
 
+	const [selectedTab, setSelectedTab] = useState(0)
 	const [loading, setLoading] = useState(false)
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
 		0,
 		1499,
 	])
 	const [selectedGraph, setSelectedGraph] = useState<string>(graphs[0])
-
 	const [graphData, setGraphData] = useState<any>(data)
 
 	const [dragChartData, setDragChartData] = useState([
@@ -130,6 +139,30 @@ const Home = (props: Props) => {
 		setSelectedGraph(graphs[index])
 	}
 
+	const handleSelectTab = (event: any, index: number): void => {
+		setSelectedTab(index)
+	}
+
+	const TabPanel = (props: {
+		children?: ReactNode
+		index: any
+		value: any
+	}) => {
+		const { children, value, index, ...other } = props
+
+		return (
+			<div
+				role='tabpanel'
+				hidden={value !== index}
+				id={`simple-tabpanel-${index}`}
+				aria-labelledby={`simple-tab-${index}`}
+				{...other}
+			>
+				{value === index && <Typography>{children}</Typography>}
+			</div>
+		)
+	}
+
 	return (
 		<>
 			<Box className={classes.root}>
@@ -138,93 +171,137 @@ const Home = (props: Props) => {
 					<link rel='icon' href='/favicon.ico' />
 				</Head>
 				<LoadingOverlay loading={loading}></LoadingOverlay>
-				<Grid container spacing={2}>
-					<Grid item xs={12}>
-						<Paper>
-							<Box padding={1}>
-								<Typography variant='h1' align='center'>
-									COVID-19 Simulation
-								</Typography>
-							</Box>
-						</Paper>
-					</Grid>
-					<Grid item xs={8}>
-						<Paper>
-							<Box
-								height={'100px'}
-								display='flex'
-								justifyContent='center'
-								alignItems='center'
-							>
-								<ButtonGroup>
-									<Button
-										onClick={() => handleGraphChange(0)}
-									>
-										Population
-									</Button>
-									<Button
-										onClick={() => handleGraphChange(1)}
-									>
-										Intensive Care
-									</Button>
-									<Button
-										onClick={() => handleGraphChange(2)}
-									>
-										Indicators
-									</Button>
-								</ButtonGroup>
-							</Box>
-						</Paper>
-					</Grid>
-					<Grid item xs={4}>
-						<Paper>
-							<Box
-								height={'100px'}
-								display='flex'
-								justifyContent='center'
-								alignItems='center'
-							>
-								<Typography variant='h3'>
-									Assumptions
-								</Typography>
-							</Box>
-						</Paper>
-					</Grid>
-					<Grid item xs={8}>
-						<Paper>
-							<Box padding={3} height={'500px'}>
-								<Typography variant='h4' align='center'>
-									{selectedGraph
-										.toUpperCase()
-										.replace('_', ' ')}
-								</Typography>
-								<Chart
-									type={AREA}
-									theme={VictoryTheme.material}
-									chartProps={{
-										animate: {
-											duration: 2000,
-											onLoad: { duration: 1000 },
-										},
-										data: graphData[selectedGraph].slice(
-											rangeSliderRange[0],
-											rangeSliderRange[1],
-										),
-									}}
-									size={{ width: 600, height: 300 }}
-								></Chart>
-							</Box>
-						</Paper>
-					</Grid>
-					<Grid item xs={4}>
-						<Paper>
-							<Tabs>
+				<div className={classes.main}>
+					<Grid container spacing={2}>
+						<Grid item xs={12}>
+							<Paper>
+								<Box padding={1}>
+									<Typography variant='h1' align='center'>
+										COVID-19 Simulation
+									</Typography>
+								</Box>
+							</Paper>
+						</Grid>
+						<Grid item xs={8}>
+							<Paper>
+								<Box
+									height={'100px'}
+									display='flex'
+									justifyContent='center'
+									alignItems='center'
+								>
+									<ButtonGroup>
+										<Button
+											onClick={() => handleGraphChange(0)}
+										>
+											Population
+										</Button>
+										<Button
+											onClick={() => handleGraphChange(1)}
+										>
+											Intensive Care
+										</Button>
+										<Button
+											onClick={() => handleGraphChange(2)}
+										>
+											Indicators
+										</Button>
+									</ButtonGroup>
+								</Box>
+							</Paper>
+						</Grid>
+						<Grid item xs={4}>
+							<Paper>
+								<Box
+									height={'100px'}
+									display='flex'
+									justifyContent='center'
+									alignItems='center'
+								>
+									<Typography variant='h3'>
+										Assumptions
+									</Typography>
+								</Box>
+							</Paper>
+						</Grid>
+						<Grid item xs={8}>
+							<Paper>
 								<Box
 									padding={3}
-									height={'500px'}
+									height={'600px'}
+									position='relative'
+									display='flex'
+									alignItems='center'
+									flexDirection='column'
+								>
+									<Typography variant='h4' align='center'>
+										{selectedGraph
+											.toUpperCase()
+											.replace('_', ' ')}
+									</Typography>
+
+									<div>
+										<Chart
+											type={AREA}
+											theme={VictoryTheme.material}
+											chartProps={{
+												animate: {
+													duration: 2000,
+													onLoad: {
+														duration: 1000,
+													},
+												},
+												data: graphData[
+													selectedGraph
+												].slice(
+													rangeSliderRange[0],
+													rangeSliderRange[1],
+												),
+											}}
+											size={{
+												width: 900,
+												height: 450,
+											}}
+										></Chart>
+									</div>
+
+									<Box width='100%'>
+										<Typography gutterBottom>
+											Visualization Range
+										</Typography>
+										<Slider
+											value={rangeSliderRange}
+											onChange={handleSliderChange}
+											valueLabelDisplay='auto'
+											min={0}
+											max={1499}
+										/>
+									</Box>
+								</Box>
+							</Paper>
+						</Grid>
+						<Grid item xs={4}>
+							<Paper>
+								<Box
+									padding={3}
+									height={'600px'}
 									position='relative'
 								>
-									<Typography>
+									<Tabs
+										value={selectedTab}
+										onChange={handleSelectTab}
+										indicatorColor='primary'
+										textColor='primary'
+										className={classes.tabs}
+										centered
+									>
+										<Tab label='intro' id='intro' />
+										<Tab
+											label='assumptions'
+											id='assumptions'
+										/>
+									</Tabs>
+									<TabPanel value={selectedTab} index={0}>
 										Whenever you need to make predictions
 										about complex situations you have little
 										prior experience with, models and
@@ -235,10 +312,8 @@ const Home = (props: Props) => {
 										Play with our COVID-19 simulation and
 										see how social distancing can slow the
 										spreading of the virus.
-									</Typography>
-								</Box>
-								<Box padding={3} height={'500px'}>
-									<Typography>
+									</TabPanel>
+									<TabPanel value={selectedTab} index={1}>
 										The implementation here is roughly
 										calibrated to the situation in Germany
 										at the beginning of the pandemic, around
@@ -289,142 +364,126 @@ const Home = (props: Props) => {
 										settings. The contact number is the
 										product of contact rate, infectivity and
 										duration.
-									</Typography>
+									</TabPanel>
 								</Box>
-							</Tabs>
-						</Paper>
-					</Grid>
-					<Grid item xs={8}>
-						<Paper>
-							<Box
-								height={'200px'}
-								padding={3}
-								position='relative'
-							>
-								<div
-									style={{
-										float: 'left',
-										width: '45%',
-										marginLeft: '30px',
-									}}
-								>
-									<Box>
-										<Typography gutterBottom>
-											Visualization Range
-										</Typography>
-										<Slider
-											value={rangeSliderRange}
-											onChange={handleSliderChange}
-											valueLabelDisplay='auto'
-											min={0}
-											max={1499}
-										/>
-									</Box>
-								</div>
-								<div
-									style={{
-										float: 'left',
-										width: '45%',
-										marginLeft: '30px',
-									}}
+							</Paper>
+						</Grid>
+						<Grid item xs={8}>
+							<Paper>
+								<Box
+									height={'200px'}
+									padding={3}
+									position='relative'
 								>
 									<div
 										style={{
-											position: 'absolute',
-											right: '1%',
+											marginLeft: '10px',
 										}}
 									>
-										<Tooltip title={'Resets the dragchart'}>
-											<IconButton
-												// onClick={() =>
-												// 	// resetDragData()
-												// }
-												aria-label='delete'
-											>
-												<Refresh />
-											</IconButton>
-										</Tooltip>
-
-										<Tooltip
-											title={
-												'Runs the Model with the new dragchart data'
-											}
+										<div
+											style={{
+												position: 'absolute',
+												right: '1%',
+											}}
 										>
-											<IconButton
-												onClick={() => requestData()}
-												aria-label='run'
+											<Tooltip
+												title={'Resets the dragchart'}
 											>
-												<PlayArrow />
-											</IconButton>
-										</Tooltip>
-									</div>
-									<Typography>Contact Rate</Typography>
-									<ReactResizeDetector handleWidth>
-										{({ width }) => (
-											<Box>
-												<DragChart
-													data={dragChartData}
-													colorTheme={[
-														'#6aedc7',
-														'#5ce6be',
-													]}
-													onChangeData={(
-														newData,
-														tupleData,
-													) => {
-														setRequestBody({
-															...requestBody,
-															settings: {
-																smSir: {
-																	dashboard: {
-																		constants: {
-																			...requestBody
-																				.settings
-																				.smSir
-																				.dashboard
-																				.constants,
-																		},
-																		points: {
-																			variable_contact_rate: tupleData,
+												<IconButton
+													// onClick={() =>
+													// 	// resetDragData()
+													// }
+													aria-label='delete'
+												>
+													<Refresh />
+												</IconButton>
+											</Tooltip>
+
+											<Tooltip
+												title={
+													'Runs the Model with the new dragchart data'
+												}
+											>
+												<IconButton
+													onClick={() =>
+														requestData()
+													}
+													aria-label='run'
+												>
+													<PlayArrow />
+												</IconButton>
+											</Tooltip>
+										</div>
+										<Typography>Contact Rate</Typography>
+										<ReactResizeDetector handleWidth>
+											{({ width }) => (
+												<Box>
+													<DragChart
+														data={dragChartData}
+														colorTheme={[
+															'#6aedc7',
+															'#5ce6be',
+														]}
+														onChangeData={(
+															newData,
+															tupleData,
+														) => {
+															setRequestBody({
+																...requestBody,
+																settings: {
+																	smSir: {
+																		dashboard: {
+																			constants: {
+																				...requestBody
+																					.settings
+																					.smSir
+																					.dashboard
+																					.constants,
+																			},
+																			points: {
+																				variable_contact_rate: tupleData,
+																			},
 																		},
 																	},
 																},
-															},
-														})
-														setDragChartData(
-															newData,
-														)
-													}}
-													width={
-														width ? width - 50 : 100
-													}
-													height={100}
-													margin={{
-														top: 20,
-														right: 20,
-														bottom: -20,
-														left: 20,
-													}}
-													maxValue={40}
-													xSteps={100}
-												/>
-											</Box>
-										)}
-									</ReactResizeDetector>
-								</div>
-							</Box>
-						</Paper>
+															})
+															setDragChartData(
+																newData,
+															)
+														}}
+														width={
+															width
+																? width - 50
+																: 100
+														}
+														height={100}
+														margin={{
+															top: 20,
+															right: 20,
+															bottom: -20,
+															left: 20,
+														}}
+														maxValue={40}
+														xSteps={100}
+													/>
+												</Box>
+											)}
+										</ReactResizeDetector>
+									</div>
+								</Box>
+							</Paper>
+						</Grid>
+						<Grid item xs={4}>
+							<Paper>
+								<Box
+									height={'200px'}
+									padding={3}
+									width='100%'
+								></Box>
+							</Paper>
+						</Grid>
 					</Grid>
-					<Grid item xs={4}>
-						<Paper>
-							<Box
-								height={'200px'}
-								padding={3}
-								width='100%'
-							></Box>
-						</Paper>
-					</Grid>
-				</Grid>
+				</div>
 			</Box>
 		</>
 	)
