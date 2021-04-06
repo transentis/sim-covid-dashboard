@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 		paddingBottom: theme.spacing(4),
 	},
 	main: {
-		width: '99%',
+		overflow: 'hidden',
 	},
 	tabs: {
 		marginBottom: '10px',
@@ -226,29 +226,57 @@ const Home = (props: Props) => {
 						</Grid>
 						<Grid item xs={8}>
 							<Paper>
-								<Box padding={3} height={'600px'}>
+								<Box
+									padding={3}
+									height={'600px'}
+									position='relative'
+									display='flex'
+									alignItems='center'
+									flexDirection='column'
+								>
 									<Typography variant='h4' align='center'>
 										{selectedGraph
 											.toUpperCase()
 											.replace('_', ' ')}
 									</Typography>
-									<Chart
-										type={AREA}
-										theme={VictoryTheme.material}
-										chartProps={{
-											animate: {
-												duration: 2000,
-												onLoad: { duration: 1000 },
-											},
-											data: graphData[
-												selectedGraph
-											].slice(
-												rangeSliderRange[0],
-												rangeSliderRange[1],
-											),
-										}}
-										size={{ width: 600, height: 300 }}
-									></Chart>
+
+									<div>
+										<Chart
+											type={AREA}
+											theme={VictoryTheme.material}
+											chartProps={{
+												animate: {
+													duration: 2000,
+													onLoad: {
+														duration: 1000,
+													},
+												},
+												data: graphData[
+													selectedGraph
+												].slice(
+													rangeSliderRange[0],
+													rangeSliderRange[1],
+												),
+											}}
+											size={{
+												width: 900,
+												height: 450,
+											}}
+										></Chart>
+									</div>
+
+									<Box width='100%'>
+										<Typography gutterBottom>
+											Visualization Range
+										</Typography>
+										<Slider
+											value={rangeSliderRange}
+											onChange={handleSliderChange}
+											valueLabelDisplay='auto'
+											min={0}
+											max={1499}
+										/>
+									</Box>
 								</Box>
 							</Paper>
 						</Grid>
@@ -349,29 +377,7 @@ const Home = (props: Props) => {
 								>
 									<div
 										style={{
-											float: 'left',
-											width: '45%',
-											marginLeft: '30px',
-										}}
-									>
-										<Box>
-											<Typography gutterBottom>
-												Visualization Range
-											</Typography>
-											<Slider
-												value={rangeSliderRange}
-												onChange={handleSliderChange}
-												valueLabelDisplay='auto'
-												min={0}
-												max={1499}
-											/>
-										</Box>
-									</div>
-									<div
-										style={{
-											float: 'left',
-											width: '45%',
-											marginLeft: '30px',
+											marginLeft: '10px',
 										}}
 									>
 										<div

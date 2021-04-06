@@ -15,9 +15,7 @@ import { lineOrArea } from '../../lib/types/data.types'
 import { LINE } from '../../lib/constants/data.consts'
 
 const useStyles = makeStyles(() => ({
-	root: {
-		height: '100%',
-	},
+	root: {},
 	line: {},
 }))
 
@@ -32,8 +30,12 @@ const LineChart = (props: Props): ReactElement => {
 	const { type, chartProps, size, ...rest } = props
 
 	return (
-		<Box className={classes.root}>
-			<VictoryChart {...rest} height={size?.height} width={size?.width}>
+		<Box className={classes.root} height={size?.height} width={size?.width}>
+			<VictoryChart
+				{...rest}
+				height={size?.height - 25}
+				width={size?.width - 125}
+			>
 				{type === LINE ? (
 					<VictoryLine
 						interpolation='natural'

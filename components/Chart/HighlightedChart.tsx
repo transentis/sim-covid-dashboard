@@ -105,8 +105,12 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 	)
 
 	return (
-		<Box className={classes.root}>
-			<VictoryChart {...rest} height={size?.height} width={size?.width}>
+		<Box className={classes.root} height={size?.height} width={size?.width}>
+			<VictoryChart
+				{...rest}
+				height={size?.height - 25}
+				width={size?.width - 125}
+			>
 				{allAreas.map((area, index: number) => (
 					<VictoryArea
 						key={index}
