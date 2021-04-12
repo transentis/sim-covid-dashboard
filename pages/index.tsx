@@ -217,11 +217,7 @@ const Home = (props: Props) => {
 									display='flex'
 									justifyContent='center'
 									alignItems='center'
-								>
-									<Typography variant='h3'>
-										Assumptions
-									</Typography>
-								</Box>
+								></Box>
 							</Paper>
 						</Grid>
 						<Grid item xs={8}>
