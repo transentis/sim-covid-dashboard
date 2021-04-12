@@ -24,20 +24,27 @@ const useStyles = makeStyles(() => ({
 interface Props extends VictoryChartProps {
 	type: lineOrArea
 	chartProps?: VictoryLineProps | VictoryAreaProps
-	size: { width: number; height: number }
+	size?: { width?: number; height?: number }
 	labeling: { x: string; y: string }
 }
 
 const LineChart = (props: Props): ReactElement => {
 	const classes = useStyles()
-	const { type, chartProps, size, labeling, ...rest } = props
+	const { type, chartProps, labeling, ...rest } = props
+	let { size } = props
+	const defaultHeight = 300
+	const defaultWidth = 450
+
+	!size && (size = { height: defaultHeight, width: defaultWidth })
+	!size.height && (size.height = defaultHeight)
+	!size.width && (size.width = defaultWidth)
 
 	return (
 		<div
 			className={classes.root}
 			style={{
-				width: size.width,
 				height: size.height,
+				width: size.width,
 				display: 'flex',
 				flexWrap: 'wrap',
 			}}

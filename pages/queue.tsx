@@ -80,6 +80,10 @@ const Home = (props: Props) => {
 							},
 							data: data[name],
 						}}
+						labeling={{
+							x: 'days after pandemic outbreak',
+							y: 'population',
+						}}
 
 						// domain={{ x: [0, 600], y: [0, 600] }}
 					></Chart>
