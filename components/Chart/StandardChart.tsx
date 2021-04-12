@@ -15,24 +15,27 @@ import { lineOrArea } from '../../lib/types/data.types'
 import { LINE } from '../../lib/constants/data.consts'
 
 const useStyles = makeStyles(() => ({
-	root: {
-		height: '100%',
-	},
+	root: {},
 	line: {},
 }))
 
 interface Props extends VictoryChartProps {
 	type: lineOrArea
 	chartProps?: VictoryLineProps | VictoryAreaProps
+	size?: { width?: number; height?: number }
 }
 
 const LineChart = (props: Props): ReactElement => {
 	const classes = useStyles()
-	const { type, chartProps, ...rest } = props
+	const { type, chartProps, size, ...rest } = props
 
 	return (
-		<Box className={classes.root}>
-			<VictoryChart {...rest}>
+		<Box className={classes.root} height={size?.height} width={size?.width}>
+			<VictoryChart
+				{...rest}
+				height={size?.height - 25}
+				width={size?.width - 125}
+			>
 				{type === LINE ? (
 					<VictoryLine
 						interpolation='natural'

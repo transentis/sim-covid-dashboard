@@ -24,6 +24,7 @@ const useStyles = makeStyles(() => ({
 interface Props extends VictoryChartProps {
 	type: lineOrArea
 	chartProps?: VictoryLineProps | VictoryAreaProps
+	size?: { width?: number; height?: number }
 	highlighting?: {
 		type: axes
 		areas: { start?: number; end?: number; color: string }[]
@@ -32,7 +33,7 @@ interface Props extends VictoryChartProps {
 
 const YHighlightedLineChart = (props: Props): ReactElement => {
 	const classes = useStyles()
-	const { type, chartProps, highlighting, ...rest } = props
+	const { type, chartProps, highlighting, size, ...rest } = props
 
 	const allAreas = fixStandardAreas(highlighting, '#2a9d8f', chartProps)
 
@@ -42,7 +43,7 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 				{allAreas.map(
 					(
 						area: { start: number; end: number; color: string },
-						index: number
+						index: number,
 					) => (
 						<clipPath key={index} id={`clip-path-${index}`}>
 							<rect
@@ -70,7 +71,7 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 								}
 							/>
 						</clipPath>
-					)
+					),
 				)}
 			</defs>
 		)
@@ -103,8 +104,12 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 	)
 
 	return (
-		<Box className={classes.root}>
-			<VictoryChart {...rest}>
+		<Box className={classes.root} height={size?.height} width={size?.width}>
+			<VictoryChart
+				{...rest}
+				height={size?.height - 25}
+				width={size?.width - 125}
+			>
 				{allAreas.map((area, index: number) => (
 					<VictoryArea
 						key={index}
