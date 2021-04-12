@@ -223,7 +223,7 @@ const Home = (props: Props) => {
 						<Grid item xs={8}>
 							<Paper>
 								<Box
-									padding={3}
+									padding={2}
 									height={'600px'}
 									position='relative'
 									display='flex'
@@ -236,34 +236,32 @@ const Home = (props: Props) => {
 											.replace('_', ' ')}
 									</Typography>
 
-									<div>
-										<Chart
-											type={AREA}
-											theme={VictoryTheme.material}
-											chartProps={{
-												animate: {
-													duration: 2000,
-													onLoad: {
-														duration: 1000,
-													},
+									<Chart
+										type={AREA}
+										theme={VictoryTheme.material}
+										chartProps={{
+											animate: {
+												duration: 2000,
+												onLoad: {
+													duration: 1000,
 												},
-												data: graphData[
-													selectedGraph
-												].slice(
-													rangeSliderRange[0],
-													rangeSliderRange[1],
-												),
-											}}
-											size={{
-												width: 900,
-												height: 450,
-											}}
-											labeling={{
-												x: 'testX',
-												y: 'testY',
-											}}
-										></Chart>
-									</div>
+											},
+											data: graphData[
+												selectedGraph
+											].slice(
+												rangeSliderRange[0],
+												rangeSliderRange[1],
+											),
+										}}
+										size={{
+											width: 1200,
+											height: 450,
+										}}
+										labeling={{
+											x: 'days after pandemic outbreak',
+											y: 'population',
+										}}
+									></Chart>
 
 									<Box width='100%'>
 										<Typography gutterBottom>

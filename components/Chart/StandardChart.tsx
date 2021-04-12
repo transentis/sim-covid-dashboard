@@ -24,8 +24,8 @@ const useStyles = makeStyles(() => ({
 interface Props extends VictoryChartProps {
 	type: lineOrArea
 	chartProps?: VictoryLineProps | VictoryAreaProps
-	size?: { width?: number; height?: number }
-	labeling?: { x?: string; y?: string }
+	size: { width: number; height: number }
+	labeling: { x: string; y: string }
 }
 
 const LineChart = (props: Props): ReactElement => {
@@ -36,26 +36,32 @@ const LineChart = (props: Props): ReactElement => {
 		<div
 			className={classes.root}
 			style={{
+				width: size.width,
+				height: size.height,
 				display: 'flex',
 				flexWrap: 'wrap',
 			}}
 		>
 			<VictoryChart
 				{...rest}
-				height={size?.height}
-				width={size?.width}
-				style={{ parent: { maxWidth: '90%' } }}
+				height={size.height}
+				width={size.width}
+				style={{ parent: { maxWidth: '100%', maxHeight: '100%' } }}
+				padding={{ left: 120, right: 80, top: 40, bottom: 70 }}
 			>
-				{labeling?.x && (
-					<VictoryAxis
-						axisLabelComponent={<VictoryLabel dx={labeling.x} />}
-					/>
-				)}
-				{labeling?.y && (
-					<VictoryAxis
-						axisLabelComponent={<VictoryLabel dy={labeling.y} />}
-					/>
-				)}
+				<VictoryAxis
+					crossAxis
+					axisLabelComponent={<VictoryLabel dy={10} />}
+					label={labeling.x}
+					style={{ axisLabel: { fontSize: 25, padding: 20 } }}
+				/>
+				<VictoryAxis
+					dependentAxis
+					crossAxis
+					axisLabelComponent={<VictoryLabel dy={-70} />}
+					label={labeling.y}
+					style={{ axisLabel: { fontSize: 25, padding: 20 } }}
+				/>
 				{type === LINE ? (
 					<VictoryLine
 						interpolation='natural'

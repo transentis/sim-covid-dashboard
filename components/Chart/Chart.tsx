@@ -19,8 +19,8 @@ interface Props extends VictoryChartProps {
 		type: axes
 		areas: { start?: number; end?: number; color: string }[]
 	}
-	size?: { width?: number; height?: number }
-	labeling?: { x?: string; y?: string }
+	size: { width: number; height: number }
+	labeling: { x: string; y: string }
 	legend?: Array<Legend>
 }
 
