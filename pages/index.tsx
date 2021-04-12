@@ -258,6 +258,10 @@ const Home = (props: Props) => {
 												width: 900,
 												height: 450,
 											}}
+											labeling={{
+												x: 'testX',
+												y: 'testY',
+											}}
 										></Chart>
 									</div>
 

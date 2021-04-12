@@ -30,6 +30,7 @@ interface Props extends VictoryChartProps {
 		type: axes
 		areas: { start?: number; end?: number; color: string }[]
 	}
+	labeling?: { x?: string; y?: string }
 }
 
 const YHighlightedLineChart = (props: Props): ReactElement => {
@@ -105,11 +106,18 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 	)
 
 	return (
-		<Box className={classes.root} height={size?.height} width={size?.width}>
+		<div
+			className={classes.root}
+			style={{
+				display: 'flex',
+				flexWrap: 'wrap',
+			}}
+		>
 			<VictoryChart
 				{...rest}
-				height={size?.height - 25}
-				width={size?.width - 125}
+				height={size?.height}
+				width={size?.width}
+				style={{ parent: { maxWidth: '90%' } }}
 			>
 				{allAreas.map((area, index: number) => (
 					<VictoryArea
@@ -135,7 +143,7 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 				<CustomClip />
 				<GradientFill />
 			</VictoryChart>
-		</Box>
+		</div>
 	)
 }
 

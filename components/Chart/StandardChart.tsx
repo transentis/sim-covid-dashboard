@@ -2,8 +2,10 @@ import React, { ReactElement } from 'react'
 import {
 	VictoryArea,
 	VictoryAreaProps,
+	VictoryAxis,
 	VictoryChart,
 	VictoryChartProps,
+	VictoryLabel,
 	VictoryLine,
 	VictoryLineProps,
 } from 'victory'
@@ -23,19 +25,37 @@ interface Props extends VictoryChartProps {
 	type: lineOrArea
 	chartProps?: VictoryLineProps | VictoryAreaProps
 	size?: { width?: number; height?: number }
+	labeling?: { x?: string; y?: string }
 }
 
 const LineChart = (props: Props): ReactElement => {
 	const classes = useStyles()
-	const { type, chartProps, size, ...rest } = props
+	const { type, chartProps, size, labeling, ...rest } = props
 
 	return (
-		<Box className={classes.root} height={size?.height} width={size?.width}>
+		<div
+			className={classes.root}
+			style={{
+				display: 'flex',
+				flexWrap: 'wrap',
+			}}
+		>
 			<VictoryChart
 				{...rest}
-				height={size?.height - 25}
-				width={size?.width - 125}
+				height={size?.height}
+				width={size?.width}
+				style={{ parent: { maxWidth: '90%' } }}
 			>
+				{labeling?.x && (
+					<VictoryAxis
+						axisLabelComponent={<VictoryLabel dx={labeling.x} />}
+					/>
+				)}
+				{labeling?.y && (
+					<VictoryAxis
+						axisLabelComponent={<VictoryLabel dy={labeling.y} />}
+					/>
+				)}
 				{type === LINE ? (
 					<VictoryLine
 						interpolation='natural'
@@ -98,7 +118,7 @@ const LineChart = (props: Props): ReactElement => {
 					categories={chartProps?.categories}
 				></VictoryLine>
 			</VictoryChart>
-		</Box>
+		</div>
 	)
 }
 
