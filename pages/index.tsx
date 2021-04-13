@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core/'
 import { Chart, DragChart, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
-import { AREA } from '../lib/constants/data.consts'
+import { AREA, LINE } from '../lib/constants/data.consts'
 
 import ReactResizeDetector from 'react-resize-detector'
 
@@ -245,7 +245,7 @@ const Home = (props: Props) => {
 									</Typography>
 
 									<Chart
-										type={AREA}
+										type={LINE}
 										theme={VictoryTheme.material}
 										chartProps={{
 											animate: {
@@ -254,12 +254,16 @@ const Home = (props: Props) => {
 													duration: 1000,
 												},
 											},
-											data: graphData[
-												selectedGraph
-											].slice(
-												rangeSliderRange[0],
-												rangeSliderRange[1],
-											),
+											data: [
+												graphData[selectedGraph].slice(
+													rangeSliderRange[0],
+													rangeSliderRange[1],
+												),
+												graphData['contact_rate'].slice(
+													rangeSliderRange[0],
+													rangeSliderRange[1],
+												),
+											],
 										}}
 										size={{
 											width: 1200,

@@ -10,16 +10,12 @@ import {
 	VictoryLineProps,
 } from 'victory'
 
-import { makeStyles } from '@material-ui/core/styles'
-
-import { Box } from '@material-ui/core'
 import { lineOrArea } from '../../lib/types/data.types'
-import { LINE } from '../../lib/constants/data.consts'
-
-const useStyles = makeStyles(() => ({
-	root: {},
-	line: {},
-}))
+import { AREA, LINE } from '../../lib/constants/data.consts'
+import AreaChart from './AreaChart'
+import LineChart from './LineChart'
+import MultiLineChart from './MultiLineChart'
+import StackedAreaChart from './StackedAreaChart'
 
 interface Props extends VictoryChartProps {
 	type: lineOrArea
@@ -28,9 +24,124 @@ interface Props extends VictoryChartProps {
 	labeling: { x: string; y: string }
 }
 
-const LineChart = (props: Props): ReactElement => {
-	const classes = useStyles()
-	const { type, chartProps, labeling, ...rest } = props
+const Line = (chartProps: VictoryLineProps) => {
+	const isStacked = Array.isArray(chartProps.data[0])
+	if (isStacked) {
+		return (
+			<>
+				{chartProps.data.map((data, index) => {
+					return (
+						<VictoryLine
+							key={index}
+							interpolation='natural'
+							style={
+								chartProps?.style || {
+									data: {
+										stroke: 'rgb(106, 237, 199)',
+										strokeWidth: '2.5px',
+									},
+								}
+							}
+							animate={
+								chartProps?.animate || {
+									duration: 2000,
+									onLoad: { duration: 1000 },
+								}
+							}
+							data={data}
+							categories={chartProps?.categories}
+						></VictoryLine>
+					)
+				})}
+			</>
+		)
+	}
+	return (
+		<VictoryLine
+			interpolation='natural'
+			style={
+				chartProps?.style || {
+					data: {
+						stroke: 'rgb(106, 237, 199)',
+						strokeWidth: '2.5px',
+					},
+				}
+			}
+			animate={
+				chartProps?.animate || {
+					duration: 2000,
+					onLoad: { duration: 1000 },
+				}
+			}
+			data={chartProps?.data}
+			categories={chartProps?.categories}
+		></VictoryLine>
+	)
+}
+
+const Area = React.forwardRef((chartProps: VictoryAreaProps, ref) => {
+	const isStacked = Array.isArray(chartProps.data[0])
+	if (isStacked) {
+		return (
+			<>
+				{chartProps.data.map((data, index) => {
+					return (
+						<VictoryArea
+							key={index}
+							interpolation='natural'
+							style={
+								chartProps?.style || {
+									data: {
+										stroke: 'rgb(106, 237, 199)',
+										strokeWidth: '4px',
+										fill: 'rgb(106, 237, 199)',
+										fillOpacity: 0.6,
+									},
+								}
+							}
+							animate={
+								chartProps?.animate || {
+									duration: 2000,
+									onLoad: { duration: 1000 },
+								}
+							}
+							data={data}
+							categories={chartProps?.categories}
+						></VictoryArea>
+					)
+				})}
+			</>
+		)
+	}
+	return (
+		<VictoryArea
+			interpolation='natural'
+			style={
+				chartProps?.style || {
+					data: {
+						stroke: 'rgb(106, 237, 199)',
+						strokeWidth: '4px',
+						fill: 'rgb(106, 237, 199)',
+						fillOpacity: 0.6,
+					},
+				}
+			}
+			animate={
+				chartProps?.animate || {
+					duration: 2000,
+					onLoad: { duration: 1000 },
+				}
+			}
+			data={chartProps?.data}
+			categories={chartProps?.categories}
+		></VictoryArea>
+	)
+})
+
+const StandardChart = (props: Props): ReactElement => {
+	const { type, chartProps, labeling } = props
+	const isStacked = Array.isArray(chartProps.data[0])
+
 	let { size } = props
 	const defaultHeight = 300
 	const defaultWidth = 450
@@ -41,7 +152,6 @@ const LineChart = (props: Props): ReactElement => {
 
 	return (
 		<div
-			className={classes.root}
 			style={{
 				height: size.height,
 				width: size.width,
@@ -49,90 +159,41 @@ const LineChart = (props: Props): ReactElement => {
 				flexWrap: 'wrap',
 			}}
 		>
-			<VictoryChart
-				{...rest}
-				height={size.height}
-				width={size.width}
-				style={{ parent: { maxWidth: '100%', maxHeight: '100%' } }}
-				padding={{ left: 120, right: 80, top: 40, bottom: 70 }}
-			>
-				<VictoryAxis
-					crossAxis
-					axisLabelComponent={<VictoryLabel dy={10} />}
-					label={labeling.x}
-					style={{ axisLabel: { fontSize: 25, padding: 20 } }}
-				/>
-				<VictoryAxis
-					dependentAxis
-					crossAxis
-					axisLabelComponent={<VictoryLabel dy={-70} />}
-					label={labeling.y}
-					style={{ axisLabel: { fontSize: 25, padding: 20 } }}
-				/>
-				{type === LINE ? (
-					<VictoryLine
-						interpolation='natural'
-						style={
-							chartProps?.style || {
-								data: {
-									stroke: 'rgb(106, 237, 199)',
-									strokeWidth: '2.5px',
-								},
-							}
-						}
-						animate={
-							chartProps?.animate || {
-								duration: 2000,
-								onLoad: { duration: 1000 },
-							}
-						}
-						data={chartProps?.data}
-						categories={chartProps?.categories}
-					></VictoryLine>
-				) : (
-					<VictoryArea
-						interpolation='natural'
-						style={
-							chartProps?.style || {
-								data: {
-									stroke: 'rgb(106, 237, 199)',
-									strokeWidth: '4px',
-									fill: 'rgb(106, 237, 199)',
-									fillOpacity: 0.6,
-								},
-							}
-						}
-						animate={
-							chartProps?.animate || {
-								duration: 2000,
-								onLoad: { duration: 1000 },
-							}
-						}
-						data={chartProps?.data}
-						categories={chartProps?.categories}
-					></VictoryArea>
-				)}
-				<VictoryLine
-					style={
-						chartProps?.style || {
-							data: {
-								stroke: 'rgb(106, 237, 199)',
-								strokeWidth: '2.5px',
-							},
-						}
-					}
-					animate={
-						chartProps?.animate || {
-							duration: 2000,
-							onLoad: { duration: 1000 },
-						}
-					}
-					data={chartProps?.data}
-					categories={chartProps?.categories}
-				></VictoryLine>
-			</VictoryChart>
+			{type === AREA ? (
+				<>
+					{isStacked ? (
+						<StackedAreaChart
+							chartProps={chartProps as VictoryAreaProps}
+							labeling={labeling}
+							size={size}
+						></StackedAreaChart>
+					) : (
+						<AreaChart
+							chartProps={chartProps as VictoryAreaProps}
+							labeling={labeling}
+							size={size}
+						></AreaChart>
+					)}
+				</>
+			) : (
+				<>
+					{isStacked ? (
+						<MultiLineChart
+							chartProps={chartProps as VictoryLineProps}
+							labeling={labeling}
+							size={size}
+						></MultiLineChart>
+					) : (
+						<LineChart
+							chartProps={chartProps as VictoryLineProps}
+							labeling={labeling}
+							size={size}
+						></LineChart>
+					)}
+				</>
+			)}
 		</div>
 	)
 }
 
-export default LineChart
+export default StandardChart
