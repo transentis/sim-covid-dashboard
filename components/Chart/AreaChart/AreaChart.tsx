@@ -14,7 +14,7 @@ interface Props extends VictoryChartProps {
 	labeling: { x: string; y: string }
 }
 
-const LineChart = (props: Props): ReactElement => {
+const AreaChart = (props: Props): ReactElement => {
 	const { chartProps, labeling, ...rest } = props
 
 	let { size } = props
@@ -71,4 +71,4 @@ const LineChart = (props: Props): ReactElement => {
 	)
 }
 
-export default LineChart
+export default AreaChart
