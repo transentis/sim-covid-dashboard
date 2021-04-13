@@ -14,11 +14,10 @@ import {
 	Typography,
 	Tabs,
 	Tab,
-	AppBar,
 } from '@material-ui/core/'
 import { Chart, DragChart, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
-import { AREA, LINE, X } from '../lib/constants/data.consts'
+import { AREA, LINE } from '../lib/constants/data.consts'
 
 import ReactResizeDetector from 'react-resize-detector'
 
@@ -47,25 +46,36 @@ const defaultModel = {
 	scenario_managers: ['smSir'],
 	scenarios: ['dashboard'],
 	equations: [
-		'normal_contact_rate',
-		'distancing_contact_rate',
-		'infectious',
 		'total_population',
+		'contact_rate',
+		'infectious',
 		'recovered',
 		'deceased',
+		'intensive_needed',
+		'intensive_available',
 	],
 	settings: {
 		smSir: {
 			dashboard: {
-				constants: {
-					distancing_contact_rate: 5.0,
-					distancing_on: 0.0,
-					dashboard_on: 0.0,
-				},
+				constants: {},
 				points: {
-					variable_contact_rate: [
-						[0, 20.0],
-						[1500, 20.0],
+					contact_rate_table: [
+						[0, 20],
+						[100, 20],
+						[200, 20],
+						[300, 20],
+						[400, 20],
+						[500, 20],
+						[600, 20],
+						[700, 20],
+						[800, 20],
+						[900, 20],
+						[1000, 20],
+						[1100, 20],
+						[1200, 20],
+						[1300, 20],
+						[1400, 20],
+						[1500, 20],
 					],
 				},
 			},
@@ -86,7 +96,7 @@ const Home = (props: Props) => {
 
 	const classes = useStyles()
 
-	const graphs = ['total_population', 'normal_contact_rate', 'infectious']
+	const graphs = ['total_population', 'contact_rate', 'infectious']
 
 	const [selectedTab, setSelectedTab] = useState(0)
 	const [loading, setLoading] = useState(false)
@@ -121,8 +131,6 @@ const Home = (props: Props) => {
 	const requestData = async () => {
 		let requestedData: any
 		requestedData = await bptkApi.requestModel(requestBody)
-
-		console.log(requestedData)
 
 		if (!requestedData) {
 			return
@@ -162,7 +170,7 @@ const Home = (props: Props) => {
 			</div>
 		)
 	}
-
+	console.log(data)
 	return (
 		<>
 			<Box className={classes.root}>
@@ -237,7 +245,7 @@ const Home = (props: Props) => {
 									</Typography>
 
 									<Chart
-										type={AREA}
+										type={LINE}
 										theme={VictoryTheme.material}
 										chartProps={{
 											animate: {
@@ -246,12 +254,16 @@ const Home = (props: Props) => {
 													duration: 1000,
 												},
 											},
-											data: graphData[
-												selectedGraph
-											].slice(
-												rangeSliderRange[0],
-												rangeSliderRange[1],
-											),
+											data: [
+												graphData[selectedGraph].slice(
+													rangeSliderRange[0],
+													rangeSliderRange[1],
+												),
+												graphData['contact_rate'].slice(
+													rangeSliderRange[0],
+													rangeSliderRange[1],
+												),
+											],
 										}}
 										size={{
 											width: 1200,
@@ -439,7 +451,7 @@ const Home = (props: Props) => {
 																					.constants,
 																			},
 																			points: {
-																				variable_contact_rate: tupleData,
+																				contact_rate_table: tupleData,
 																			},
 																		},
 																	},

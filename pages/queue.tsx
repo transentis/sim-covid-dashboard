@@ -13,7 +13,7 @@ import { Chart, JsonInput, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
 import { AREA } from '../lib/constants/data.consts'
 
-import BPTKApi from '../lib/apiMiddlewear'
+import BPTKApi from '@transentis/bptk-connector'
 import Inputs from '../components/Inputs'
 
 const bptkApi = new BPTKApi('YOUR API KEY')
