@@ -20,6 +20,7 @@ interface Props extends VictoryChartProps {
 		areas: { start?: number; end?: number; color: string }[]
 	}
 	size?: { width?: number; height?: number }
+	labeling: { x: string; y: string }
 	legend?: Array<Legend>
 }
 

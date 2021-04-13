@@ -2,8 +2,10 @@ import React, { ReactElement } from 'react'
 import {
 	VictoryArea,
 	VictoryAreaProps,
+	VictoryAxis,
 	VictoryChart,
 	VictoryChartProps,
+	VictoryLabel,
 	VictoryLine,
 	VictoryLineProps,
 } from 'victory'
@@ -23,19 +25,50 @@ interface Props extends VictoryChartProps {
 	type: lineOrArea
 	chartProps?: VictoryLineProps | VictoryAreaProps
 	size?: { width?: number; height?: number }
+	labeling: { x: string; y: string }
 }
 
 const LineChart = (props: Props): ReactElement => {
 	const classes = useStyles()
-	const { type, chartProps, size, ...rest } = props
+	const { type, chartProps, labeling, ...rest } = props
+	let { size } = props
+	const defaultHeight = 300
+	const defaultWidth = 450
+
+	!size && (size = { height: defaultHeight, width: defaultWidth })
+	!size.height && (size.height = defaultHeight)
+	!size.width && (size.width = defaultWidth)
 
 	return (
-		<Box className={classes.root} height={size?.height} width={size?.width}>
+		<div
+			className={classes.root}
+			style={{
+				height: size.height,
+				width: size.width,
+				display: 'flex',
+				flexWrap: 'wrap',
+			}}
+		>
 			<VictoryChart
 				{...rest}
-				height={size?.height - 25}
-				width={size?.width - 125}
+				height={size.height}
+				width={size.width}
+				style={{ parent: { maxWidth: '100%', maxHeight: '100%' } }}
+				padding={{ left: 120, right: 80, top: 40, bottom: 70 }}
 			>
+				<VictoryAxis
+					crossAxis
+					axisLabelComponent={<VictoryLabel dy={10} />}
+					label={labeling.x}
+					style={{ axisLabel: { fontSize: 25, padding: 20 } }}
+				/>
+				<VictoryAxis
+					dependentAxis
+					crossAxis
+					axisLabelComponent={<VictoryLabel dy={-70} />}
+					label={labeling.y}
+					style={{ axisLabel: { fontSize: 25, padding: 20 } }}
+				/>
 				{type === LINE ? (
 					<VictoryLine
 						interpolation='natural'
@@ -98,7 +131,7 @@ const LineChart = (props: Props): ReactElement => {
 					categories={chartProps?.categories}
 				></VictoryLine>
 			</VictoryChart>
-		</Box>
+		</div>
 	)
 }
 

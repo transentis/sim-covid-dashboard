@@ -5,6 +5,8 @@ import {
 	VictoryChartProps,
 	VictoryLineProps,
 	VictoryAreaProps,
+	VictoryAxis,
+	VictoryLabel,
 } from 'victory'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -25,17 +27,24 @@ interface Props extends VictoryChartProps {
 	type: lineOrArea
 	chartProps?: VictoryLineProps | VictoryAreaProps
 	size?: { width?: number; height?: number }
-	highlighting?: {
+	highlighting: {
 		type: axes
 		areas: { start?: number; end?: number; color: string }[]
 	}
+	labeling: { x: string; y: string }
 }
 
 const YHighlightedLineChart = (props: Props): ReactElement => {
 	const classes = useStyles()
-	const { type, chartProps, highlighting, size, ...rest } = props
-
+	const { type, chartProps, highlighting, labeling, ...rest } = props
+	let { size } = props
+	const defaultHeight = 300
+	const defaultWidth = 450
 	const allAreas = fixStandardAreas(highlighting, '#2a9d8f', chartProps)
+
+	!size && (size = { height: defaultHeight, width: defaultWidth })
+	!size.height && (size.height = defaultHeight)
+	!size.width && (size.width = defaultWidth)
 
 	const CustomClip = ({ ...props }) => {
 		return (
@@ -104,12 +113,35 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 	)
 
 	return (
-		<Box className={classes.root} height={size?.height} width={size?.width}>
+		<div
+			className={classes.root}
+			style={{
+				width: size.width,
+				height: size.height,
+				display: 'flex',
+				flexWrap: 'wrap',
+			}}
+		>
 			<VictoryChart
 				{...rest}
-				height={size?.height - 25}
-				width={size?.width - 125}
+				height={size.height}
+				width={size.width}
+				style={{ parent: { maxWidth: '100%', maxHeight: '100%' } }}
+				padding={{ left: 120, right: 80, top: 40, bottom: 70 }}
 			>
+				<VictoryAxis
+					crossAxis
+					axisLabelComponent={<VictoryLabel dy={10} />}
+					label={labeling.x}
+					style={{ axisLabel: { fontSize: 25, padding: 20 } }}
+				/>
+				<VictoryAxis
+					dependentAxis
+					crossAxis
+					axisLabelComponent={<VictoryLabel dy={-70} />}
+					label={labeling.y}
+					style={{ axisLabel: { fontSize: 25, padding: 20 } }}
+				/>
 				{allAreas.map((area, index: number) => (
 					<VictoryArea
 						key={index}
@@ -128,13 +160,13 @@ const YHighlightedLineChart = (props: Props): ReactElement => {
 							}
 						}
 						categories={chartProps?.categories}
-						data={chartProps.data}
+						data={chartProps?.data}
 					/>
 				))}
 				<CustomClip />
 				<GradientFill />
 			</VictoryChart>
-		</Box>
+		</div>
 	)
 }
 
