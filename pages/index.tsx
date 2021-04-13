@@ -213,15 +213,20 @@ const Home = (props: Props) => {
 										<Button
 											onClick={() => handleGraphChange(1)}
 										>
-											Indicators
+											Extensive Care
 										</Button>
 										<Button
 											onClick={() => handleGraphChange(2)}
 										>
-											Contact Rate
+											Indicators
 										</Button>
 										<Button
 											onClick={() => handleGraphChange(3)}
+										>
+											Contact Rate
+										</Button>
+										<Button
+											onClick={() => handleGraphChange(4)}
 										>
 											Assumptions
 										</Button>
