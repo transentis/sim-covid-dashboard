@@ -96,7 +96,13 @@ const Home = (props: Props) => {
 
 	const classes = useStyles()
 
-	const graphs = ['total_population', 'contact_rate', 'infectious']
+	const graphs = [
+		['total_population'],
+		['intensive_needed', 'intensive_available'],
+		['recovered', 'deceased'],
+		['contact_rate'],
+		['infectious'],
+	]
 
 	const [selectedTab, setSelectedTab] = useState(0)
 	const [loading, setLoading] = useState(false)
@@ -104,7 +110,7 @@ const Home = (props: Props) => {
 		0,
 		1499,
 	])
-	const [selectedGraph, setSelectedGraph] = useState<string>(graphs[0])
+	const [selectedGraph, setSelectedGraph] = useState<Array<string>>(graphs[0])
 	const [graphData, setGraphData] = useState<any>(data)
 
 	const [dragChartData, setDragChartData] = useState([
@@ -207,12 +213,17 @@ const Home = (props: Props) => {
 										<Button
 											onClick={() => handleGraphChange(1)}
 										>
-											Intensive Care
+											Indicators
 										</Button>
 										<Button
 											onClick={() => handleGraphChange(2)}
 										>
-											Indicators
+											Contact Rate
+										</Button>
+										<Button
+											onClick={() => handleGraphChange(3)}
+										>
+											Assumptions
 										</Button>
 									</ButtonGroup>
 								</Box>
@@ -239,13 +250,13 @@ const Home = (props: Props) => {
 									flexDirection='column'
 								>
 									<Typography variant='h4' align='center'>
-										{selectedGraph
+										{selectedGraph[0]
 											.toUpperCase()
 											.replace('_', ' ')}
 									</Typography>
 
 									<Chart
-										type={LINE}
+										type={AREA}
 										theme={VictoryTheme.material}
 										chartProps={{
 											animate: {
@@ -255,13 +266,14 @@ const Home = (props: Props) => {
 												},
 											},
 											data: [
-												graphData[selectedGraph].slice(
-													rangeSliderRange[0],
-													rangeSliderRange[1],
-												),
-												graphData['contact_rate'].slice(
-													rangeSliderRange[0],
-													rangeSliderRange[1],
+												...selectedGraph.map(
+													(graphName) =>
+														graphData[
+															graphName
+														].slice(
+															rangeSliderRange[0],
+															rangeSliderRange[1],
+														),
 												),
 											],
 										}}
