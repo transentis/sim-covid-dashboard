@@ -47,13 +47,15 @@ const MultiLineChart = (props: Props): ReactElement => {
 				label={labeling.y}
 				style={{ axisLabel: { fontSize: 25, padding: 20 } }}
 			/>
-			{chartProps.data.map((data) => (
+			{chartProps.data.map((data, index) => (
 				<VictoryLine
 					interpolation='natural'
 					style={
 						chartProps?.style || {
 							data: {
-								stroke: 'rgb(106, 237, 199)',
+								stroke: `rgb(106, ${
+									(237 * (index + 1)) % 255
+								}, 199)`,
 								strokeWidth: '2.5px',
 							},
 						}

@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import {
-	VictoryAreaProps,
 	VictoryAxis,
 	VictoryChart,
 	VictoryChartProps,

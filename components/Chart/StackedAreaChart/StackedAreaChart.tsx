@@ -46,16 +46,18 @@ const StackedAreaChart = (props: Props): ReactElement => {
 				label={labeling.y}
 				style={{ axisLabel: { fontSize: 25, padding: 20 } }}
 			/>
-			{chartProps.data.map((data) => {
+			{chartProps.data.map((data, index) => {
 				return (
 					<VictoryArea
 						interpolation='natural'
 						style={
 							chartProps?.style || {
 								data: {
-									stroke: 'rgb(106, 237, 199)',
+									stroke: `rgb(106, ${
+										(237 * (index + 1)) % 255
+									}, 199)`,
 									strokeWidth: '4px',
-									fill: 'rgb(106, 237, 199)',
+									fill: `rgb(106, ${237 % 255}, 199)`,
 									fillOpacity: 0.6,
 								},
 							}

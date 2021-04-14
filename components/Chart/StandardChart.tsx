@@ -141,7 +141,7 @@ const Area = React.forwardRef((chartProps: VictoryAreaProps, ref) => {
 const StandardChart = (props: Props): ReactElement => {
 	const { type, chartProps, labeling } = props
 	const isStacked = Array.isArray(chartProps.data[0])
-
+	console.log(isStacked)
 	let { size } = props
 	const defaultHeight = 300
 	const defaultWidth = 450
@@ -149,7 +149,7 @@ const StandardChart = (props: Props): ReactElement => {
 	!size && (size = { height: defaultHeight, width: defaultWidth })
 	!size.height && (size.height = defaultHeight)
 	!size.width && (size.width = defaultWidth)
-
+	console.log(chartProps.data)
 	return (
 		<div
 			style={{
