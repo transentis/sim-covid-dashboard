@@ -31,12 +31,18 @@ interface Legend {
 
 const LineChart = (props: Props): ReactElement => {
 	const classes = useStyles()
+	const defaultHeight = 300
+	const defaultWidth = 450
+	const { size = { height: defaultHeight, width: defaultWidth } } = props
 	const { highlighting, ...rest } = props
 
+	console.log(size)
 	return !highlighting ? (
-		<StandardChart {...rest} />
+		// @ts-ignore
+		<StandardChart size={size} {...rest} />
 	) : (
-		<HighlightedChart highlighting={highlighting} {...rest} />
+		// @ts-ignore
+		<HighlightedChart size={size} highlighting={highlighting} {...rest} />
 	)
 }
 
