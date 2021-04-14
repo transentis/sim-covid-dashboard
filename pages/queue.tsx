@@ -9,12 +9,13 @@ import {
 	Paper,
 	Typography,
 } from '@material-ui/core/'
-import { Chart, JsonInput, LoadingOverlay } from '../components'
+import { JsonInput, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
 import { AREA } from '../lib/constants/data.consts'
 
 import BPTKApi from '@transentis/bptk-connector'
 import Inputs from '../components/Inputs'
+import Chart from '@transentis/bptk-widgets'
 
 const bptkApi = new BPTKApi('YOUR API KEY')
 
