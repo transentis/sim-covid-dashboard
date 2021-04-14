@@ -72,7 +72,7 @@ const Home = (props: Props) => {
 						{name.toUpperCase()}
 					</Typography>
 					<Chart
-						type={AREA}
+						type={'AREA'}
 						theme={VictoryTheme.material}
 						chartProps={{
 							animate: {
