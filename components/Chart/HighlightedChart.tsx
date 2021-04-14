@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
 interface Props extends VictoryChartProps {
 	type: lineOrArea
 	chartProps?: VictoryLineProps | VictoryAreaProps
-	size?: { width?: number; height?: number }
+	size: { width: number; height: number }
 	highlighting: {
 		type: axes
 		areas: { start?: number; end?: number; color: string }[]
@@ -36,15 +36,8 @@ interface Props extends VictoryChartProps {
 
 const YHighlightedLineChart = (props: Props): ReactElement => {
 	const classes = useStyles()
-	const { type, chartProps, highlighting, labeling, ...rest } = props
-	let { size } = props
-	const defaultHeight = 300
-	const defaultWidth = 450
+	const { type, chartProps, highlighting, labeling, size, ...rest } = props
 	const allAreas = fixStandardAreas(highlighting, '#2a9d8f', chartProps)
-
-	!size && (size = { height: defaultHeight, width: defaultWidth })
-	!size.height && (size.height = defaultHeight)
-	!size.width && (size.width = defaultWidth)
 
 	const CustomClip = ({ ...props }) => {
 		return (

@@ -176,7 +176,9 @@ const Home = (props: Props) => {
 			</div>
 		)
 	}
-	console.log(data)
+
+	// console.log(data)
+
 	return (
 		<>
 			<Box className={classes.root}>
