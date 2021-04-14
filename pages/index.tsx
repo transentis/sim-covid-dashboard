@@ -15,15 +15,15 @@ import {
 	Tabs,
 	Tab,
 } from '@material-ui/core/'
-import { Chart, DragChart, LoadingOverlay } from '../components'
+import { DragChart, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
-import { AREA, LINE } from '../lib/constants/data.consts'
 
 import ReactResizeDetector from 'react-resize-detector'
 
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
+import Chart from '@transentis/bptk-widgets/'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -261,7 +261,7 @@ const Home = (props: Props) => {
 									</Typography>
 
 									<Chart
-										type={AREA}
+										type={'AREA'}
 										theme={VictoryTheme.material}
 										chartProps={{
 											animate: {
