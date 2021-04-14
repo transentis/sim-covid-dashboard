@@ -36,7 +36,8 @@ const LineChart = (props: Props): ReactElement => {
 	const { size = { height: defaultHeight, width: defaultWidth } } = props
 	const { highlighting, ...rest } = props
 
-	console.log(size)
+	// console.log(size)
+
 	return !highlighting ? (
 		// @ts-ignore
 		<StandardChart size={size} {...rest} />
