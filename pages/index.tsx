@@ -14,11 +14,10 @@ import {
 	Typography,
 	Tabs,
 	Tab,
-	AppBar,
 } from '@material-ui/core/'
 import { Chart, DragChart, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
-import { AREA, LINE, X } from '../lib/constants/data.consts'
+import { AREA, LINE } from '../lib/constants/data.consts'
 
 import ReactResizeDetector from 'react-resize-detector'
 
@@ -47,25 +46,36 @@ const defaultModel = {
 	scenario_managers: ['smSir'],
 	scenarios: ['dashboard'],
 	equations: [
-		'normal_contact_rate',
-		'distancing_contact_rate',
-		'infectious',
 		'total_population',
+		'contact_rate',
+		'infectious',
 		'recovered',
 		'deceased',
+		'intensive_needed',
+		'intensive_available',
 	],
 	settings: {
 		smSir: {
 			dashboard: {
-				constants: {
-					distancing_contact_rate: 5.0,
-					distancing_on: 0.0,
-					dashboard_on: 0.0,
-				},
+				constants: {},
 				points: {
-					variable_contact_rate: [
-						[0, 20.0],
-						[1500, 20.0],
+					contact_rate_table: [
+						[0, 20],
+						[100, 20],
+						[200, 20],
+						[300, 20],
+						[400, 20],
+						[500, 20],
+						[600, 20],
+						[700, 20],
+						[800, 20],
+						[900, 20],
+						[1000, 20],
+						[1100, 20],
+						[1200, 20],
+						[1300, 20],
+						[1400, 20],
+						[1500, 20],
 					],
 				},
 			},
@@ -86,7 +96,13 @@ const Home = (props: Props) => {
 
 	const classes = useStyles()
 
-	const graphs = ['total_population', 'normal_contact_rate', 'infectious']
+	const graphs = [
+		['total_population'],
+		['intensive_needed', 'intensive_available'],
+		['recovered', 'deceased'],
+		['contact_rate'],
+		['infectious'],
+	]
 
 	const [selectedTab, setSelectedTab] = useState(0)
 	const [loading, setLoading] = useState(false)
@@ -94,7 +110,7 @@ const Home = (props: Props) => {
 		0,
 		1499,
 	])
-	const [selectedGraph, setSelectedGraph] = useState<string>(graphs[0])
+	const [selectedGraph, setSelectedGraph] = useState<Array<string>>(graphs[0])
 	const [graphData, setGraphData] = useState<any>(data)
 
 	const [dragChartData, setDragChartData] = useState([
@@ -121,8 +137,6 @@ const Home = (props: Props) => {
 	const requestData = async () => {
 		let requestedData: any
 		requestedData = await bptkApi.requestModel(requestBody)
-
-		console.log(requestedData)
 
 		if (!requestedData) {
 			return
@@ -162,7 +176,7 @@ const Home = (props: Props) => {
 			</div>
 		)
 	}
-
+	console.log(data)
 	return (
 		<>
 			<Box className={classes.root}>
@@ -199,12 +213,22 @@ const Home = (props: Props) => {
 										<Button
 											onClick={() => handleGraphChange(1)}
 										>
-											Intensive Care
+											Extensive Care
 										</Button>
 										<Button
 											onClick={() => handleGraphChange(2)}
 										>
 											Indicators
+										</Button>
+										<Button
+											onClick={() => handleGraphChange(3)}
+										>
+											Contact Rate
+										</Button>
+										<Button
+											onClick={() => handleGraphChange(4)}
+										>
+											Assumptions
 										</Button>
 									</ButtonGroup>
 								</Box>
@@ -231,7 +255,7 @@ const Home = (props: Props) => {
 									flexDirection='column'
 								>
 									<Typography variant='h4' align='center'>
-										{selectedGraph
+										{selectedGraph[0]
 											.toUpperCase()
 											.replace('_', ' ')}
 									</Typography>
@@ -246,12 +270,17 @@ const Home = (props: Props) => {
 													duration: 1000,
 												},
 											},
-											data: graphData[
-												selectedGraph
-											].slice(
-												rangeSliderRange[0],
-												rangeSliderRange[1],
-											),
+											data: [
+												...selectedGraph.map(
+													(graphName) =>
+														graphData[
+															graphName
+														].slice(
+															rangeSliderRange[0],
+															rangeSliderRange[1],
+														),
+												),
+											],
 										}}
 										size={{
 											width: 1200,
@@ -439,7 +468,7 @@ const Home = (props: Props) => {
 																					.constants,
 																			},
 																			points: {
-																				variable_contact_rate: tupleData,
+																				contact_rate_table: tupleData,
 																			},
 																		},
 																	},
