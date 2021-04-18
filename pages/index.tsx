@@ -188,7 +188,7 @@ const Home = (props: Props) => {
 
 		first && (css += ' rounded-l')
 		last && (css += ' rounded-r')
-		console.log(css)
+
 		return (
 			<button className={css} onClick={onClick}>
 				{children}
@@ -198,7 +198,7 @@ const Home = (props: Props) => {
 	// console.log(data)
 
 	return (
-		<div className='min-h-screen w-screen font-transentis'>
+		<div className='min-h-screen w-full font-transentis'>
 			<Head>
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
@@ -212,7 +212,7 @@ const Home = (props: Props) => {
 						</div>
 					</div>
 					<div className='col-span-2 bg-bg-paper rounded flex flex-col justify-center items-center'>
-						<div className='p-4'>
+						<div className='p-1'>
 							<EquationButton
 								onClick={() => handleGraphChange(0)}
 								first
