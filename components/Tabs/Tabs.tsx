@@ -1,18 +1,4 @@
 import React, { FC, ReactNode, useState } from 'react'
-import { makeStyles, Radio, Tooltip } from '@material-ui/core'
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		height: '100%',
-		width: '100%',
-		position: 'relative',
-	},
-	tabs: {
-		position: 'absolute',
-		bottom: '1%',
-		right: '5px',
-	},
-}))
 
 interface Props {
 	children: Array<ReactNode>
@@ -22,8 +8,6 @@ const Tabs: FC<Props> = (props) => {
 	const { children } = props
 	const [selectedValue, setSelectedValue] = useState(0)
 
-	const classes = useStyles()
-
 	const handleChange = (event) => {
 		setSelectedValue(parseInt(event.target.value))
 	}
@@ -32,7 +16,9 @@ const Tabs: FC<Props> = (props) => {
 		let buttons = []
 		for (let i = 0; i < amount; i++) {
 			buttons.push(
-				<Radio
+				<input
+					type='radio'
+					className='h-6 w-6 m-3 bg-bg'
 					checked={selectedValue === i}
 					onChange={handleChange}
 					value={i}
@@ -41,16 +27,15 @@ const Tabs: FC<Props> = (props) => {
 				/>,
 			)
 		}
+
 		return buttons
 	}
 
 	return (
-		<div className={classes.root}>
-			<Tooltip title={'Click here to change tabs'} arrow>
-				<div className={classes.tabs}>
-					{getTabButtons(children.length)}
-				</div>
-			</Tooltip>
+		<div className='relative w-full h-full'>
+			<div className='group absolute bottom-1 right-4 hover:'>
+				{getTabButtons(children.length)}
+			</div>
 			{children[selectedValue]}
 		</div>
 	)

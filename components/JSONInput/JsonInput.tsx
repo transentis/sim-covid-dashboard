@@ -1,23 +1,15 @@
 import React, { ReactElement } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-
-import { Box } from '@material-ui/core'
 
 import JSONInput from 'react-json-editor-ajrm'
 import locale from 'react-json-editor-ajrm/locale/en'
-
-const useStyles = makeStyles((theme) => ({
-	root: {},
-}))
 
 interface Props {
 	onChange?: (input) => void
 }
 
 const JsonInput = ({ onChange }: Props): ReactElement => {
-	const classes = useStyles()
 	return (
-		<Box className={classes.root}>
+		<div className=''>
 			<JSONInput
 				id='jsonInput'
 				placeholder={{
@@ -44,7 +36,7 @@ const JsonInput = ({ onChange }: Props): ReactElement => {
 				width='100%'
 				onChange={onChange}
 			/>
-		</Box>
+		</div>
 	)
 }
 

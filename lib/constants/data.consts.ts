@@ -4,8 +4,8 @@ export const Y = 'y'
 export const MIN = 'min'
 export const MAX = 'max'
 
-export const LINE = 'line'
-export const AREA = 'area'
+export const LINE = 'LINE'
+export const AREA = 'AREA'
 
 export const stringArray = 'STRING_ARRAY'
 export const numberArray = 'NUMBER_ARRAY'
