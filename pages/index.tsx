@@ -9,7 +9,7 @@ import ReactResizeDetector from 'react-resize-detector'
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
-import Chart from '@transentis/bptk-widgets/'
+import Chart from '@transentis/bptk-widgets'
 import { AREA } from '../lib/constants/data.consts'
 
 const bptkApi = new BPTKApi('MY API KEY')
@@ -229,7 +229,10 @@ const Home = (props: Props) => {
 											style: {
 												tickLabels: {
 													fill: 'white',
-													padding: 5,
+													padding: 7,
+												},
+												axisLabel: {
+													fill: 'white',
 												},
 											},
 										},
