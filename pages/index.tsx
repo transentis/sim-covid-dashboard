@@ -2,15 +2,15 @@ import React, { ReactElement, ReactNode, useState } from 'react'
 import Head from 'next/head'
 
 import { IconButton, Slider, Tooltip, Tabs, Tab } from '@material-ui/core/'
-import { Chart, DragChart, LoadingOverlay } from '../components'
-import { VictoryTheme } from 'victory'
-import { AREA, LINE } from '../lib/constants/data.consts'
+import { DragChart, LoadingOverlay } from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
 
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
+import Chart from '@transentis/bptk-widgets/'
+import { AREA } from '../lib/constants/data.consts'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
