@@ -139,7 +139,7 @@ const Area = React.forwardRef((chartProps: VictoryAreaProps, ref) => {
 })
 
 const StandardChart = (props: Props): ReactElement => {
-	const { type, chartProps, labeling, size } = props
+	const { type, chartProps, labeling, size, theme } = props
 	const isStacked = Array.isArray(chartProps.data[0])
 	// console.log(isStacked)
 	// console.log(chartProps.data)
@@ -156,12 +156,14 @@ const StandardChart = (props: Props): ReactElement => {
 					{isStacked ? (
 						<StackedAreaChart
 							chartProps={chartProps as VictoryAreaProps}
+							theme={theme}
 							labeling={labeling}
 							size={size}
 						></StackedAreaChart>
 					) : (
 						<AreaChart
 							chartProps={chartProps as VictoryAreaProps}
+							theme={theme}
 							labeling={labeling}
 							size={size}
 						></AreaChart>
@@ -172,12 +174,14 @@ const StandardChart = (props: Props): ReactElement => {
 					{isStacked ? (
 						<MultiLineChart
 							chartProps={chartProps as VictoryLineProps}
+							theme={theme}
 							labeling={labeling}
 							size={size}
 						></MultiLineChart>
 					) : (
 						<LineChart
 							chartProps={chartProps as VictoryLineProps}
+							theme={theme}
 							labeling={labeling}
 							size={size}
 						></LineChart>

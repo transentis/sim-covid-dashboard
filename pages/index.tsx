@@ -1,20 +1,7 @@
 import React, { ReactElement, ReactNode, useState } from 'react'
 import Head from 'next/head'
 
-import {
-	Box,
-	Button,
-	ButtonGroup,
-	Grid,
-	IconButton,
-	makeStyles,
-	Paper,
-	Slider,
-	Tooltip,
-	Typography,
-	Tabs,
-	Tab,
-} from '@material-ui/core/'
+import { IconButton, Slider, Tooltip, Tabs, Tab } from '@material-ui/core/'
 import { Chart, DragChart, LoadingOverlay } from '../components'
 import { VictoryTheme } from 'victory'
 import { AREA, LINE } from '../lib/constants/data.consts'
@@ -24,21 +11,6 @@ import ReactResizeDetector from 'react-resize-detector'
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		paddingBottom: theme.spacing(4),
-	},
-	main: {
-		overflow: 'hidden',
-	},
-	tabs: {
-		marginBottom: '10px',
-	},
-	bottomNavigation: {
-		width: 500,
-	},
-}))
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -93,8 +65,6 @@ interface Props {
 
 const Home = (props: Props) => {
 	const { data } = props
-
-	const classes = useStyles()
 
 	const graphs = [
 		['total_population'],
@@ -166,13 +136,14 @@ const Home = (props: Props) => {
 
 		return (
 			<div
+				className='p-4'
 				role='tabpanel'
 				hidden={value !== index}
 				id={`simple-tabpanel-${index}`}
 				aria-labelledby={`simple-tab-${index}`}
 				{...other}
 			>
-				{value === index && <Typography>{children}</Typography>}
+				{value === index && <p className='text-base'>{children}</p>}
 			</div>
 		)
 	}
@@ -212,7 +183,7 @@ const Home = (props: Props) => {
 						</div>
 					</div>
 					<div className='col-span-2 bg-bg-paper rounded flex flex-col justify-center items-center'>
-						<div className='p-1'>
+						<div className='p-4'>
 							<EquationButton
 								onClick={() => handleGraphChange(0)}
 								first
@@ -253,7 +224,16 @@ const Home = (props: Props) => {
 							<div className='p-2'>
 								<Chart
 									type={AREA}
-									theme={VictoryTheme.material}
+									theme={{
+										axis: {
+											style: {
+												tickLabels: {
+													fill: 'white',
+													padding: 5,
+												},
+											},
+										},
+									}}
 									chartProps={{
 										animate: {
 											duration: 2000,
@@ -293,13 +273,13 @@ const Home = (props: Props) => {
 						</div>
 					</div>
 					<div className='col-span-2 lg:col-span-1 bg-bg-paper rounded'>
-						<div>
+						<div className='p-3'>
 							<Tabs
 								value={selectedTab}
 								onChange={handleSelectTab}
 								indicatorColor='primary'
 								textColor='primary'
-								className={classes.tabs}
+								className='m-3'
 								centered
 							>
 								<Tab label='intro' id='intro' />
@@ -363,9 +343,9 @@ const Home = (props: Props) => {
 							</TabPanel>
 						</div>
 					</div>
-					<div className='col-span-2 bg-bg-paper rounded'>
-						<div className='relative m-2 p-1'>
-							<div className='absolute right-2'>
+					<div className='col-span-2 bg-bg-paper rounded flex flex-col justify-center'>
+						<div className='relative m-2 p-3'>
+							<div className='absolute right-2 top-2'>
 								<Tooltip title={'Resets the dragchart'}>
 									<IconButton
 										// onClick={() =>
@@ -390,10 +370,10 @@ const Home = (props: Props) => {
 									</IconButton>
 								</Tooltip>
 							</div>
-							<Typography>Contact Rate</Typography>
+							<p>Contact Rate</p>
 							<ReactResizeDetector handleWidth>
 								{({ width }) => (
-									<Box>
+									<div className='w-11/12'>
 										<DragChart
 											data={dragChartData}
 											colorTheme={['#6aedc7', '#5ce6be']}
@@ -433,7 +413,7 @@ const Home = (props: Props) => {
 											maxValue={40}
 											xSteps={100}
 										/>
-									</Box>
+									</div>
 								)}
 							</ReactResizeDetector>
 						</div>

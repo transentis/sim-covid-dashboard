@@ -35,16 +35,24 @@ const AreaChart = (props: Props): ReactElement => {
 		>
 			<VictoryAxis
 				crossAxis
-				axisLabelComponent={<VictoryLabel dy={10} />}
+				axisLabelComponent={
+					<VictoryLabel
+						dy={10}
+						style={{ fill: 'white', fontSize: 25, padding: 20 }}
+					/>
+				}
 				label={labeling.x}
-				style={{ axisLabel: { fontSize: 25, padding: 20 } }}
 			/>
 			<VictoryAxis
 				dependentAxis
 				crossAxis
-				axisLabelComponent={<VictoryLabel dy={-70} />}
+				axisLabelComponent={
+					<VictoryLabel
+						dy={-70}
+						style={{ fill: 'white', fontSize: 25, padding: 20 }}
+					/>
+				}
 				label={labeling.y}
-				style={{ axisLabel: { fontSize: 25, padding: 20 } }}
 			/>
 			<VictoryArea
 				interpolation='natural'
