@@ -11,6 +11,8 @@ import { PlayArrow, Refresh } from '@material-ui/icons'
 import BPTKApi from '@transentis/bptk-connector'
 import Chart from '@transentis/bptk-widgets'
 import { AREA } from '../lib/constants/data.consts'
+import Dropdown from '../components/Dropdown'
+import DropdownItems from '../components/Dropdown/DropdownItem'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -206,6 +208,9 @@ const Scenarios = (props: Props) => {
 							>
 								Contact Rate
 							</EquationButton>
+							<Dropdown color='purple'>
+								<DropdownItems name='Test'></DropdownItems>-{' '}
+							</Dropdown>
 						</div>
 					</div>
 					<div className='col-span-2 hidden lg:flex  lg:col-span-1 bg-bg-paper rounded'></div>
