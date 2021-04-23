@@ -11,12 +11,14 @@ import { PlayArrow, Refresh } from '@material-ui/icons'
 import BPTKApi from '@transentis/bptk-connector'
 import Chart from '@transentis/bptk-widgets'
 import { AREA } from '../lib/constants/data.consts'
+import Dropdown from '../components/Dropdown'
+import DropdownItems from '../components/Dropdown/DropdownItem'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
-const defaultModel = {
+const defaultModel = (scenario: string) => ({
 	scenario_managers: ['smSir'],
-	scenarios: ['smSir_base', 'smSir_dashboard'],
+	scenarios: ['dashboard'],
 	equations: [
 		'total_population',
 		'contact_rate',
@@ -53,7 +55,7 @@ const defaultModel = {
 			},
 		},
 	},
-}
+})
 
 interface Props {
 	data: {
@@ -64,10 +66,8 @@ interface Props {
 	scenarios: Array<string>
 }
 
-const Home = (props: Props) => {
+const Scenarios = (props: Props) => {
 	const { data, scenarios } = props
-
-	console.log(scenarios, data)
 
 	const graphs = [
 		['total_population'],
@@ -104,7 +104,8 @@ const Home = (props: Props) => {
 		20,
 	])
 
-	const [requestBody, setRequestBody] = useState(defaultModel)
+	const [scenario, setScenario] = useState(scenarios[0])
+	const [requestBody, setRequestBody] = useState(defaultModel(scenario))
 
 	const requestData = async () => {
 		let requestedData: any
@@ -157,10 +158,10 @@ const Home = (props: Props) => {
 		last?: boolean
 	}): ReactElement => {
 		const { children, onClick, first, last } = props
-		let css = 'uppercase border border-white p-3 text-xs lg:text-sm'
+		let css = 'uppercase border border-white p-3'
 
-		first && (css += ' lg:rounded-l')
-		last && (css += ' lg:rounded-r')
+		first && (css += ' rounded-l')
+		last && (css += ' rounded-r')
 
 		return (
 			<button className={css} onClick={onClick}>
@@ -181,9 +182,7 @@ const Home = (props: Props) => {
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3 bg-bg-paper rounded flex flex-col justify-center items-center'>
 						<div className=''>
-							<p className='text-5xl lg:text-7xl p-4'>
-								COVID-19 Simulation
-							</p>
+							<p className='text-7xl p-4'>COVID-19 Simulation</p>
 						</div>
 					</div>
 					<div className='col-span-2 bg-bg-paper rounded flex flex-col justify-center items-center'>
@@ -209,12 +208,15 @@ const Home = (props: Props) => {
 							>
 								Contact Rate
 							</EquationButton>
+							<Dropdown color='purple'>
+								<DropdownItems name='Test'></DropdownItems>-{' '}
+							</Dropdown>
 						</div>
 					</div>
 					<div className='col-span-2 hidden lg:flex  lg:col-span-1 bg-bg-paper rounded'></div>
 					<div className='col-span-2 bg-bg-paper rounded'>
 						<div className='flex flex-col justify-center items-center'>
-							<p className='text-3xl lg:text-4xl p-4'>
+							<p className='text-4xl p-4'>
 								{selectedGraph[0]
 									.toUpperCase()
 									.replace('_', ' ')}
@@ -454,8 +456,8 @@ const Home = (props: Props) => {
 }
 
 export const getStaticProps = async () => {
-	const requestedData = await bptkApi.requestModel(defaultModel)
 	const scenarios = await bptkApi.getScenarios()
+	const requestedData = await bptkApi.requestModel(defaultModel(scenarios[0]))
 
 	if (!requestedData) {
 		return {
@@ -473,4 +475,4 @@ export const getStaticProps = async () => {
 	}
 }
 
-export default Home
+export default Scenarios

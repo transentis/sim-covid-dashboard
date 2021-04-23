@@ -265,18 +265,23 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/context-base/-/context-base-0.14.0.tgz#c67fc20a4d891447ca1a855d7d70fa79a3533001"
   integrity sha512-sDOAZcYwynHFTbLo6n8kIbLiVF3a3BLkrmehJUyEbT9F+Smbi47kLGS2gG2g0fjBLR/Lr1InPD7kXL7FaTqEkw==
 
-"@transentis/bptk-connector@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@transentis/bptk-connector/-/bptk-connector-1.0.1.tgz#772989efe103632d40c81813e4211594b99f1082"
-  integrity sha512-4wVfrzSzs4WP75aobWizkl8RGAW5z9MvCejxXuhHdnrVayCCj9ySGO7JI6z4KCdadzwqWfWCdUe9FhSnZxUIeg==
+"@popperjs/core@^2.9.2":
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.2.tgz#adea7b6953cbb34651766b0548468e743c6a2353"
+  integrity sha512-VZMYa7+fXHdwIq1TDhSXoVmSPEGM/aa+6Aiq3nVVJ9bXr24zScr+NlKFKC3iPljA7ho/GAZr+d2jOf5GIRC30Q==
+
+"@transentis/bptk-connector@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@transentis/bptk-connector/-/bptk-connector-0.0.5.tgz#770bc483bc55c76868e38dbf2143e3c6a6bd5b29"
+  integrity sha512-QhzIjoD4ATOwC0GVi2xs3LGufIExw3H64Q7TuIgdcBK1cXU3xkAPV3/1KCWicvYITYiW0MyrA8xsSYB6r0PJ+w==
   dependencies:
     axios "^0.21.1"
     axios-cache-adapter "^2.7.3"
 
-"@transentis/bptk-widgets@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@transentis/bptk-widgets/-/bptk-widgets-0.0.5.tgz#63ba3f8fbe8e5df0019f2e791656faddf57fd104"
-  integrity sha512-F6W8jj7jisp1VWtKiEXfZkqpGKV7ZYtysosJ0YyTtqmhqrLDp9AuqVxLWtbZqIMmfTnY9LkfEHKkM2fmvVqE6Q==
+"@transentis/bptk-widgets@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@transentis/bptk-widgets/-/bptk-widgets-0.0.6.tgz#4b423a39fde462ca3396ec0e4c02897d347ebe07"
+  integrity sha512-QynwHRztciszCLrFEWztAuVgp7x/wxpDGuduGystObdjIw3q+Jrjr1d8gz89LVL5ZwFA7VPaDqOObNWtdZLNvQ==
   dependencies:
     react "^17.0.1"
     victory "^35.5.1"
