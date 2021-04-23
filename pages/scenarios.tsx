@@ -2,7 +2,7 @@ import React, { ReactElement, ReactNode, useState } from 'react'
 import Head from 'next/head'
 
 import { IconButton, Slider, Tooltip, Tabs, Tab } from '@material-ui/core/'
-import { DragChart, LoadingOverlay, NavigationButtons } from '../components'
+import { DragChart, LoadingOverlay } from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
 
@@ -14,9 +14,9 @@ import { AREA } from '../lib/constants/data.consts'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
-const defaultModel = {
+const defaultModel = (scenario: string) => ({
 	scenario_managers: ['smSir'],
-	scenarios: ['smSir_base', 'smSir_dashboard'],
+	scenarios: ['dashboard'],
 	equations: [
 		'total_population',
 		'contact_rate',
@@ -53,7 +53,7 @@ const defaultModel = {
 			},
 		},
 	},
-}
+})
 
 interface Props {
 	data: {
@@ -64,10 +64,8 @@ interface Props {
 	scenarios: Array<string>
 }
 
-const Home = (props: Props) => {
+const Scenarios = (props: Props) => {
 	const { data, scenarios } = props
-
-	console.log(scenarios, data)
 
 	const graphs = [
 		['total_population'],
@@ -104,7 +102,8 @@ const Home = (props: Props) => {
 		20,
 	])
 
-	const [requestBody, setRequestBody] = useState(defaultModel)
+	const [scenario, setScenario] = useState(scenarios[0])
+	const [requestBody, setRequestBody] = useState(defaultModel(scenario))
 
 	const requestData = async () => {
 		let requestedData: any
@@ -446,14 +445,21 @@ const Home = (props: Props) => {
 					<div className='col-span-2 hidden lg:flex lg:col-span-1 bg-bg-paper rounded'></div>
 				</div>
 			</div>
-			<NavigationButtons></NavigationButtons>
+			<div className='absolute inset-x-1/2 bottom-5 inline-flex'>
+				<button className='bg-purple-600 hover:bg-purple-700 text-gray-800 font-bold py-2 px-4 rounded-l'>
+					Dashboard
+				</button>
+				<button className='bg-purple-600 hover:bg-purple-700 text-gray-800 font-bold py-2 px-4 rounded-r'>
+					Scenarios
+				</button>
+			</div>
 		</div>
 	)
 }
 
 export const getStaticProps = async () => {
-	const requestedData = await bptkApi.requestModel(defaultModel)
 	const scenarios = await bptkApi.getScenarios()
+	const requestedData = await bptkApi.requestModel(defaultModel(scenarios[0]))
 
 	if (!requestedData) {
 		return {
@@ -471,4 +477,4 @@ export const getStaticProps = async () => {
 	}
 }
 
-export default Home
+export default Scenarios
