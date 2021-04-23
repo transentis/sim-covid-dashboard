@@ -155,10 +155,10 @@ const Home = (props: Props) => {
 		last?: boolean
 	}): ReactElement => {
 		const { children, onClick, first, last } = props
-		let css = 'uppercase border border-white p-3'
+		let css = 'uppercase border border-white p-3 text-xs lg:text-sm'
 
-		first && (css += ' rounded-l')
-		last && (css += ' rounded-r')
+		first && (css += ' lg:rounded-l')
+		last && (css += ' lg:rounded-r')
 
 		return (
 			<button className={css} onClick={onClick}>
@@ -179,7 +179,9 @@ const Home = (props: Props) => {
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3 bg-bg-paper rounded flex flex-col justify-center items-center'>
 						<div className=''>
-							<p className='text-7xl p-4'>COVID-19 Simulation</p>
+							<p className='text-5xl lg:text-7xl p-4'>
+								COVID-19 Simulation
+							</p>
 						</div>
 					</div>
 					<div className='col-span-2 bg-bg-paper rounded flex flex-col justify-center items-center'>
@@ -216,7 +218,7 @@ const Home = (props: Props) => {
 					<div className='col-span-2 hidden lg:flex  lg:col-span-1 bg-bg-paper rounded'></div>
 					<div className='col-span-2 bg-bg-paper rounded'>
 						<div className='flex flex-col justify-center items-center'>
-							<p className='text-4xl p-4'>
+							<p className='text-3xl lg:text-4xl p-4'>
 								{selectedGraph[0]
 									.toUpperCase()
 									.replace('_', ' ')}
