@@ -171,7 +171,7 @@ const Home = (props: Props) => {
 	// console.log(data)
 
 	return (
-		<div className='min-h-screen w-full font-transentis'>
+		<div className='min-h-screen w-full font-transentis bg-bg'>
 			<Head>
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />

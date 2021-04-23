@@ -2,7 +2,7 @@ import React, { ReactElement, ReactNode, useState } from 'react'
 import Head from 'next/head'
 
 import { IconButton, Slider, Tooltip, Tabs, Tab } from '@material-ui/core/'
-import { DragChart, LoadingOverlay } from '../components'
+import { DragChart, LoadingOverlay, NavigationButtons } from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
 
@@ -170,7 +170,7 @@ const Scenarios = (props: Props) => {
 	// console.log(data)
 
 	return (
-		<div className='min-h-screen w-full font-transentis'>
+		<div className='min-h-screen w-full font-transentis bg-bg'>
 			<Head>
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
@@ -445,14 +445,7 @@ const Scenarios = (props: Props) => {
 					<div className='col-span-2 hidden lg:flex lg:col-span-1 bg-bg-paper rounded'></div>
 				</div>
 			</div>
-			<div className='absolute inset-x-1/2 bottom-5 inline-flex'>
-				<button className='bg-purple-600 hover:bg-purple-700 text-gray-800 font-bold py-2 px-4 rounded-l'>
-					Dashboard
-				</button>
-				<button className='bg-purple-600 hover:bg-purple-700 text-gray-800 font-bold py-2 px-4 rounded-r'>
-					Scenarios
-				</button>
-			</div>
+			<NavigationButtons></NavigationButtons>
 		</div>
 	)
 }
