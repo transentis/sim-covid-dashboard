@@ -145,7 +145,9 @@ const Home = (props: Props) => {
 				aria-labelledby={`simple-tab-${index}`}
 				{...other}
 			>
-				{value === index && <p className='text-base'>{children}</p>}
+				{value === index && (
+					<p className='prose text-base'>{children}</p>
+				)}
 			</div>
 		)
 	}
@@ -157,10 +159,10 @@ const Home = (props: Props) => {
 		last?: boolean
 	}): ReactElement => {
 		const { children, onClick, first, last } = props
-		let css = 'uppercase border border-white p-3'
+		let css = 'prose uppercase border border-white p-3 text-xs lg:text-sm'
 
-		first && (css += ' rounded-l')
-		last && (css += ' rounded-r')
+		first && (css += ' lg:rounded-l')
+		last && (css += ' lg:rounded-r')
 
 		return (
 			<button className={css} onClick={onClick}>
@@ -181,7 +183,9 @@ const Home = (props: Props) => {
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3 bg-bg-paper rounded flex flex-col justify-center items-center'>
 						<div className=''>
-							<p className='text-7xl p-4'>COVID-19 Simulation</p>
+							<p className='prose text-5xl lg:text-7xl p-4'>
+								COVID-19 Simulation
+							</p>
 						</div>
 					</div>
 					<div className='col-span-2 bg-bg-paper rounded flex flex-col justify-center items-center'>
@@ -212,7 +216,7 @@ const Home = (props: Props) => {
 					<div className='col-span-2 hidden lg:flex  lg:col-span-1 bg-bg-paper rounded'></div>
 					<div className='col-span-2 bg-bg-paper rounded'>
 						<div className='flex flex-col justify-center items-center'>
-							<p className='text-4xl p-4'>
+							<p className='prose text-3xl lg:text-4xl p-4'>
 								{selectedGraph[0]
 									.toUpperCase()
 									.replace('_', ' ')}
@@ -282,11 +286,12 @@ const Home = (props: Props) => {
 										],
 										x: 100,
 										y: 100,
+										outline: 'none',
 									}}
 								></Chart>
 							</div>
 							<div className='w-11/12 p-2'>
-								<p>Visualization Range</p>
+								<p className='prose '>Visualization Range</p>
 								<Slider
 									value={rangeSliderRange}
 									onChange={handleSliderChange}
@@ -298,17 +303,25 @@ const Home = (props: Props) => {
 						</div>
 					</div>
 					<div className='col-span-2 lg:col-span-1 bg-bg-paper rounded'>
-						<div className='p-3'>
+						<div className='prose p-3'>
 							<Tabs
 								value={selectedTab}
 								onChange={handleSelectTab}
 								indicatorColor='primary'
-								textColor='primary'
+								textColor='inherit'
 								className='m-3'
 								centered
 							>
-								<Tab label='intro' id='intro' />
-								<Tab label='assumptions' id='assumptions' />
+								<Tab
+									className='prose focus:outline-none'
+									label='intro'
+									id='intro'
+								/>
+								<Tab
+									className='prose focus:outline-none'
+									label='assumptions'
+									id='assumptions'
+								/>
 							</Tabs>
 							<TabPanel value={selectedTab} index={0}>
 								Whenever you need to make predictions about
@@ -395,7 +408,7 @@ const Home = (props: Props) => {
 									</IconButton>
 								</Tooltip>
 							</div>
-							<p>Contact Rate</p>
+							<p className='prose '>Contact Rate</p>
 							<ReactResizeDetector handleWidth>
 								{({ width }) => (
 									<div className='w-11/12'>
@@ -446,7 +459,7 @@ const Home = (props: Props) => {
 					<div className='col-span-2 hidden lg:flex lg:col-span-1 bg-bg-paper rounded'></div>
 				</div>
 			</div>
-			<NavigationButtons></NavigationButtons>
+			<NavigationButtons />
 		</div>
 	)
 }
