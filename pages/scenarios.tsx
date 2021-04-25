@@ -107,9 +107,8 @@ const Scenarios = (props: Props) => {
 	const [scenario, setScenario] = useState(scenarios[0])
 	const [requestBody, setRequestBody] = useState(defaultModel(scenario))
 
-	const requestData = async () => {
-		let requestedData: any
-		requestedData = await bptkApi.requestModel(requestBody)
+	const requestData = async (scenario?: string) => {
+		const requestedData = await bptkApi.requestModel(defaultModel(scenario))
 
 		if (!requestedData) {
 			return
@@ -169,7 +168,6 @@ const Scenarios = (props: Props) => {
 			</button>
 		)
 	}
-	// console.log(data)
 
 	return (
 		<div className='min-h-screen w-full font-transentis bg-bg'>
@@ -185,7 +183,16 @@ const Scenarios = (props: Props) => {
 							<p className='text-7xl p-4'>COVID-19 Simulation</p>
 						</div>
 					</div>
-					<div className='col-span-2 bg-bg-paper rounded flex flex-col justify-center items-center'>
+					<div className='col-span-2 bg-bg-paper rounded flex flex-row justify-center items-center'>
+						<Dropdown color='purple' name='Scenarios'>
+							{scenarios.map((scenario, index) => (
+								<DropdownItems
+									name={scenario}
+									onClick={() => requestData(scenario)}
+									key={index}
+								></DropdownItems>
+							))}
+						</Dropdown>
 						<div className='p-4'>
 							<EquationButton
 								onClick={() => handleGraphChange(0)}
@@ -208,9 +215,6 @@ const Scenarios = (props: Props) => {
 							>
 								Contact Rate
 							</EquationButton>
-							<Dropdown color='purple'>
-								<DropdownItems name='Test'></DropdownItems>-{' '}
-							</Dropdown>
 						</div>
 					</div>
 					<div className='col-span-2 hidden lg:flex  lg:col-span-1 bg-bg-paper rounded'></div>
