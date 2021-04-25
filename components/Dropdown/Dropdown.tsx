@@ -4,9 +4,10 @@ import { DropdownItemsI } from './DropdownItem'
 
 interface Props {
 	color: string
-	children: ReactElement<DropdownItemsI>
+	name?: string
+	children: ReactElement<DropdownItemsI>[]
 }
-const Dropdown: FC<Props> = ({ color, children }) => {
+const Dropdown: FC<Props> = ({ color, children, name }) => {
 	const [dropdownPopoverShow, setDropdownPopoverShow] = useState(false)
 
 	const btnDropdownRef = createRef<HTMLButtonElement>()
@@ -45,9 +46,7 @@ const Dropdown: FC<Props> = ({ color, children }) => {
 									: openDropdownPopover()
 							}}
 						>
-							{color === 'white'
-								? 'White Dropdown'
-								: color + ' Dropdown'}
+							{name}
 						</button>
 						<div
 							ref={popoverDropdownRef}
@@ -61,55 +60,6 @@ const Dropdown: FC<Props> = ({ color, children }) => {
 							style={{ minWidth: '12rem' }}
 						>
 							{children}
-							<a
-								href='#pablo'
-								className={
-									'text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent ' +
-									(color === 'white'
-										? ' text-blueGray-700'
-										: 'text-white')
-								}
-								onClick={(e) => e.preventDefault()}
-							>
-								Action
-							</a>
-							<a
-								href='#pablo'
-								className={
-									'text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent ' +
-									(color === 'white'
-										? ' text-blueGray-700'
-										: 'text-white')
-								}
-								onClick={(e) => e.preventDefault()}
-							>
-								Another action
-							</a>
-							<a
-								href='#pablo'
-								className={
-									'text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent ' +
-									(color === 'white'
-										? ' text-blueGray-700'
-										: 'text-white')
-								}
-								onClick={(e) => e.preventDefault()}
-							>
-								Something else here
-							</a>
-							<div className='h-0 my-2 border border-solid border-t-0 border-blueGray-800 opacity-25' />
-							<a
-								href='#pablo'
-								className={
-									'text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent ' +
-									(color === 'white'
-										? ' text-blueGray-700'
-										: 'text-white')
-								}
-								onClick={(e) => e.preventDefault()}
-							>
-								Seprated link
-							</a>
 						</div>
 					</div>
 				</div>
