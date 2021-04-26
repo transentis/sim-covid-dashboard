@@ -1,8 +1,14 @@
-import React, { ReactElement, ReactNode, useState } from 'react'
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import { IconButton, Slider, Tooltip, Tabs, Tab } from '@material-ui/core/'
-import { DragChart, LoadingOverlay, NavigationButtons } from '../components'
+import {
+	DragChart,
+	LoadingOverlay,
+	NavigationButtons,
+	Dropdown,
+	DropdownItem,
+} from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
 
@@ -10,11 +16,11 @@ import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
 import Chart from '@transentis/bptk-widgets'
-import { VictoryTheme } from 'victory-core'
+import { VictoryTheme } from 'victory'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
-const defaultModel = {
+const defaultModel = (scenario: string) => ({
 	scenario_managers: ['smSir'],
 	scenarios: ['dashboard'],
 	equations: [
@@ -53,7 +59,7 @@ const defaultModel = {
 			},
 		},
 	},
-}
+})
 
 interface Props {
 	data: {
@@ -61,12 +67,11 @@ interface Props {
 		reproduction_rate: [{ x: number; y: number }]
 		total_population: [{ x: number; y: number }]
 	}
+	scenarios: Array<string>
 }
 
-const Home = (props: Props) => {
-	const { data } = props
-
-	console.log(data)
+const Scenarios = (props: Props) => {
+	const { data, scenarios } = props
 
 	const graphs = [
 		['total_population'],
@@ -103,11 +108,15 @@ const Home = (props: Props) => {
 		20,
 	])
 
-	const [requestBody, setRequestBody] = useState(defaultModel)
+	const [scenario, setScenario] = useState(scenarios[0])
+	const [requestBody, setRequestBody] = useState(defaultModel(scenario))
+
+	useEffect(() => {
+		requestData()
+	}, [scenario])
 
 	const requestData = async () => {
-		let requestedData: any
-		requestedData = await bptkApi.requestModel(requestBody)
+		const requestedData = await bptkApi.requestModel(defaultModel(scenario))
 
 		if (!requestedData) {
 			return
@@ -145,7 +154,7 @@ const Home = (props: Props) => {
 				{...other}
 			>
 				{value === index && (
-					<p className='prose text-base'>{children}</p>
+					<p className='text-base prose'>{children}</p>
 				)}
 			</div>
 		)
@@ -158,10 +167,10 @@ const Home = (props: Props) => {
 		last?: boolean
 	}): ReactElement => {
 		const { children, onClick, first, last } = props
-		let css = 'uppercase border border-white p-3 text-xs lg:text-sm'
+		let css = 'prose uppercase border border-white p-3'
 
-		first && (css += ' lg:rounded-l')
-		last && (css += ' lg:rounded-r')
+		first && (css += ' rounded-l')
+		last && (css += ' rounded-r')
 
 		return (
 			<button className={css} onClick={onClick}>
@@ -169,12 +178,11 @@ const Home = (props: Props) => {
 			</button>
 		)
 	}
-	// console.log(data)
 
 	return (
 		<div className='min-h-screen w-full bg-bg'>
 			<Head>
-				<title>COVID-19 Simulation</title>
+				<title>COVID-19 Scenarios</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<LoadingOverlay loading={loading}></LoadingOverlay>
@@ -182,12 +190,19 @@ const Home = (props: Props) => {
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3 bg-bg-paper rounded flex flex-col justify-center items-center'>
 						<div className=''>
-							<p className='text-5xl lg:text-7xl p-4'>
-								COVID-19 Simulation
-							</p>
+							<p className='text-5xl prose p-4'>{`COVID-19 Scenarios: ${scenario}`}</p>
 						</div>
 					</div>
-					<div className='col-span-2 bg-bg-paper rounded flex flex-col justify-center items-center'>
+					<div className='col-span-2 bg-bg-paper rounded flex flex-row justify-center items-center'>
+						<Dropdown color='purple' name='Scenarios'>
+							{scenarios.map((scenario, index) => (
+								<DropdownItem
+									name={scenario}
+									onClick={() => setScenario(scenario)}
+									key={index}
+								></DropdownItem>
+							))}
+						</Dropdown>
 						<div className='p-4'>
 							<EquationButton
 								onClick={() => handleGraphChange(0)}
@@ -215,7 +230,7 @@ const Home = (props: Props) => {
 					<div className='col-span-2 hidden lg:flex  lg:col-span-1 bg-bg-paper rounded'></div>
 					<div className='col-span-2 bg-bg-paper rounded'>
 						<div className='flex flex-col justify-center items-center'>
-							<p className='text-3xl lg:text-4xl p-4'>
+							<p className='text-4xl p-4'>
 								{selectedGraph[0]
 									.toUpperCase()
 									.replace('_', ' ')}
@@ -224,36 +239,6 @@ const Home = (props: Props) => {
 								<Chart
 									type={'AREA'}
 									theme={VictoryTheme.material}
-									// theme={{
-									// 	axis: {
-									// 		style: {
-									// 			tickLabels: {
-									// 				fill: 'white',
-									// 				padding: 7,
-									// 			},
-									// 			axisLabel: {
-									// 				fill: 'white',
-									// 			},
-									// 		},
-									// 	},
-									// 	line: {
-									// 		style: {
-									// 			data: {
-									// 				fill: 'transparent',
-									// 				opacity: 1,
-									// 				stroke: '#009696',
-									// 				strokeWidth: 2,
-									// 			},
-									// 		},
-									// 	},
-									// 	area: {
-									// 		style: {
-									// 			data: {
-									// 				fill: '#009696',
-									// 			},
-									// 		},
-									// 	},
-									// }}
 									chartProps={{
 										animate: {
 											duration: 2000,
@@ -279,23 +264,24 @@ const Home = (props: Props) => {
 										y: 'population',
 									}}
 									legend={{
-										outline: 'none',
+										outline: 'white',
 										names: [
 											...selectedGraph.map(
 												(graphName) => {
 													return {
 														name: graphName,
+														color: 'green',
 													}
 												},
 											),
 										],
-										x: 900,
-										y: 300,
+										x: 100,
+										y: 100,
 									}}
 								></Chart>
 							</div>
 							<div className='w-11/12 p-2'>
-								<p className=''>Visualization Range</p>
+								<p>Visualization Range</p>
 								<Slider
 									value={rangeSliderRange}
 									onChange={handleSliderChange}
@@ -307,25 +293,17 @@ const Home = (props: Props) => {
 						</div>
 					</div>
 					<div className='col-span-2 lg:col-span-1 bg-bg-paper rounded'>
-						<div className='p-3'>
+						<div className='p-3 prose'>
 							<Tabs
 								value={selectedTab}
 								onChange={handleSelectTab}
 								indicatorColor='primary'
-								textColor='inherit'
-								className='m-3'
+								textColor='primary'
+								className='m-3 prose'
 								centered
 							>
-								<Tab
-									className='focus:outline-none'
-									label='intro'
-									id='intro'
-								/>
-								<Tab
-									className='focus:outline-none'
-									label='assumptions'
-									id='assumptions'
-								/>
+								<Tab label='intro' id='intro' />
+								<Tab label='assumptions' id='assumptions' />
 							</Tabs>
 							<TabPanel value={selectedTab} index={0}>
 								Whenever you need to make predictions about
@@ -412,7 +390,7 @@ const Home = (props: Props) => {
 									</IconButton>
 								</Tooltip>
 							</div>
-							<p className=''>Contact Rate</p>
+							<p>Contact Rate</p>
 							<ReactResizeDetector handleWidth>
 								{({ width }) => (
 									<div className='w-11/12'>
@@ -463,13 +441,14 @@ const Home = (props: Props) => {
 					<div className='col-span-2 hidden lg:flex lg:col-span-1 bg-bg-paper rounded'></div>
 				</div>
 			</div>
-			<NavigationButtons />
+			<NavigationButtons></NavigationButtons>
 		</div>
 	)
 }
 
 export const getStaticProps = async () => {
-	const requestedData = await bptkApi.requestModel(defaultModel)
+	const scenarios = await bptkApi.getScenarios()
+	const requestedData = await bptkApi.requestModel(defaultModel(scenarios[0]))
 
 	if (!requestedData) {
 		return {
@@ -482,8 +461,9 @@ export const getStaticProps = async () => {
 	return {
 		props: {
 			data: data,
+			scenarios: scenarios,
 		},
 	}
 }
 
-export default Home
+export default Scenarios

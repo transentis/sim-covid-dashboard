@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	body {
+		@apply text-white font-transentis;
+	}
+	button {
+		color: 'white';
+	}
+	button:focus {
+		@apply outline-none shadow-none;
+	}
+}

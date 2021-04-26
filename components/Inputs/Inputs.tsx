@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core'
 import { PlayArrow, Refresh } from '@material-ui/icons'
 import React, { ReactElement, ReactNode, useState } from 'react'
-import { Tabs } from '..'
+import { InputTabs } from '..'
 import {
 	arrayArray,
 	numberArray,
@@ -296,11 +296,11 @@ const Inputs = (props: Props): ReactElement => {
 	}
 
 	return (
-		<Tabs>
+		<InputTabs>
 			{tabs.map((tab, index: number) => {
 				return <div key={index}>{tab}</div>
 			})}
-		</Tabs>
+		</InputTabs>
 	)
 }
 

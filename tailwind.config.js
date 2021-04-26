@@ -1,15 +1,33 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
 	purge: [
 		'./pages/**/*.{js,ts,jsx,tsx}',
 		'./components/**/*.{js,ts,jsx,tsx}',
 	],
-	darkMode: false, // or 'media' or 'class'
+	darkMode: 'media',
 	theme: {
-		extend: {},
+		extend: {
+			typography: {
+				DEFAULT: {
+					css: {
+						color: 'white',
+						a: {
+							color: '#009696',
+							'&:hover': {
+								color: '#004b4b',
+							},
+						},
+					},
+				},
+			},
+		},
 		fontFamily: {
 			transentis: ['franklin-gothic-urw', 'sans-serif'],
 		},
 		colors: {
+			transparent: 'transparent',
+			current: 'currentColor',
 			cyan: {
 				DEFAULT: '#009696',
 				light: '#60C0C0',
@@ -20,6 +38,8 @@ module.exports = {
 				light: '#FFb466',
 				dark: '#804100',
 			},
+			white: colors.white,
+			purple: colors.purple,
 			bg: {
 				DEFAULT: '#222222',
 				paper: '#333333',
@@ -29,5 +49,5 @@ module.exports = {
 	variants: {
 		extend: {},
 	},
-	plugins: [],
+	plugins: [require('@tailwindcss/typography')],
 }

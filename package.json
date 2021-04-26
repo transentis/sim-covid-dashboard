@@ -10,9 +10,11 @@
 	"dependencies": {
 		"@material-ui/core": "^4.11.3",
 		"@material-ui/icons": "^4.11.2",
-		"@transentis/bptk-connector": "^1.0.1",
-		"autoprefixer": "^10.2.5",
+		"@popperjs/core": "^2.9.2",
+		"@tailwindcss/typography": "^0.4.0",
+		"@transentis/bptk-connector": "^0.0.5",
 		"@transentis/bptk-widgets": "^0.0.6",
+		"autoprefixer": "^10.2.5",
 		"axios": "^0.21.1",
 		"axios-cache-adapter": "^2.7.3",
 		"d3": "^6.5.0",
@@ -24,7 +26,7 @@
 		"react-json-editor-ajrm": "^2.5.13",
 		"react-resize-detector": "^6.6.1",
 		"tailwindcss": "^2.1.1",
-		"victory": "^35.4.9"
+		"victory": "^35.5.1"
 	},
 	"devDependencies": {
 		"@types/d3": "^6.3.0",
