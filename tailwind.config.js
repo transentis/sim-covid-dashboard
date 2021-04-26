@@ -38,6 +38,7 @@ module.exports = {
 				light: '#FFb466',
 				dark: '#804100',
 			},
+			white: colors.white,
 			purple: colors.purple,
 			bg: {
 				DEFAULT: '#222222',
