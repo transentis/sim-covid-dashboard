@@ -11,7 +11,9 @@ import { PlayArrow, Refresh } from '@material-ui/icons'
 import BPTKApi from '@transentis/bptk-connector'
 import Chart from '@transentis/bptk-widgets'
 import { VictoryTheme } from 'victory-core'
+
 import { theme } from '../lib/constants/covid.dashboard.theme'
+import { transentisColors as tc } from '../lib/constants/colors'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -225,36 +227,14 @@ const Home = (props: Props) => {
 								<Chart
 									type={'AREA'}
 									theme={theme}
-									// theme={{
-									// 	axis: {
-									// 		style: {
-									// 			tickLabels: {
-									// 				fill: 'white',
-									// 				padding: 7,
-									// 			},
-									// 			axisLabel: {
-									// 				fill: 'white',
-									// 			},
-									// 		},
-									// 	},
-									// 	line: {
-									// 		style: {
-									// 			data: {
-									// 				fill: 'transparent',
-									// 				opacity: 1,
-									// 				stroke: '#009696',
-									// 				strokeWidth: 2,
-									// 			},
-									// 		},
-									// 	},
-									// 	area: {
-									// 		style: {
-									// 			data: {
-									// 				fill: '#009696',
-									// 			},
-									// 		},
-									// 	},
-									// }}
+									colorPalette={[
+										tc.cyan.default,
+										tc.cyan.light,
+										tc.cyan.dark,
+										tc.orange.default,
+										tc.orange.light,
+										tc.orange.dark,
+									]}
 									chartProps={{
 										animate: {
 											duration: 2000,
