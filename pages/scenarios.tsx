@@ -292,27 +292,16 @@ const Scenarios = (props: Props) => {
 										y: 'population',
 									}}
 									legend={{
+										outline: 'white',
 										names: [
-											{
-												name: 'Test',
-											},
-											{
-												name: 'Test2',
-											},
-											// ...selectedGraph.map(
-											// 	(graphName) => {
-											// 		console.log(graphName)
-											// 		return {
-											// 			name: graphName,
-											// 			color: 'green',
-											// 			// .replaceAll(
-											// 			// 	'_',
-											// 			// 	' ',
-											// 			// )
-											// 			// .toUpperCase(),
-											// 		}
-											// 	},
-											// ),
+											...selectedGraph.map(
+												(graphName) => {
+													return {
+														name: graphName,
+														color: 'green',
+													}
+												},
+											),
 										],
 										x: 100,
 										y: 100,
@@ -338,7 +327,7 @@ const Scenarios = (props: Props) => {
 								onChange={handleSelectTab}
 								indicatorColor='primary'
 								textColor='primary'
-								className='m-3'
+								className='m-3 prose'
 								centered
 							>
 								<Tab label='intro' id='intro' />

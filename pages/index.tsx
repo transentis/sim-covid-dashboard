@@ -277,31 +277,20 @@ const Home = (props: Props) => {
 										y: 'population',
 									}}
 									legend={{
+										outline: 'white',
 										names: [
-											{
-												name: 'Test',
-											},
-											{
-												name: 'Test2',
-											},
-											// ...selectedGraph.map(
-											// 	(graphName) => {
-											// 		console.log(graphName)
-											// 		return {
-											// 			name: graphName,
-											// 			color: 'green',
-											// 			// .replaceAll(
-											// 			// 	'_',
-											// 			// 	' ',
-											// 			// )
-											// 			// .toUpperCase(),
-											// 		}
-											// 	},
-											// ),
+											...selectedGraph.map(
+												(graphName) => {
+													console.log(graphName)
+													return {
+														name: graphName,
+														color: 'green',
+													}
+												},
+											),
 										],
 										x: 100,
 										y: 100,
-										outline: 'none',
 									}}
 								></Chart>
 							</div>
