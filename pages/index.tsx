@@ -11,6 +11,7 @@ import { PlayArrow, Refresh } from '@material-ui/icons'
 import BPTKApi from '@transentis/bptk-connector'
 import Chart from '@transentis/bptk-widgets'
 import { VictoryTheme } from 'victory-core'
+import { theme } from '../lib/constants/covid.dashboard.theme'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -223,7 +224,7 @@ const Home = (props: Props) => {
 							<div className='p-2'>
 								<Chart
 									type={'AREA'}
-									theme={VictoryTheme.material}
+									theme={theme}
 									// theme={{
 									// 	axis: {
 									// 		style: {
