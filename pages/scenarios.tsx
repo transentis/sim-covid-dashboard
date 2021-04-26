@@ -170,7 +170,7 @@ const Scenarios = (props: Props) => {
 	}
 
 	return (
-		<div className='min-h-screen w-full font-transentis bg-bg'>
+		<div className='min-h-screen w-full bg-bg'>
 			<Head>
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
