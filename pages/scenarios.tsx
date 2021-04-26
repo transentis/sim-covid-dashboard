@@ -265,7 +265,7 @@ const Scenarios = (props: Props) => {
 										y: 'population',
 									}}
 									legend={{
-										outline: 'white',
+										outline: 'none',
 										names: [
 											...selectedGraph.map(
 												(graphName) => {
@@ -276,8 +276,8 @@ const Scenarios = (props: Props) => {
 												},
 											),
 										],
-										x: 100,
-										y: 100,
+										x: 900,
+										y: 300,
 									}}
 								></Chart>
 							</div>
