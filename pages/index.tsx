@@ -236,6 +236,23 @@ const Home = (props: Props) => {
 												},
 											},
 										},
+										line: {
+											style: {
+												data: {
+													fill: 'transparent',
+													opacity: 1,
+													stroke: '#009696',
+													strokeWidth: 2,
+												},
+											},
+										},
+										area: {
+											style: {
+												data: {
+													fill: '#009696',
+												},
+											},
+										},
 									}}
 									chartProps={{
 										animate: {
