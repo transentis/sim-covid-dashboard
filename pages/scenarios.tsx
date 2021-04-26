@@ -16,6 +16,7 @@ import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
 import Chart from '@transentis/bptk-widgets'
+import { VictoryTheme } from 'victory'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -237,36 +238,7 @@ const Scenarios = (props: Props) => {
 							<div className='p-2'>
 								<Chart
 									type={'AREA'}
-									theme={{
-										axis: {
-											style: {
-												tickLabels: {
-													fill: 'white',
-													padding: 7,
-												},
-												axisLabel: {
-													fill: 'white',
-												},
-											},
-										},
-										line: {
-											style: {
-												data: {
-													fill: 'transparent',
-													opacity: 1,
-													stroke: '#009696',
-													strokeWidth: 2,
-												},
-											},
-										},
-										area: {
-											style: {
-												data: {
-													fill: '#009696',
-												},
-											},
-										},
-									}}
+									theme={VictoryTheme.material}
 									chartProps={{
 										animate: {
 											duration: 2000,

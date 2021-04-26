@@ -26,7 +26,7 @@
 		"react-json-editor-ajrm": "^2.5.13",
 		"react-resize-detector": "^6.6.1",
 		"tailwindcss": "^2.1.1",
-		"victory": "^35.4.9"
+		"victory": "^35.5.1"
 	},
 	"devDependencies": {
 		"@types/d3": "^6.3.0",

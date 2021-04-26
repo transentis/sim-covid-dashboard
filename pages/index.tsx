@@ -10,6 +10,7 @@ import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
 import Chart from '@transentis/bptk-widgets'
+import { VictoryTheme } from 'victory-core'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -222,36 +223,37 @@ const Home = (props: Props) => {
 							<div className='p-2'>
 								<Chart
 									type={'AREA'}
-									theme={{
-										axis: {
-											style: {
-												tickLabels: {
-													fill: 'white',
-													padding: 7,
-												},
-												axisLabel: {
-													fill: 'white',
-												},
-											},
-										},
-										line: {
-											style: {
-												data: {
-													fill: 'transparent',
-													opacity: 1,
-													stroke: '#009696',
-													strokeWidth: 2,
-												},
-											},
-										},
-										area: {
-											style: {
-												data: {
-													fill: '#009696',
-												},
-											},
-										},
-									}}
+									theme={VictoryTheme.material}
+									// theme={{
+									// 	axis: {
+									// 		style: {
+									// 			tickLabels: {
+									// 				fill: 'white',
+									// 				padding: 7,
+									// 			},
+									// 			axisLabel: {
+									// 				fill: 'white',
+									// 			},
+									// 		},
+									// 	},
+									// 	line: {
+									// 		style: {
+									// 			data: {
+									// 				fill: 'transparent',
+									// 				opacity: 1,
+									// 				stroke: '#009696',
+									// 				strokeWidth: 2,
+									// 			},
+									// 		},
+									// 	},
+									// 	area: {
+									// 		style: {
+									// 			data: {
+									// 				fill: '#009696',
+									// 			},
+									// 		},
+									// 	},
+									// }}
 									chartProps={{
 										animate: {
 											duration: 2000,
@@ -277,20 +279,18 @@ const Home = (props: Props) => {
 										y: 'population',
 									}}
 									legend={{
-										outline: 'white',
+										outline: 'none',
 										names: [
 											...selectedGraph.map(
 												(graphName) => {
-													console.log(graphName)
 													return {
 														name: graphName,
-														color: 'green',
 													}
 												},
 											),
 										],
-										x: 100,
-										y: 100,
+										x: 900,
+										y: 300,
 									}}
 								></Chart>
 							</div>
