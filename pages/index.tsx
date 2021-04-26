@@ -10,13 +10,12 @@ import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
 import Chart from '@transentis/bptk-widgets'
-import { AREA } from '../lib/constants/data.consts'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
 const defaultModel = {
 	scenario_managers: ['smSir'],
-	scenarios: ['smSir_base', 'smSir_dashboard'],
+	scenarios: ['dashboard'],
 	equations: [
 		'total_population',
 		'contact_rate',
@@ -61,13 +60,12 @@ interface Props {
 		reproduction_rate: [{ x: number; y: number }]
 		total_population: [{ x: number; y: number }]
 	}
-	scenarios: Array<string>
 }
 
 const Home = (props: Props) => {
-	const { data, scenarios } = props
+	const { data } = props
 
-	console.log(scenarios, data)
+	console.log(data)
 
 	const graphs = [
 		['total_population'],
@@ -223,7 +221,7 @@ const Home = (props: Props) => {
 							</p>
 							<div className='p-2'>
 								<Chart
-									type={AREA}
+									type={'AREA'}
 									theme={{
 										axis: {
 											style: {
@@ -466,7 +464,6 @@ const Home = (props: Props) => {
 
 export const getStaticProps = async () => {
 	const requestedData = await bptkApi.requestModel(defaultModel)
-	const scenarios = await bptkApi.getScenarios()
 
 	if (!requestedData) {
 		return {
@@ -479,7 +476,6 @@ export const getStaticProps = async () => {
 	return {
 		props: {
 			data: data,
-			scenarios: scenarios,
 		},
 	}
 }

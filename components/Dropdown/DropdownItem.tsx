@@ -14,7 +14,7 @@ const DropdownItems: FC<DropdownItemsI> = ({
 		<a
 			onClick={onClick}
 			className={
-				'text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent cursor-pointer ' +
+				'text-sm py-2 px-4 prose block w-full whitespace-nowrap bg-transparent cursor-pointer ' +
 				(color === 'white' ? ' text-blueGray-700' : 'text-white')
 			}
 		>

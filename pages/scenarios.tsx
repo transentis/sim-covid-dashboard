@@ -1,8 +1,14 @@
-import React, { ReactElement, ReactNode, useState } from 'react'
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import { IconButton, Slider, Tooltip, Tabs, Tab } from '@material-ui/core/'
-import { DragChart, LoadingOverlay, NavigationButtons } from '../components'
+import {
+	DragChart,
+	LoadingOverlay,
+	NavigationButtons,
+	Dropdown,
+	DropdownItem,
+} from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
 
@@ -10,9 +16,6 @@ import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
 import Chart from '@transentis/bptk-widgets'
-import { AREA } from '../lib/constants/data.consts'
-import Dropdown from '../components/Dropdown'
-import DropdownItems from '../components/Dropdown/DropdownItem'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -107,7 +110,11 @@ const Scenarios = (props: Props) => {
 	const [scenario, setScenario] = useState(scenarios[0])
 	const [requestBody, setRequestBody] = useState(defaultModel(scenario))
 
-	const requestData = async (scenario?: string) => {
+	useEffect(() => {
+		requestData()
+	}, [scenario])
+
+	const requestData = async () => {
 		const requestedData = await bptkApi.requestModel(defaultModel(scenario))
 
 		if (!requestedData) {
@@ -145,7 +152,9 @@ const Scenarios = (props: Props) => {
 				aria-labelledby={`simple-tab-${index}`}
 				{...other}
 			>
-				{value === index && <p className='text-base'>{children}</p>}
+				{value === index && (
+					<p className='text-base prose'>{children}</p>
+				)}
 			</div>
 		)
 	}
@@ -157,7 +166,7 @@ const Scenarios = (props: Props) => {
 		last?: boolean
 	}): ReactElement => {
 		const { children, onClick, first, last } = props
-		let css = 'uppercase border border-white p-3'
+		let css = 'prose uppercase border border-white p-3'
 
 		first && (css += ' rounded-l')
 		last && (css += ' rounded-r')
@@ -172,7 +181,7 @@ const Scenarios = (props: Props) => {
 	return (
 		<div className='min-h-screen w-full font-transentis bg-bg'>
 			<Head>
-				<title>COVID-19 Simulation</title>
+				<title>COVID-19 Scenarios</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<LoadingOverlay loading={loading}></LoadingOverlay>
@@ -180,17 +189,17 @@ const Scenarios = (props: Props) => {
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3 bg-bg-paper rounded flex flex-col justify-center items-center'>
 						<div className=''>
-							<p className='text-7xl p-4'>COVID-19 Simulation</p>
+							<p className='text-5xl prose p-4'>{`COVID-19 Scenarios: ${scenario}`}</p>
 						</div>
 					</div>
 					<div className='col-span-2 bg-bg-paper rounded flex flex-row justify-center items-center'>
 						<Dropdown color='purple' name='Scenarios'>
 							{scenarios.map((scenario, index) => (
-								<DropdownItems
+								<DropdownItem
 									name={scenario}
-									onClick={() => requestData(scenario)}
+									onClick={() => setScenario(scenario)}
 									key={index}
-								></DropdownItems>
+								></DropdownItem>
 							))}
 						</Dropdown>
 						<div className='p-4'>
@@ -227,7 +236,7 @@ const Scenarios = (props: Props) => {
 							</p>
 							<div className='p-2'>
 								<Chart
-									type={AREA}
+									type={'AREA'}
 									theme={{
 										axis: {
 											style: {
@@ -306,7 +315,7 @@ const Scenarios = (props: Props) => {
 						</div>
 					</div>
 					<div className='col-span-2 lg:col-span-1 bg-bg-paper rounded'>
-						<div className='p-3'>
+						<div className='p-3 prose'>
 							<Tabs
 								value={selectedTab}
 								onChange={handleSelectTab}
