@@ -179,7 +179,7 @@ const Scenarios = (props: Props) => {
 	}
 
 	return (
-		<div className='min-h-screen w-full font-transentis bg-bg'>
+		<div className='min-h-screen w-full bg-bg'>
 			<Head>
 				<title>COVID-19 Scenarios</title>
 				<link rel='icon' href='/favicon.ico' />
@@ -246,6 +246,23 @@ const Scenarios = (props: Props) => {
 												},
 												axisLabel: {
 													fill: 'white',
+												},
+											},
+										},
+										line: {
+											style: {
+												data: {
+													fill: 'transparent',
+													opacity: 1,
+													stroke: '#009696',
+													strokeWidth: 2,
+												},
+											},
+										},
+										area: {
+											style: {
+												data: {
+													fill: '#009696',
 												},
 											},
 										},

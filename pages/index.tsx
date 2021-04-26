@@ -157,7 +157,7 @@ const Home = (props: Props) => {
 		last?: boolean
 	}): ReactElement => {
 		const { children, onClick, first, last } = props
-		let css = 'prose uppercase border border-white p-3 text-xs lg:text-sm'
+		let css = 'uppercase border border-white p-3 text-xs lg:text-sm'
 
 		first && (css += ' lg:rounded-l')
 		last && (css += ' lg:rounded-r')
@@ -171,7 +171,7 @@ const Home = (props: Props) => {
 	// console.log(data)
 
 	return (
-		<div className='min-h-screen w-full font-transentis bg-bg'>
+		<div className='min-h-screen w-full bg-bg'>
 			<Head>
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
@@ -181,7 +181,7 @@ const Home = (props: Props) => {
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3 bg-bg-paper rounded flex flex-col justify-center items-center'>
 						<div className=''>
-							<p className='prose text-5xl lg:text-7xl p-4'>
+							<p className='text-5xl lg:text-7xl p-4'>
 								COVID-19 Simulation
 							</p>
 						</div>
@@ -214,7 +214,7 @@ const Home = (props: Props) => {
 					<div className='col-span-2 hidden lg:flex  lg:col-span-1 bg-bg-paper rounded'></div>
 					<div className='col-span-2 bg-bg-paper rounded'>
 						<div className='flex flex-col justify-center items-center'>
-							<p className='prose text-3xl lg:text-4xl p-4'>
+							<p className='text-3xl lg:text-4xl p-4'>
 								{selectedGraph[0]
 									.toUpperCase()
 									.replace('_', ' ')}
@@ -231,6 +231,23 @@ const Home = (props: Props) => {
 												},
 												axisLabel: {
 													fill: 'white',
+												},
+											},
+										},
+										line: {
+											style: {
+												data: {
+													fill: 'transparent',
+													opacity: 1,
+													stroke: '#009696',
+													strokeWidth: 2,
+												},
+											},
+										},
+										area: {
+											style: {
+												data: {
+													fill: '#009696',
 												},
 											},
 										},
@@ -289,7 +306,7 @@ const Home = (props: Props) => {
 								></Chart>
 							</div>
 							<div className='w-11/12 p-2'>
-								<p className='prose '>Visualization Range</p>
+								<p className=''>Visualization Range</p>
 								<Slider
 									value={rangeSliderRange}
 									onChange={handleSliderChange}
@@ -301,7 +318,7 @@ const Home = (props: Props) => {
 						</div>
 					</div>
 					<div className='col-span-2 lg:col-span-1 bg-bg-paper rounded'>
-						<div className='prose p-3'>
+						<div className='p-3'>
 							<Tabs
 								value={selectedTab}
 								onChange={handleSelectTab}
@@ -311,12 +328,12 @@ const Home = (props: Props) => {
 								centered
 							>
 								<Tab
-									className='prose focus:outline-none'
+									className='focus:outline-none'
 									label='intro'
 									id='intro'
 								/>
 								<Tab
-									className='prose focus:outline-none'
+									className='focus:outline-none'
 									label='assumptions'
 									id='assumptions'
 								/>
@@ -406,7 +423,7 @@ const Home = (props: Props) => {
 									</IconButton>
 								</Tooltip>
 							</div>
-							<p className='prose '>Contact Rate</p>
+							<p className=''>Contact Rate</p>
 							<ReactResizeDetector handleWidth>
 								{({ width }) => (
 									<div className='w-11/12'>
