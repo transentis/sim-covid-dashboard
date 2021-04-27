@@ -8,6 +8,7 @@ import {
 	NavigationButtons,
 	Dropdown,
 	DropdownItem,
+	Paper,
 } from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
@@ -16,8 +17,8 @@ import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
 import Chart from '@transentis/bptk-widgets'
-import { VictoryTheme } from 'victory'
 import { theme } from '../lib/constants/covid.dashboard.theme'
+import { transentisColors as tc } from '../lib/constants/colors'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -154,9 +155,7 @@ const Scenarios = (props: Props) => {
 				aria-labelledby={`simple-tab-${index}`}
 				{...other}
 			>
-				{value === index && (
-					<p className='text-base prose'>{children}</p>
-				)}
+				{value === index && <p className='text-base'>{children}</p>}
 			</div>
 		)
 	}
@@ -168,7 +167,7 @@ const Scenarios = (props: Props) => {
 		last?: boolean
 	}): ReactElement => {
 		const { children, onClick, first, last } = props
-		let css = 'prose uppercase border border-white p-3'
+		let css = 'uppercase border border-white p-3'
 
 		first && (css += ' rounded-l')
 		last && (css += ' rounded-r')
@@ -189,257 +188,292 @@ const Scenarios = (props: Props) => {
 			<LoadingOverlay loading={loading}></LoadingOverlay>
 			<div className='overflow-hidden bg-bg h-full'>
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
-					<div className='col-span-2 lg:col-span-3 bg-bg-paper rounded flex flex-col justify-center items-center'>
-						<div className=''>
-							<p className='text-5xl prose p-4'>{`COVID-19 Scenarios: ${scenario}`}</p>
-						</div>
-					</div>
-					<div className='col-span-2 bg-bg-paper rounded flex flex-row justify-center items-center'>
-						<Dropdown color='purple' name='Scenarios'>
-							{scenarios.map((scenario, index) => (
-								<DropdownItem
-									name={scenario}
-									onClick={() => setScenario(scenario)}
-									key={index}
-								></DropdownItem>
-							))}
-						</Dropdown>
-						<div className='p-4'>
-							<EquationButton
-								onClick={() => handleGraphChange(0)}
-								first
-							>
-								Population
-							</EquationButton>
-							<EquationButton
-								onClick={() => handleGraphChange(1)}
-							>
-								Extensive Care
-							</EquationButton>
-							<EquationButton
-								onClick={() => handleGraphChange(2)}
-							>
-								Indicators
-							</EquationButton>
-							<EquationButton
-								onClick={() => handleGraphChange(3)}
-							>
-								Contact Rate
-							</EquationButton>
-						</div>
-					</div>
-					<div className='col-span-2 hidden lg:flex  lg:col-span-1 bg-bg-paper rounded'></div>
-					<div className='col-span-2 bg-bg-paper rounded'>
-						<div className='flex flex-col justify-center items-center'>
-							<p className='text-4xl p-4'>
-								{selectedGraph[0]
-									.toUpperCase()
-									.replace('_', ' ')}
-							</p>
-							<div className='p-2'>
-								<Chart
-									type={'AREA'}
-									theme={theme}
-									chartProps={{
-										animate: {
-											duration: 2000,
-											onLoad: {
-												duration: 1000,
-											},
-										},
-										data: [
-											...selectedGraph.map((graphName) =>
-												graphData[graphName].slice(
-													rangeSliderRange[0],
-													rangeSliderRange[1],
-												),
-											),
-										],
-									}}
-									size={{
-										width: 1200,
-										height: 450,
-									}}
-									labeling={{
-										x: 'days after pandemic outbreak',
-										y: 'population',
-									}}
-									legend={{
-										outline: 'none',
-										names: [
-											...selectedGraph.map(
-												(graphName) => {
-													return {
-														name: graphName,
-														color: 'green',
-													}
-												},
-											),
-										],
-										x: 900,
-										y: 300,
-									}}
-								></Chart>
+					<div className='col-span-2 lg:col-span-3'>
+						<Paper className='bg-bg-paper w-full h-full rounded flex flex-col justify-center items-center'>
+							<div className=''>
+								<p className='text-5xl p-4'>{`COVID-19 Scenarios: ${scenario}`}</p>
 							</div>
-							<div className='w-11/12 p-2'>
-								<p>Visualization Range</p>
-								<Slider
-									value={rangeSliderRange}
-									onChange={handleSliderChange}
-									valueLabelDisplay='auto'
-									min={0}
-									max={1499}
-								/>
-							</div>
-						</div>
+						</Paper>
 					</div>
-					<div className='col-span-2 lg:col-span-1 bg-bg-paper rounded'>
-						<div className='p-3 prose'>
-							<Tabs
-								value={selectedTab}
-								onChange={handleSelectTab}
-								indicatorColor='primary'
-								textColor='primary'
-								className='m-3 prose'
-								centered
-							>
-								<Tab label='intro' id='intro' />
-								<Tab label='assumptions' id='assumptions' />
-							</Tabs>
-							<TabPanel value={selectedTab} index={0}>
-								Whenever you need to make predictions about
-								complex situations you have little prior
-								experience with, models and simulations are a
-								good starting point to explore the situation and
-								to make qualitative and quantitative predictions
-								about how the situation may develop. Play with
-								our COVID-19 simulation and see how social
-								distancing can slow the spreading of the virus.
-							</TabPanel>
-							<TabPanel value={selectedTab} index={1}>
-								The implementation here is roughly calibrated to
-								the situation in Germany at the beginning of the
-								pandemic, around the end of March 2020. It
-								illustrates the effects of social distancing in
-								achieving the objective of keeping the strain on
-								the health care system as small as possible.
-								<br />
-								<ul>
-									<li>
-										<b>Contact Rate:</b> 20 persons. Defines
-										how many people a person encounters per
-										day in average.
-									</li>
-									<li>
-										<b>Infectivity:</b> 2%. Defines the
-										probability that a person becomes
-										infected after contact with an
-										infectious person.
-									</li>
-									<li>
-										<b>Duration.</b> Defines how long an
-										infective person remains contagious
-									</li>
-									<li>
-										<b>Population.</b> The susceptible
-										population starts at 80 Mio., the
-										infectious population starts at 120
-										persons.
-									</li>
-									<li>
-										<b>Intensive Care Needed:</b> 0.2%.
-										Measures the number of infected people
-										who need intensive care.
-									</li>
-									<li>
-										<b>Intensive Care Available:</b> 30,000
-										units. The number of intensive care
-										units available.
-									</li>
-								</ul>
-								With the above settings, this means we have a
-								contact number of 8 in the base settings. The
-								contact number is the product of contact rate,
-								infectivity and duration.
-							</TabPanel>
-						</div>
-					</div>
-					<div className='col-span-2 bg-bg-paper rounded flex flex-col justify-center'>
-						<div className='relative m-2 p-3'>
-							<div className='absolute right-2 top-2'>
-								<Tooltip title={'Resets the dragchart'}>
-									<IconButton
-										// onClick={() =>
-										// 	// resetDragData()
-										// }
-										aria-label='delete'
-									>
-										<Refresh />
-									</IconButton>
-								</Tooltip>
-
-								<Tooltip
-									title={
-										'Runs the Model with the new dragchart data'
-									}
+					<div className='col-span-2'>
+						<Paper className='bg-bg-paper w-full h-full rounded flex flex-row justify-center items-center'>
+							<Dropdown color='purple' name='Scenarios'>
+								{scenarios.map((scenario, index) => (
+									<DropdownItem
+										name={scenario}
+										onClick={() => setScenario(scenario)}
+										key={index}
+									></DropdownItem>
+								))}
+							</Dropdown>
+							<div className='p-4'>
+								<EquationButton
+									onClick={() => handleGraphChange(0)}
+									first
 								>
-									<IconButton
-										onClick={() => requestData()}
-										aria-label='run'
-									>
-										<PlayArrow />
-									</IconButton>
-								</Tooltip>
+									Population
+								</EquationButton>
+								<EquationButton
+									onClick={() => handleGraphChange(1)}
+								>
+									Extensive Care
+								</EquationButton>
+								<EquationButton
+									onClick={() => handleGraphChange(2)}
+								>
+									Indicators
+								</EquationButton>
+								<EquationButton
+									onClick={() => handleGraphChange(3)}
+								>
+									Contact Rate
+								</EquationButton>
 							</div>
-							<p>Contact Rate</p>
-							<ReactResizeDetector handleWidth>
-								{({ width }) => (
-									<div className='w-11/12'>
-										<DragChart
-											data={dragChartData}
-											colorTheme={['#6aedc7', '#5ce6be']}
-											onChangeData={(
-												newData,
-												tupleData,
-											) => {
-												setRequestBody({
-													...requestBody,
-													settings: {
-														smSir: {
-															dashboard: {
-																constants: {
-																	...requestBody
-																		.settings
-																		.smSir
-																		.dashboard
-																		.constants,
-																},
-																points: {
-																	contact_rate_table: tupleData,
+						</Paper>
+					</div>
+					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
+						<Paper className='bg-bg-paper w-full h-full rounded'>
+							<div></div>
+						</Paper>
+					</div>
+					<div className='col-span-2'>
+						<Paper className=' bg-bg-paper w-full h-full rounded'>
+							<div className='flex flex-col justify-center items-center'>
+								<p className='text-4xl p-4'>
+									{selectedGraph[0]
+										.toUpperCase()
+										.replace('_', ' ')}
+								</p>
+								<div className='p-2'>
+									<Chart
+										type={'AREA'}
+										theme={theme}
+										colorPalette={[
+											tc.cyan.default,
+											tc.orange.default,
+											tc.cyan.light,
+											tc.orange.light,
+											tc.cyan.dark,
+											tc.orange.dark,
+										]}
+										chartProps={{
+											animate: {
+												duration: 2000,
+												onLoad: {
+													duration: 1000,
+												},
+											},
+											data: [
+												...selectedGraph.map(
+													(graphName) =>
+														graphData[
+															graphName
+														].slice(
+															rangeSliderRange[0],
+															rangeSliderRange[1],
+														),
+												),
+											],
+										}}
+										size={{
+											width: 1200,
+											height: 450,
+										}}
+										labeling={{
+											x: 'days after pandemic outbreak',
+											y: 'population',
+										}}
+										legend={{
+											outline: 'none',
+											names: [
+												...selectedGraph.map(
+													(graphName) => {
+														return {
+															name: graphName,
+															color: 'green',
+														}
+													},
+												),
+											],
+											x: 900,
+											y: 300,
+										}}
+									></Chart>
+								</div>
+								<div className='w-11/12 p-2'>
+									<p>Visualization Range</p>
+									<Slider
+										value={rangeSliderRange}
+										onChange={handleSliderChange}
+										valueLabelDisplay='auto'
+										min={0}
+										max={1499}
+									/>
+								</div>
+							</div>
+						</Paper>
+					</div>
+					<div className='col-span-2 lg:col-span-1'>
+						<Paper className='bg-bg-paper w-full h-full rounded'>
+							<div className='p-3'>
+								<Tabs
+									value={selectedTab}
+									onChange={handleSelectTab}
+									indicatorColor='primary'
+									textColor='inherit'
+									className='m-3'
+									centered
+								>
+									<Tab label='intro' id='intro' />
+									<Tab label='assumptions' id='assumptions' />
+								</Tabs>
+								<TabPanel value={selectedTab} index={0}>
+									Whenever you need to make predictions about
+									complex situations you have little prior
+									experience with, models and simulations are
+									a good starting point to explore the
+									situation and to make qualitative and
+									quantitative predictions about how the
+									situation may develop. Play with our
+									COVID-19 simulation and see how social
+									distancing can slow the spreading of the
+									virus.
+								</TabPanel>
+								<TabPanel value={selectedTab} index={1}>
+									The implementation here is roughly
+									calibrated to the situation in Germany at
+									the beginning of the pandemic, around the
+									end of March 2020. It illustrates the
+									effects of social distancing in achieving
+									the objective of keeping the strain on the
+									health care system as small as possible.
+									<br />
+									<ul>
+										<li>
+											<b>Contact Rate:</b> 20 persons.
+											Defines how many people a person
+											encounters per day in average.
+										</li>
+										<li>
+											<b>Infectivity:</b> 2%. Defines the
+											probability that a person becomes
+											infected after contact with an
+											infectious person.
+										</li>
+										<li>
+											<b>Duration.</b> Defines how long an
+											infective person remains contagious
+										</li>
+										<li>
+											<b>Population.</b> The susceptible
+											population starts at 80 Mio., the
+											infectious population starts at 120
+											persons.
+										</li>
+										<li>
+											<b>Intensive Care Needed:</b> 0.2%.
+											Measures the number of infected
+											people who need intensive care.
+										</li>
+										<li>
+											<b>Intensive Care Available:</b>{' '}
+											30,000 units. The number of
+											intensive care units available.
+										</li>
+									</ul>
+									With the above settings, this means we have
+									a contact number of 8 in the base settings.
+									The contact number is the product of contact
+									rate, infectivity and duration.
+								</TabPanel>
+							</div>
+						</Paper>
+					</div>
+					<div className='col-span-2'>
+						<Paper className='bg-bg-paper w-full h-full rounded flex flex-col justify-center'>
+							<div className='relative m-2 p-3'>
+								<div className='absolute right-2 top-2'>
+									<Tooltip title={'Resets the dragchart'}>
+										<IconButton
+											// onClick={() =>
+											// 	// resetDragData()
+											// }
+											aria-label='delete'
+										>
+											<Refresh />
+										</IconButton>
+									</Tooltip>
+
+									<Tooltip
+										title={
+											'Runs the Model with the new dragchart data'
+										}
+									>
+										<IconButton
+											onClick={() => requestData()}
+											aria-label='run'
+										>
+											<PlayArrow />
+										</IconButton>
+									</Tooltip>
+								</div>
+								<p>Contact Rate</p>
+								<ReactResizeDetector handleWidth>
+									{({ width }) => (
+										<div className='w-11/12'>
+											<DragChart
+												data={dragChartData}
+												colorTheme={[
+													'#6aedc7',
+													'#5ce6be',
+												]}
+												onChangeData={(
+													newData,
+													tupleData,
+												) => {
+													setRequestBody({
+														...requestBody,
+														settings: {
+															smSir: {
+																dashboard: {
+																	constants: {
+																		...requestBody
+																			.settings
+																			.smSir
+																			.dashboard
+																			.constants,
+																	},
+																	points: {
+																		contact_rate_table: tupleData,
+																	},
 																},
 															},
 														},
-													},
-												})
-												setDragChartData(newData)
-											}}
-											width={width ? width - 50 : 100}
-											height={100}
-											margin={{
-												top: 20,
-												right: 20,
-												bottom: -20,
-												left: 20,
-											}}
-											maxValue={40}
-											xSteps={100}
-										/>
-									</div>
-								)}
-							</ReactResizeDetector>
-						</div>
+													})
+													setDragChartData(newData)
+												}}
+												width={width ? width - 50 : 100}
+												height={100}
+												margin={{
+													top: 20,
+													right: 20,
+													bottom: -20,
+													left: 20,
+												}}
+												maxValue={40}
+												xSteps={100}
+											/>
+										</div>
+									)}
+								</ReactResizeDetector>
+							</div>
+						</Paper>
 					</div>
-					<div className='col-span-2 hidden lg:flex lg:col-span-1 bg-bg-paper rounded'></div>
+					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
+						<Paper className='bg-bg-paper w-full h-full rounded'>
+							<div></div>
+						</Paper>
+					</div>
 				</div>
 			</div>
 			<NavigationButtons></NavigationButtons>

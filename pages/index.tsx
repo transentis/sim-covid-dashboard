@@ -15,7 +15,6 @@ import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
 import Chart from '@transentis/bptk-widgets'
-import { VictoryTheme } from 'victory-core'
 
 import { theme } from '../lib/constants/covid.dashboard.theme'
 import { transentisColors as tc } from '../lib/constants/colors'
@@ -243,10 +242,10 @@ const Home = (props: Props) => {
 										theme={theme}
 										colorPalette={[
 											tc.cyan.default,
-											tc.cyan.light,
-											tc.cyan.dark,
 											tc.orange.default,
+											tc.cyan.light,
 											tc.orange.light,
+											tc.cyan.dark,
 											tc.orange.dark,
 										]}
 										chartProps={{
