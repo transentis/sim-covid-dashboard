@@ -197,7 +197,7 @@ const Scenarios = (props: Props) => {
 					</div>
 					<div className='col-span-2'>
 						<Paper className='bg-bg-paper w-full h-full rounded flex flex-row justify-center items-center'>
-							<Dropdown color='purple' name='Scenarios'>
+							<Dropdown color='cyan' name='Scenarios'>
 								{scenarios.map((scenario, index) => (
 									<DropdownItem
 										name={scenario}
@@ -424,8 +424,8 @@ const Scenarios = (props: Props) => {
 											<DragChart
 												data={dragChartData}
 												colorTheme={[
-													'#6aedc7',
-													'#5ce6be',
+													tc.cyan.default,
+													tc.orange.default,
 												]}
 												onChangeData={(
 													newData,

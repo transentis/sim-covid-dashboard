@@ -25,9 +25,8 @@ const Dropdown: FC<Props> = ({ color, children, name }) => {
 
 	let bgColor: string
 
-	color === 'white'
-		? (bgColor = 'bg-blueGray-700')
-		: (bgColor = 'bg-' + color + '-500')
+	color === 'white' ? (bgColor = 'bg-bg-paper') : (bgColor = 'bg-' + color)
+
 	return (
 		<>
 			<div className='flex flex-wrap'>
@@ -52,9 +51,8 @@ const Dropdown: FC<Props> = ({ color, children, name }) => {
 							ref={popoverDropdownRef}
 							className={
 								(dropdownPopoverShow ? 'block ' : 'hidden ') +
-								(color === 'white'
-									? 'bg-white '
-									: bgColor + ' ') +
+								bgColor +
+								' ' +
 								'text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1'
 							}
 							style={{ minWidth: '12rem' }}

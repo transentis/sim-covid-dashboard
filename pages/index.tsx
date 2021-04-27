@@ -423,8 +423,8 @@ const Home = (props: Props) => {
 											<DragChart
 												data={dragChartData}
 												colorTheme={[
-													'#6aedc7',
-													'#5ce6be',
+													tc.cyan.default,
+													tc.orange.default,
 												]}
 												onChangeData={(
 													newData,
