@@ -1,7 +1,9 @@
-import { Opacity } from '@material-ui/icons'
 import { ReactElement, ReactNode } from 'react'
 
-const Paper = (props: { children: ReactNode }): ReactElement => {
+const Paper = (props: {
+	children: ReactNode
+	className: string
+}): ReactElement => {
 	const { children, ...rest } = props
 	return <div {...rest}>{children}</div>
 }
