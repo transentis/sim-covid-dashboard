@@ -9,7 +9,7 @@ import {
 	Paper,
 	Typography,
 } from '@material-ui/core/'
-import { JsonInput, LoadingOverlay } from '../components'
+import { JsonInput } from '../components'
 import { VictoryTheme } from 'victory'
 
 import BPTKApi from '@transentis/bptk-connector'
@@ -104,7 +104,6 @@ const Home = (props: Props) => {
 				</Head>
 
 				<main>
-					<LoadingOverlay loading={false}></LoadingOverlay>
 					<Box width='100%'>
 						<Typography variant='h1' align='center'>
 							Cool Dashboard

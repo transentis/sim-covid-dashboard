@@ -149,7 +149,6 @@ const Scenarios = (props: Props) => {
 				<title>COVID-19 Scenarios</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<LoadingOverlay loading={loading}></LoadingOverlay>
 			<div className='overflow-hidden bg-bg h-full'>
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3'>
