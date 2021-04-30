@@ -2,19 +2,14 @@ import React, { ReactElement, ReactNode, useState } from 'react'
 import Head from 'next/head'
 
 import { IconButton, Slider, Tooltip, Tabs, Tab } from '@material-ui/core/'
-import {
-	DragChart,
-	LoadingOverlay,
-	NavigationButtons,
-	Paper,
-} from '../components'
+import { LoadingOverlay, NavigationButtons, Paper } from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
 
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
-import { Chart, Dropdown } from '@transentis/bptk-widgets'
+import { Chart, DragComponent } from '@transentis/bptk-widgets'
 
 import { theme } from '../lib/constants/covid.dashboard.theme'
 import { transentisColors as tc } from '../lib/constants/colors'
@@ -208,7 +203,7 @@ const Home = (props: Props) => {
 								<EquationButton
 									onClick={() => handleGraphChange(1)}
 								>
-									Extensive Care
+									Intensive Care
 								</EquationButton>
 								<EquationButton
 									onClick={() => handleGraphChange(2)}
@@ -420,7 +415,7 @@ const Home = (props: Props) => {
 								<ReactResizeDetector handleWidth>
 									{({ width }) => (
 										<div className='w-11/12'>
-											<DragChart
+											<DragComponent
 												data={dragChartData}
 												colorTheme={[
 													tc.cyan.default,

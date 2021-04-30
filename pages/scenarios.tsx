@@ -1,21 +1,11 @@
 import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
 import Head from 'next/head'
 
-import { IconButton, Slider, Tooltip, Tabs, Tab } from '@material-ui/core/'
-import {
-	DragChart,
-	LoadingOverlay,
-	NavigationButtons,
-	DropdownItem,
-	Paper,
-} from '../components'
-
-import ReactResizeDetector from 'react-resize-detector'
-
-import { PlayArrow, Refresh } from '@material-ui/icons'
+import { Slider, Tabs, Tab } from '@material-ui/core/'
+import { LoadingOverlay, NavigationButtons, Paper } from '../components'
 
 import BPTKApi from '@transentis/bptk-connector'
-import { Chart, Dropdown } from '@transentis/bptk-widgets'
+import { Chart, Dropdown, DropdownItem } from '@transentis/bptk-widgets'
 import { theme } from '../lib/constants/covid.dashboard.theme'
 import { transentisColors as tc } from '../lib/constants/colors'
 
@@ -23,7 +13,7 @@ const bptkApi = new BPTKApi('MY API KEY')
 
 const defaultModel = (scenario: string) => ({
 	scenario_managers: ['smSir'],
-	scenarios: ['dashboard'],
+	scenarios: [scenario],
 	equations: [
 		'total_population',
 		'contact_rate',
@@ -85,27 +75,7 @@ const Scenarios = (props: Props) => {
 	const [selectedGraph, setSelectedGraph] = useState<Array<string>>(graphs[0])
 	const [graphData, setGraphData] = useState<any>(data)
 
-	const [dragChartData, setDragChartData] = useState([
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-	])
-
 	const [scenario, setScenario] = useState(scenarios[0])
-	const [requestBody, setRequestBody] = useState(defaultModel(scenario))
 
 	useEffect(() => {
 		requestData()
@@ -375,82 +345,7 @@ const Scenarios = (props: Props) => {
 					</div>
 					<div className='col-span-2'>
 						<Paper className='bg-bg-paper w-full h-full rounded flex flex-col justify-center'>
-							<div className='relative m-2 p-3'>
-								<div className='absolute right-2 top-2'>
-									<Tooltip title={'Resets the dragchart'}>
-										<IconButton
-											// onClick={() =>
-											// 	// resetDragData()
-											// }
-											aria-label='delete'
-										>
-											<Refresh />
-										</IconButton>
-									</Tooltip>
-
-									<Tooltip
-										title={
-											'Runs the Model with the new dragchart data'
-										}
-									>
-										<IconButton
-											onClick={() => requestData()}
-											aria-label='run'
-										>
-											<PlayArrow />
-										</IconButton>
-									</Tooltip>
-								</div>
-								<p>Contact Rate</p>
-								<ReactResizeDetector handleWidth>
-									{({ width }) => (
-										<div className='w-11/12'>
-											<DragChart
-												data={dragChartData}
-												colorTheme={[
-													tc.cyan.default,
-													tc.orange.default,
-												]}
-												onChangeData={(
-													newData,
-													tupleData,
-												) => {
-													setRequestBody({
-														...requestBody,
-														settings: {
-															smSir: {
-																dashboard: {
-																	constants: {
-																		...requestBody
-																			.settings
-																			.smSir
-																			.dashboard
-																			.constants,
-																	},
-																	points: {
-																		contact_rate_table: tupleData,
-																	},
-																},
-															},
-														},
-													})
-													setDragChartData(newData)
-												}}
-												width={width ? width - 50 : 100}
-												height={100}
-												margin={{
-													top: 20,
-													right: 20,
-													bottom: -20,
-													left: 20,
-												}}
-												maxValue={40}
-												xSteps={100}
-											/>
-										</div>
-									)}
-								</ReactResizeDetector>
-							</div>
+							<div></div>
 						</Paper>
 					</div>
 					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
