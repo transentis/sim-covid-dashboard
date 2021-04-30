@@ -5,7 +5,14 @@ import { Slider, Tabs, Tab } from '@material-ui/core/'
 import { NavigationButtons } from '../components'
 
 import BPTKApi from '@transentis/bptk-connector'
-import { Card, Chart, Dropdown, DropdownItem } from '@transentis/bptk-widgets'
+import {
+	ButtonGroup,
+	Card,
+	Chart,
+	Dropdown,
+	DropdownItem,
+	RadioButton,
+} from '@transentis/bptk-widgets'
 import { theme } from '../lib/constants/covid.dashboard.theme'
 import { transentisColors as tc } from '../lib/constants/colors'
 
@@ -173,17 +180,18 @@ const Scenarios = (props: Props) => {
 									))}
 								</Dropdown>
 								<div className='p-4'>
-									<EquationButton
-										onClick={() => handleGraphChange(0)}
-										first
-									>
-										Contact Rate
-									</EquationButton>
-									<EquationButton
-										onClick={() => handleGraphChange(1)}
-									>
-										Indicators
-									</EquationButton>
+									<ButtonGroup>
+										<RadioButton
+											onClick={() => handleGraphChange(0)}
+										>
+											Contact Rate
+										</RadioButton>
+										<RadioButton
+											onClick={() => handleGraphChange(1)}
+										>
+											Indicators
+										</RadioButton>
+									</ButtonGroup>
 								</div>
 							</div>
 						</div>
