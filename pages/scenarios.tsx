@@ -6,7 +6,6 @@ import {
 	DragChart,
 	LoadingOverlay,
 	NavigationButtons,
-	Dropdown,
 	DropdownItem,
 	Paper,
 } from '../components'
@@ -16,7 +15,7 @@ import ReactResizeDetector from 'react-resize-detector'
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
-import Chart from '@transentis/bptk-widgets'
+import { Chart, Dropdown } from '@transentis/bptk-widgets'
 import { theme } from '../lib/constants/covid.dashboard.theme'
 import { transentisColors as tc } from '../lib/constants/colors'
 
@@ -75,12 +74,7 @@ interface Props {
 const Scenarios = (props: Props) => {
 	const { data, scenarios } = props
 
-	const graphs = [
-		['total_population'],
-		['intensive_needed', 'intensive_available'],
-		['recovered', 'deceased'],
-		['contact_rate'],
-	]
+	const graphs = [['contact_rate'], ['recovered', 'deceased', 'infectious']]
 
 	const [selectedTab, setSelectedTab] = useState(0)
 	const [loading, setLoading] = useState(false)
@@ -211,22 +205,12 @@ const Scenarios = (props: Props) => {
 									onClick={() => handleGraphChange(0)}
 									first
 								>
-									Population
+									Contact Rate
 								</EquationButton>
 								<EquationButton
 									onClick={() => handleGraphChange(1)}
 								>
-									Extensive Care
-								</EquationButton>
-								<EquationButton
-									onClick={() => handleGraphChange(2)}
-								>
 									Indicators
-								</EquationButton>
-								<EquationButton
-									onClick={() => handleGraphChange(3)}
-								>
-									Contact Rate
 								</EquationButton>
 							</div>
 						</Paper>
@@ -296,7 +280,7 @@ const Scenarios = (props: Props) => {
 												),
 											],
 											x: 900,
-											y: 300,
+											y: 250,
 										}}
 									></Chart>
 								</div>

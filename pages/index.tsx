@@ -14,7 +14,7 @@ import ReactResizeDetector from 'react-resize-detector'
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
-import Chart from '@transentis/bptk-widgets'
+import { Chart, Dropdown } from '@transentis/bptk-widgets'
 
 import { theme } from '../lib/constants/covid.dashboard.theme'
 import { transentisColors as tc } from '../lib/constants/colors'
@@ -223,7 +223,7 @@ const Home = (props: Props) => {
 							</div>
 						</Paper>
 					</div>
-					<div className='col-span-2 hidden lg:flex  lg:col-span-1'>
+					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
 						<Paper className='bg-bg-paper w-full h-full rounded'>
 							<div></div>
 						</Paper>
