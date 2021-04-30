@@ -22,6 +22,8 @@ const defaultModel = {
 	equations: [
 		'total_population',
 		'contact_rate',
+		'contact_number',
+		'reproduction_rate',
 		'infectious',
 		'recovered',
 		'deceased',
@@ -68,10 +70,12 @@ interface Props {
 const Home = (props: Props) => {
 	const { data } = props
 
+	console.log(data)
+
 	const graphs = [
-		['total_population', 'recovered', 'deceased'],
+		['infectious', 'recovered', 'deceased'],
 		['intensive_needed', 'intensive_available'],
-		['recovered', 'deceased'],
+		['contact_number', 'reproduction_rate'],
 		['contact_rate'],
 	]
 
