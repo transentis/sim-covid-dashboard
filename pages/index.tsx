@@ -9,7 +9,7 @@ import ReactResizeDetector from 'react-resize-detector'
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
-import { Chart, DragComponent } from '@transentis/bptk-widgets'
+import { Chart, DragComponent, Card } from '@transentis/bptk-widgets'
 
 import { theme } from '../lib/constants/covid.dashboard.theme'
 import { transentisColors as tc } from '../lib/constants/colors'
@@ -69,7 +69,7 @@ const Home = (props: Props) => {
 	const { data } = props
 
 	const graphs = [
-		['total_population'],
+		['total_population', 'recovered', 'deceased'],
 		['intensive_needed', 'intensive_available'],
 		['recovered', 'deceased'],
 		['contact_rate'],
@@ -188,7 +188,7 @@ const Home = (props: Props) => {
 						</Paper>
 					</div>
 					<div className='col-span-2'>
-						<Paper className='bg-bg-paper w-full h-full rounded flex flex-col justify-center items-center'>
+						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center items-center'>
 							<div className='p-4'>
 								<EquationButton
 									onClick={() => handleGraphChange(0)}
@@ -212,21 +212,21 @@ const Home = (props: Props) => {
 									Contact Rate
 								</EquationButton>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
-						<Paper className='bg-bg-paper w-full h-full rounded'>
+						<Card className='bg-bg-paper w-full h-full'>
 							<div></div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Paper className='bg-bg-paper w-full h-full rounded'>
+						<Card
+							className='bg-bg-paper w-full h-full'
+							title={selectedGraph[0]
+								.toUpperCase()
+								.replace('_', ' ')}
+						>
 							<div className='flex flex-col justify-center items-center'>
-								<p className='text-3xl lg:text-4xl p-4'>
-									{selectedGraph[0]
-										.toUpperCase()
-										.replace('_', ' ')}
-								</p>
 								<div className='p-2'>
 									<Chart
 										type={'AREA'}
@@ -278,7 +278,7 @@ const Home = (props: Props) => {
 												),
 											],
 											x: 900,
-											y: 300,
+											y: 250,
 										}}
 									></Chart>
 								</div>
@@ -293,10 +293,10 @@ const Home = (props: Props) => {
 									/>
 								</div>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2 lg:col-span-1'>
-						<Paper className='bg-bg-paper w-full h-full rounded'>
+						<Card className='bg-bg-paper w-full h-full'>
 							<div className='p-3'>
 								<Tabs
 									value={selectedTab}
@@ -377,10 +377,10 @@ const Home = (props: Props) => {
 									rate, infectivity and duration.
 								</TabPanel>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Paper className='bg-bg-paper w-full h-full rounded flex flex-col justify-center'>
+						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center'>
 							<div className='relative m-2 p-3'>
 								<div className='absolute right-2 top-2'>
 									<Tooltip title={'Resets the dragchart'}>
@@ -459,12 +459,12 @@ const Home = (props: Props) => {
 									)}
 								</ReactResizeDetector>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
-						<Paper className='bg-bg-paper w-full h-full rounded'>
+						<Card className='bg-bg-paper w-full h-full'>
 							<div></div>
-						</Paper>
+						</Card>
 					</div>
 				</div>
 			</div>

@@ -160,7 +160,7 @@ const Scenarios = (props: Props) => {
 					</div>
 					<div className='col-span-2'>
 						<Paper className='bg-bg-paper w-full h-full rounded flex flex-row justify-center items-center'>
-							<Dropdown color='cyan' name='Scenarios'>
+							<Dropdown color='accent' name='Scenarios'>
 								{scenarios.map((scenario, index) => (
 									<DropdownItem
 										name={scenario}
