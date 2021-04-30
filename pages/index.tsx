@@ -2,14 +2,14 @@ import React, { ReactElement, ReactNode, useState } from 'react'
 import Head from 'next/head'
 
 import { IconButton, Slider, Tooltip, Tabs, Tab } from '@material-ui/core/'
-import { LoadingOverlay, NavigationButtons, Paper } from '../components'
+import { NavigationButtons } from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
 
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
-import { Chart, DragComponent } from '@transentis/bptk-widgets'
+import { Chart, DragComponent, Card } from '@transentis/bptk-widgets'
 
 import { theme } from '../lib/constants/covid.dashboard.theme'
 import { transentisColors as tc } from '../lib/constants/colors'
@@ -22,6 +22,8 @@ const defaultModel = {
 	equations: [
 		'total_population',
 		'contact_rate',
+		'contact_number',
+		'reproduction_rate',
 		'infectious',
 		'recovered',
 		'deceased',
@@ -71,14 +73,13 @@ const Home = (props: Props) => {
 	console.log(data)
 
 	const graphs = [
-		['total_population'],
+		['infectious', 'recovered', 'deceased'],
 		['intensive_needed', 'intensive_available'],
-		['recovered', 'deceased'],
+		['contact_number', 'reproduction_rate'],
 		['contact_rate'],
 	]
 
 	const [selectedTab, setSelectedTab] = useState(0)
-	const [loading, setLoading] = useState(false)
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
 		0,
 		1499,
@@ -179,21 +180,20 @@ const Home = (props: Props) => {
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<LoadingOverlay loading={loading}></LoadingOverlay>
 			<div className='overflow-hidden bg-bg h-full'>
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3'>
-						<Paper className='bg-bg-paper w-full h-full rounded flex flex-col justify-center items-center'>
+						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center items-center'>
 							<div className=''>
 								<p className='text-5xl lg:text-7xl p-4'>
 									COVID-19 Simulation
 								</p>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Paper className='bg-bg-paper w-full h-full rounded flex flex-col justify-center items-center'>
-							<div className='p-4'>
+						<Card className='bg-bg-paper w-full h-full items-center'>
+							<div className='flex flex-row justify-center'>
 								<EquationButton
 									onClick={() => handleGraphChange(0)}
 									first
@@ -216,21 +216,21 @@ const Home = (props: Props) => {
 									Contact Rate
 								</EquationButton>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
-						<Paper className='bg-bg-paper w-full h-full rounded'>
+						<Card className='bg-bg-paper w-full h-full'>
 							<div></div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Paper className='bg-bg-paper w-full h-full rounded'>
+						<Card
+							className='bg-bg-paper w-full h-full'
+							title={selectedGraph[0]
+								.toUpperCase()
+								.replace('_', ' ')}
+						>
 							<div className='flex flex-col justify-center items-center'>
-								<p className='text-3xl lg:text-4xl p-4'>
-									{selectedGraph[0]
-										.toUpperCase()
-										.replace('_', ' ')}
-								</p>
 								<div className='p-2'>
 									<Chart
 										type={'AREA'}
@@ -282,7 +282,7 @@ const Home = (props: Props) => {
 												),
 											],
 											x: 900,
-											y: 300,
+											y: 250,
 										}}
 									></Chart>
 								</div>
@@ -297,10 +297,10 @@ const Home = (props: Props) => {
 									/>
 								</div>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2 lg:col-span-1'>
-						<Paper className='bg-bg-paper w-full h-full rounded'>
+						<Card className='bg-bg-paper w-full h-full'>
 							<div className='p-3'>
 								<Tabs
 									value={selectedTab}
@@ -381,10 +381,10 @@ const Home = (props: Props) => {
 									rate, infectivity and duration.
 								</TabPanel>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Paper className='bg-bg-paper w-full h-full rounded flex flex-col justify-center'>
+						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center'>
 							<div className='relative m-2 p-3'>
 								<div className='absolute right-2 top-2'>
 									<Tooltip title={'Resets the dragchart'}>
@@ -404,7 +404,9 @@ const Home = (props: Props) => {
 										}
 									>
 										<IconButton
-											onClick={() => requestData()}
+											onClick={() => {
+												requestData()
+											}}
 											aria-label='run'
 										>
 											<PlayArrow />
@@ -461,12 +463,12 @@ const Home = (props: Props) => {
 									)}
 								</ReactResizeDetector>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
-						<Paper className='bg-bg-paper w-full h-full rounded'>
+						<Card className='bg-bg-paper w-full h-full'>
 							<div></div>
-						</Paper>
+						</Card>
 					</div>
 				</div>
 			</div>
@@ -476,14 +478,17 @@ const Home = (props: Props) => {
 }
 
 export const getStaticProps = async () => {
+	// Request Model Data for the Dashboard
 	const requestedData = await bptkApi.requestModel(defaultModel)
 
+	// If there was a problem retreiving the Data show a not found/error page
 	if (!requestedData) {
 		return {
 			notFound: true,
 		}
 	}
 
+	// Convert the data to be easily used in graphs => set them as props for the page
 	const data = bptkApi.chartifyData(requestedData)
 
 	return {
