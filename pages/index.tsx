@@ -208,7 +208,7 @@ const Home = (props: Props) => {
 								<EquationButton
 									onClick={() => handleGraphChange(1)}
 								>
-									Extensive Care
+									Intensive Care
 								</EquationButton>
 								<EquationButton
 									onClick={() => handleGraphChange(2)}

@@ -9,10 +9,6 @@ import {
 	Paper,
 } from '../components'
 
-import ReactResizeDetector from 'react-resize-detector'
-
-import { PlayArrow, Refresh } from '@material-ui/icons'
-
 import BPTKApi from '@transentis/bptk-connector'
 import { Chart, Dropdown, DropdownItem } from '@transentis/bptk-widgets'
 import { theme } from '../lib/constants/covid.dashboard.theme'
@@ -22,7 +18,7 @@ const bptkApi = new BPTKApi('MY API KEY')
 
 const defaultModel = (scenario: string) => ({
 	scenario_managers: ['smSir'],
-	scenarios: ['dashboard'],
+	scenarios: [scenario],
 	equations: [
 		'total_population',
 		'contact_rate',
