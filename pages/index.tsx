@@ -160,24 +160,6 @@ const Home = (props: Props) => {
 		)
 	}
 
-	const EquationButton = (props: {
-		children: ReactNode
-		onClick: () => void
-		first?: boolean
-		last?: boolean
-	}): ReactElement => {
-		const { children, onClick, first, last } = props
-		let css = 'uppercase border border-white p-3 text-xs lg:text-sm'
-
-		first && (css += ' lg:rounded-l')
-		last && (css += ' lg:rounded-r')
-
-		return (
-			<button className={css} onClick={onClick}>
-				{children}
-			</button>
-		)
-	}
 	// console.log(data)
 
 	return (
