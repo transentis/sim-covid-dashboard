@@ -14,7 +14,7 @@ import { VictoryTheme } from 'victory'
 
 import BPTKApi from '@transentis/bptk-connector'
 import Inputs from '../components/Inputs'
-import Chart from '@transentis/bptk-widgets'
+import { Chart } from '@transentis/bptk-widgets'
 
 const bptkApi = new BPTKApi('YOUR API KEY')
 
