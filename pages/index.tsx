@@ -2,7 +2,7 @@ import React, { ReactElement, ReactNode, useState } from 'react'
 import Head from 'next/head'
 
 import { IconButton, Slider, Tooltip, Tabs, Tab } from '@material-ui/core/'
-import { LoadingOverlay, NavigationButtons, Paper } from '../components'
+import { NavigationButtons, Paper } from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
 
@@ -68,8 +68,6 @@ interface Props {
 const Home = (props: Props) => {
 	const { data } = props
 
-	console.log(data)
-
 	const graphs = [
 		['total_population'],
 		['intensive_needed', 'intensive_available'],
@@ -78,7 +76,6 @@ const Home = (props: Props) => {
 	]
 
 	const [selectedTab, setSelectedTab] = useState(0)
-	const [loading, setLoading] = useState(false)
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
 		0,
 		1499,
@@ -179,7 +176,6 @@ const Home = (props: Props) => {
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<LoadingOverlay loading={loading}></LoadingOverlay>
 			<div className='overflow-hidden bg-bg h-full'>
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3'>
@@ -404,7 +400,9 @@ const Home = (props: Props) => {
 										}
 									>
 										<IconButton
-											onClick={() => requestData()}
+											onClick={() => {
+												requestData()
+											}}
 											aria-label='run'
 										>
 											<PlayArrow />
@@ -476,14 +474,17 @@ const Home = (props: Props) => {
 }
 
 export const getStaticProps = async () => {
+	// Request Model Data for the Dashboard
 	const requestedData = await bptkApi.requestModel(defaultModel)
 
+	// If there was a problem retreiving the Data show a not found/error page
 	if (!requestedData) {
 		return {
 			notFound: true,
 		}
 	}
 
+	// Convert the data to be easily used in graphs => set them as props for the page
 	const data = bptkApi.chartifyData(requestedData)
 
 	return {

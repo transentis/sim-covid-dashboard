@@ -2,7 +2,7 @@ import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import { Slider, Tabs, Tab } from '@material-ui/core/'
-import { LoadingOverlay, NavigationButtons, Paper } from '../components'
+import { NavigationButtons, Paper } from '../components'
 
 import BPTKApi from '@transentis/bptk-connector'
 import { Chart, Dropdown, DropdownItem } from '@transentis/bptk-widgets'
