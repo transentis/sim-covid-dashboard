@@ -2,7 +2,7 @@ import React, { ReactElement, ReactNode, useState } from 'react'
 import Head from 'next/head'
 
 import { IconButton, Slider, Tooltip, Tabs, Tab } from '@material-ui/core/'
-import { NavigationButtons, Paper } from '../components'
+import { NavigationButtons } from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
 
@@ -179,17 +179,17 @@ const Home = (props: Props) => {
 			<div className='overflow-hidden bg-bg h-full'>
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3'>
-						<Paper className='bg-bg-paper w-full h-full rounded flex flex-col justify-center items-center'>
+						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center items-center'>
 							<div className=''>
 								<p className='text-5xl lg:text-7xl p-4'>
 									COVID-19 Simulation
 								</p>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center items-center'>
-							<div className='p-4'>
+						<Card className='bg-bg-paper w-full h-full items-center'>
+							<div className='flex flex-row justify-center'>
 								<EquationButton
 									onClick={() => handleGraphChange(0)}
 									first

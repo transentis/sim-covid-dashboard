@@ -2,10 +2,10 @@ import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import { Slider, Tabs, Tab } from '@material-ui/core/'
-import { NavigationButtons, Paper } from '../components'
+import { NavigationButtons } from '../components'
 
 import BPTKApi from '@transentis/bptk-connector'
-import { Chart, Dropdown, DropdownItem } from '@transentis/bptk-widgets'
+import { Card, Chart, Dropdown, DropdownItem } from '@transentis/bptk-widgets'
 import { theme } from '../lib/constants/covid.dashboard.theme'
 import { transentisColors as tc } from '../lib/constants/colors'
 
@@ -152,45 +152,49 @@ const Scenarios = (props: Props) => {
 			<div className='overflow-hidden bg-bg h-full'>
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3'>
-						<Paper className='bg-bg-paper w-full h-full rounded flex flex-col justify-center items-center'>
+						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center items-center'>
 							<div className=''>
 								<p className='text-5xl p-4'>{`COVID-19 Scenarios: ${scenario}`}</p>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Paper className='bg-bg-paper w-full h-full rounded flex flex-row justify-center items-center'>
-							<Dropdown color='accent' name='Scenarios'>
-								{scenarios.map((scenario, index) => (
-									<DropdownItem
-										name={scenario}
-										onClick={() => setScenario(scenario)}
-										key={index}
-									></DropdownItem>
-								))}
-							</Dropdown>
-							<div className='p-4'>
-								<EquationButton
-									onClick={() => handleGraphChange(0)}
-									first
-								>
-									Contact Rate
-								</EquationButton>
-								<EquationButton
-									onClick={() => handleGraphChange(1)}
-								>
-									Indicators
-								</EquationButton>
+						<div className='bg-bg-paper w-full h-full'>
+							<div className='flex flex-row justify-center items-center'>
+								<Dropdown color='accent' name='Scenarios'>
+									{scenarios.map((scenario, index) => (
+										<DropdownItem
+											name={scenario}
+											onClick={() =>
+												setScenario(scenario)
+											}
+											key={index}
+										></DropdownItem>
+									))}
+								</Dropdown>
+								<div className='p-4'>
+									<EquationButton
+										onClick={() => handleGraphChange(0)}
+										first
+									>
+										Contact Rate
+									</EquationButton>
+									<EquationButton
+										onClick={() => handleGraphChange(1)}
+									>
+										Indicators
+									</EquationButton>
+								</div>
 							</div>
-						</Paper>
+						</div>
 					</div>
 					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
-						<Paper className='bg-bg-paper w-full h-full rounded'>
+						<Card className='bg-bg-paper w-full h-full'>
 							<div></div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Paper className=' bg-bg-paper w-full h-full rounded'>
+						<Card className=' bg-bg-paper w-full h-full'>
 							<div className='flex flex-col justify-center items-center'>
 								<p className='text-4xl p-4'>
 									{selectedGraph[0]
@@ -264,10 +268,10 @@ const Scenarios = (props: Props) => {
 									/>
 								</div>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2 lg:col-span-1'>
-						<Paper className='bg-bg-paper w-full h-full rounded'>
+						<Card className='bg-bg-paper w-full h-full'>
 							<div className='p-3'>
 								<Tabs
 									value={selectedTab}
@@ -340,17 +344,17 @@ const Scenarios = (props: Props) => {
 									rate, infectivity and duration.
 								</TabPanel>
 							</div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Paper className='bg-bg-paper w-full h-full rounded flex flex-col justify-center'>
+						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center'>
 							<div></div>
-						</Paper>
+						</Card>
 					</div>
 					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
-						<Paper className='bg-bg-paper w-full h-full rounded'>
+						<Card className='bg-bg-paper w-full h-full'>
 							<div></div>
-						</Paper>
+						</Card>
 					</div>
 				</div>
 			</div>
