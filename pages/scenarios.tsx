@@ -1,11 +1,18 @@
-import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import { Slider, Tabs, Tab } from '@material-ui/core/'
 import { NavigationButtons } from '../components'
 
 import BPTKApi from '@transentis/bptk-connector'
-import { Card, Chart, Dropdown, DropdownItem } from '@transentis/bptk-widgets'
+import {
+	ButtonGroup,
+	Card,
+	Chart,
+	Dropdown,
+	DropdownItem,
+	RadioButton,
+} from '@transentis/bptk-widgets'
 import { theme } from '../lib/constants/covid.dashboard.theme'
 import { transentisColors as tc } from '../lib/constants/colors'
 
@@ -124,25 +131,6 @@ const Scenarios = (props: Props) => {
 		)
 	}
 
-	const EquationButton = (props: {
-		children: ReactNode
-		onClick: () => void
-		first?: boolean
-		last?: boolean
-	}): ReactElement => {
-		const { children, onClick, first, last } = props
-		let css = 'uppercase border border-white p-3'
-
-		first && (css += ' rounded-l')
-		last && (css += ' rounded-r')
-
-		return (
-			<button className={css} onClick={onClick}>
-				{children}
-			</button>
-		)
-	}
-
 	return (
 		<div className='min-h-screen w-full bg-bg'>
 			<Head>
@@ -173,17 +161,18 @@ const Scenarios = (props: Props) => {
 									))}
 								</Dropdown>
 								<div className='p-4'>
-									<EquationButton
-										onClick={() => handleGraphChange(0)}
-										first
-									>
-										Contact Rate
-									</EquationButton>
-									<EquationButton
-										onClick={() => handleGraphChange(1)}
-									>
-										Indicators
-									</EquationButton>
+									<ButtonGroup>
+										<RadioButton
+											onClick={() => handleGraphChange(0)}
+										>
+											Contact Rate
+										</RadioButton>
+										<RadioButton
+											onClick={() => handleGraphChange(1)}
+										>
+											Indicators
+										</RadioButton>
+									</ButtonGroup>
 								</div>
 							</div>
 						</div>

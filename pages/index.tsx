@@ -9,7 +9,13 @@ import ReactResizeDetector from 'react-resize-detector'
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
-import { Chart, DragComponent, Card } from '@transentis/bptk-widgets'
+import {
+	RadioButton,
+	ButtonGroup,
+	Chart,
+	DragComponent,
+	Card,
+} from '@transentis/bptk-widgets'
 
 import { theme } from '../lib/constants/covid.dashboard.theme'
 import { transentisColors as tc } from '../lib/constants/colors'
@@ -154,24 +160,6 @@ const Home = (props: Props) => {
 		)
 	}
 
-	const EquationButton = (props: {
-		children: ReactNode
-		onClick: () => void
-		first?: boolean
-		last?: boolean
-	}): ReactElement => {
-		const { children, onClick, first, last } = props
-		let css = 'uppercase border border-white p-3 text-xs lg:text-sm'
-
-		first && (css += ' lg:rounded-l')
-		last && (css += ' lg:rounded-r')
-
-		return (
-			<button className={css} onClick={onClick}>
-				{children}
-			</button>
-		)
-	}
 	// console.log(data)
 
 	return (
@@ -193,29 +181,28 @@ const Home = (props: Props) => {
 					</div>
 					<div className='col-span-2'>
 						<Card className='bg-bg-paper w-full h-full items-center'>
-							<div className='flex flex-row justify-center'>
-								<EquationButton
+							<ButtonGroup>
+								<RadioButton
 									onClick={() => handleGraphChange(0)}
-									first
 								>
 									Population
-								</EquationButton>
-								<EquationButton
+								</RadioButton>
+								<RadioButton
 									onClick={() => handleGraphChange(1)}
 								>
 									Intensive Care
-								</EquationButton>
-								<EquationButton
+								</RadioButton>
+								<RadioButton
 									onClick={() => handleGraphChange(2)}
 								>
 									Indicators
-								</EquationButton>
-								<EquationButton
+								</RadioButton>
+								<RadioButton
 									onClick={() => handleGraphChange(3)}
 								>
 									Contact Rate
-								</EquationButton>
-							</div>
+								</RadioButton>
+							</ButtonGroup>
 						</Card>
 					</div>
 					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
