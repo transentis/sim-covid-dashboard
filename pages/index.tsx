@@ -459,7 +459,7 @@ const Home = (props: Props) => {
 					</div>
 				</div>
 			</div>
-			<NavigationButtons />
+			<NavigationButtons page={0} />
 		</div>
 	)
 }
