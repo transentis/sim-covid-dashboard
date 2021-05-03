@@ -347,7 +347,7 @@ const Scenarios = (props: Props) => {
 					</div>
 				</div>
 			</div>
-			<NavigationButtons></NavigationButtons>
+			<NavigationButtons page={1}></NavigationButtons>
 		</div>
 	)
 }
