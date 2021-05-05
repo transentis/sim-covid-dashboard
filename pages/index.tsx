@@ -14,7 +14,6 @@ import {
 	ButtonGroup,
 	Chart,
 	DragComponent,
-	Card,
 	StandardGridLayout,
 } from '@transentis/bptk-widgets'
 
@@ -139,8 +138,6 @@ const Home = (props: Props) => {
 	const handleSelectTab = (event: any, index: number): void => {
 		setSelectedTab(index)
 	}
-
-	console.log(dragChartData)
 
 	const TabPanel = (props: {
 		children?: ReactNode
