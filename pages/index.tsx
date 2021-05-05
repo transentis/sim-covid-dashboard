@@ -171,7 +171,7 @@ const Home = (props: Props) => {
 			<div className='overflow-hidden bg-bg h-full'>
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3'>
-						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center items-center'>
+						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center items-center rounded'>
 							<div className=''>
 								<p className='text-5xl lg:text-7xl p-4'>
 									COVID-19 Simulation
@@ -180,7 +180,7 @@ const Home = (props: Props) => {
 						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Card className='bg-bg-paper w-full h-full items-center'>
+						<Card className='bg-bg-paper w-full h-full items-center rounded'>
 							<ButtonGroup>
 								<RadioButton
 									onClick={() => handleGraphChange(0)}
@@ -206,13 +206,13 @@ const Home = (props: Props) => {
 						</Card>
 					</div>
 					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
-						<Card className='bg-bg-paper w-full h-full'>
+						<Card className='bg-bg-paper w-full h-full rounded'>
 							<div></div>
 						</Card>
 					</div>
 					<div className='col-span-2'>
 						<Card
-							className='bg-bg-paper w-full h-full'
+							className='bg-bg-paper w-full h-full rounded'
 							title={selectedGraph[0]
 								.toUpperCase()
 								.replace('_', ' ')}
@@ -287,7 +287,7 @@ const Home = (props: Props) => {
 						</Card>
 					</div>
 					<div className='col-span-2 lg:col-span-1'>
-						<Card className='bg-bg-paper w-full h-full'>
+						<Card className='bg-bg-paper w-full h-full rounded'>
 							<div className='p-3'>
 								<Tabs
 									value={selectedTab}
@@ -371,7 +371,7 @@ const Home = (props: Props) => {
 						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center'>
+						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center rounded'>
 							<div className='relative m-2 p-3'>
 								<div className='absolute right-2 top-2'>
 									<Tooltip title={'Resets the dragchart'}>
@@ -453,7 +453,7 @@ const Home = (props: Props) => {
 						</Card>
 					</div>
 					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
-						<Card className='bg-bg-paper w-full h-full'>
+						<Card className='bg-bg-paper w-full h-full rounded'>
 							<div></div>
 						</Card>
 					</div>
