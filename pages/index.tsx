@@ -65,6 +65,25 @@ const defaultModel = {
 	},
 }
 
+const defaultDragComponentState = [
+	20,
+	20,
+	20,
+	20,
+	20,
+	20,
+	20,
+	20,
+	20,
+	20,
+	20,
+	20,
+	20,
+	20,
+	20,
+	20,
+]
+
 interface Props {
 	data: {
 		contact_rate: [{ x: number; y: number }]
@@ -75,8 +94,6 @@ interface Props {
 
 const Home = (props: Props) => {
 	const { data } = props
-
-	console.log(data)
 
 	const graphs = [
 		['infectious', 'recovered', 'deceased'],
@@ -93,24 +110,9 @@ const Home = (props: Props) => {
 	const [selectedGraph, setSelectedGraph] = useState<Array<string>>(graphs[0])
 	const [graphData, setGraphData] = useState<any>(data)
 
-	const [dragChartData, setDragChartData] = useState([
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-	])
+	const [dragChartData, setDragChartData] = useState(
+		defaultDragComponentState,
+	)
 
 	const [requestBody, setRequestBody] = useState(defaultModel)
 
@@ -137,6 +139,8 @@ const Home = (props: Props) => {
 		setSelectedTab(index)
 	}
 
+	console.log(dragChartData)
+
 	const TabPanel = (props: {
 		children?: ReactNode
 		index: any
@@ -159,8 +163,6 @@ const Home = (props: Props) => {
 			</div>
 		)
 	}
-
-	// console.log(data)
 
 	return (
 		<div className='min-h-screen w-full bg-bg'>
@@ -376,10 +378,12 @@ const Home = (props: Props) => {
 								<div className='absolute right-2 top-2'>
 									<Tooltip title={'Resets the dragchart'}>
 										<IconButton
-											// onClick={() =>
-											// 	// resetDragData()
-											// }
-											aria-label='delete'
+											onClick={() =>
+												setDragChartData(
+													defaultDragComponentState,
+												)
+											}
+											aria-label='reset'
 										>
 											<Refresh />
 										</IconButton>
