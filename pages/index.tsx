@@ -1,7 +1,7 @@
 import React, { ReactElement, ReactNode, useState } from 'react'
 import Head from 'next/head'
 
-import { IconButton, Slider, Tooltip, Tabs, Tab } from '@material-ui/core/'
+import { IconButton, Slider, Tooltip } from '@material-ui/core/'
 import { NavigationButtons } from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
@@ -15,6 +15,7 @@ import {
 	Chart,
 	DragComponent,
 	Card,
+	Tabs,
 } from '@transentis/bptk-widgets'
 
 import { theme } from '../lib/constants/covid.dashboard.theme'
@@ -137,29 +138,6 @@ const Home = (props: Props) => {
 		setSelectedTab(index)
 	}
 
-	const TabPanel = (props: {
-		children?: ReactNode
-		index: any
-		value: any
-	}) => {
-		const { children, value, index, ...other } = props
-
-		return (
-			<div
-				className='p-4'
-				role='tabpanel'
-				hidden={value !== index}
-				id={`simple-tabpanel-${index}`}
-				aria-labelledby={`simple-tab-${index}`}
-				{...other}
-			>
-				{value === index && (
-					<p className='prose text-base'>{children}</p>
-				)}
-			</div>
-		)
-	}
-
 	// console.log(data)
 
 	return (
@@ -171,7 +149,7 @@ const Home = (props: Props) => {
 			<div className='overflow-hidden bg-bg h-full'>
 				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
 					<div className='col-span-2 lg:col-span-3'>
-						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center items-center'>
+						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center items-center rounded'>
 							<div className=''>
 								<p className='text-5xl lg:text-7xl p-4'>
 									COVID-19 Simulation
@@ -180,7 +158,7 @@ const Home = (props: Props) => {
 						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Card className='bg-bg-paper w-full h-full items-center'>
+						<Card className='bg-bg-paper w-full h-full items-center rounded'>
 							<ButtonGroup>
 								<RadioButton
 									onClick={() => handleGraphChange(0)}
@@ -206,13 +184,13 @@ const Home = (props: Props) => {
 						</Card>
 					</div>
 					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
-						<Card className='bg-bg-paper w-full h-full'>
+						<Card className='bg-bg-paper w-full h-full rounded'>
 							<div></div>
 						</Card>
 					</div>
 					<div className='col-span-2'>
 						<Card
-							className='bg-bg-paper w-full h-full'
+							className='bg-bg-paper w-full h-full rounded'
 							title={selectedGraph[0]
 								.toUpperCase()
 								.replace('_', ' ')}
@@ -287,91 +265,97 @@ const Home = (props: Props) => {
 						</Card>
 					</div>
 					<div className='col-span-2 lg:col-span-1'>
-						<Card className='bg-bg-paper w-full h-full'>
+						<Card className='bg-bg-paper w-full h-full rounded'>
 							<div className='p-3'>
 								<Tabs
-									value={selectedTab}
-									onChange={handleSelectTab}
-									indicatorColor='primary'
-									textColor='inherit'
-									className='m-3'
-									centered
+									buttonProps={'btn-accent'}
+									buttonGroupProps={'flex justify-center'}
+									titles={['intro', 'assumptions']}
 								>
-									<Tab
-										className='focus:outline-none'
-										label='intro'
-										id='intro'
-									/>
-									<Tab
-										className='focus:outline-none'
-										label='assumptions'
-										id='assumptions'
-									/>
+									<div className='m-3'>
+										<p>
+											Whenever you need to make
+											predictions about complex situations
+											you have little prior experience
+											with, models and simulations are a
+											good starting point to explore the
+											situation and to make qualitative
+											and quantitative predictions about
+											how the situation may develop. Play
+											with our COVID-19 simulation and see
+											how social distancing can slow the
+											spreading of the virus.
+										</p>
+									</div>
+									<div className='m-3'>
+										<p>
+											The implementation here is roughly
+											calibrated to the situation in
+											Germany at the beginning of the
+											pandemic, around the end of March
+											2020. It illustrates the effects of
+											social distancing in achieving the
+											objective of keeping the strain on
+											the health care system as small as
+											possible.
+											<br />
+											<ul>
+												<li>
+													<b>Contact Rate:</b> 20
+													persons. Defines how many
+													people a person encounters
+													per day in average.
+												</li>
+												<li>
+													<b>Infectivity:</b> 2%.
+													Defines the probability that
+													a person becomes infected
+													after contact with an
+													infectious person.
+												</li>
+												<li>
+													<b>Duration.</b> Defines how
+													long an infective person
+													remains contagious
+												</li>
+												<li>
+													<b>Population.</b> The
+													susceptible population
+													starts at 80 Mio., the
+													infectious population starts
+													at 120 persons.
+												</li>
+												<li>
+													<b>
+														Intensive Care Needed:
+													</b>{' '}
+													0.2%. Measures the number of
+													infected people who need
+													intensive care.
+												</li>
+												<li>
+													<b>
+														Intensive Care
+														Available:
+													</b>{' '}
+													30,000 units. The number of
+													intensive care units
+													available.
+												</li>
+											</ul>
+											With the above settings, this means
+											we have a contact number of 8 in the
+											base settings. The contact number is
+											the product of contact rate,
+											infectivity and duration.
+										</p>
+									</div>
 								</Tabs>
-								<TabPanel value={selectedTab} index={0}>
-									Whenever you need to make predictions about
-									complex situations you have little prior
-									experience with, models and simulations are
-									a good starting point to explore the
-									situation and to make qualitative and
-									quantitative predictions about how the
-									situation may develop. Play with our
-									COVID-19 simulation and see how social
-									distancing can slow the spreading of the
-									virus.
-								</TabPanel>
-								<TabPanel value={selectedTab} index={1}>
-									The implementation here is roughly
-									calibrated to the situation in Germany at
-									the beginning of the pandemic, around the
-									end of March 2020. It illustrates the
-									effects of social distancing in achieving
-									the objective of keeping the strain on the
-									health care system as small as possible.
-									<br />
-									<ul>
-										<li>
-											<b>Contact Rate:</b> 20 persons.
-											Defines how many people a person
-											encounters per day in average.
-										</li>
-										<li>
-											<b>Infectivity:</b> 2%. Defines the
-											probability that a person becomes
-											infected after contact with an
-											infectious person.
-										</li>
-										<li>
-											<b>Duration.</b> Defines how long an
-											infective person remains contagious
-										</li>
-										<li>
-											<b>Population.</b> The susceptible
-											population starts at 80 Mio., the
-											infectious population starts at 120
-											persons.
-										</li>
-										<li>
-											<b>Intensive Care Needed:</b> 0.2%.
-											Measures the number of infected
-											people who need intensive care.
-										</li>
-										<li>
-											<b>Intensive Care Available:</b>{' '}
-											30,000 units. The number of
-											intensive care units available.
-										</li>
-									</ul>
-									With the above settings, this means we have
-									a contact number of 8 in the base settings.
-									The contact number is the product of contact
-									rate, infectivity and duration.
-								</TabPanel>
 							</div>
 						</Card>
 					</div>
 					<div className='col-span-2'>
-						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center'>
+						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center rounded'>
 							<div className='relative m-2 p-3'>
 								<div className='absolute right-2 top-2'>
 									<Tooltip title={'Resets the dragchart'}>
@@ -453,7 +437,7 @@ const Home = (props: Props) => {
 						</Card>
 					</div>
 					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
-						<Card className='bg-bg-paper w-full h-full'>
+						<Card className='bg-bg-paper w-full h-full rounded'>
 							<div></div>
 						</Card>
 					</div>
