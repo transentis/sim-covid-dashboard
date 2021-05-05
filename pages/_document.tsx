@@ -5,10 +5,8 @@ import { ServerStyleSheets } from '@material-ui/core/styles'
 export default class MyDocument extends Document {
 	render() {
 		return (
-			<Html lang='en'>
+			<Html lang='en' data-theme='dracula'>
 				<Head>
-					{/* PWA primary color */}
-					<meta name='theme-color' content={'#bbbbbb'} />
 					<link
 						rel='stylesheet'
 						href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap'
