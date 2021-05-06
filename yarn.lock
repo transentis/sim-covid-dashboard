@@ -288,10 +288,10 @@
     axios "^0.21.1"
     axios-cache-adapter "^2.7.3"
 
-"@transentis/bptk-widgets@^0.0.26":
-  version "0.0.26"
-  resolved "https://registry.yarnpkg.com/@transentis/bptk-widgets/-/bptk-widgets-0.0.26.tgz#c1d60a7699eaa0c1a31e4108ffd102a5381812cd"
-  integrity sha512-V7LBJtNG1IQLOZ529EZEM52xx2GTAiN6b/EewwuJJdsngE529AGO2ZxD/MSPKgEnoIc7xqefKC+wWrcQHzd/qg==
+"@transentis/bptk-widgets@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@transentis/bptk-widgets/-/bptk-widgets-0.0.27.tgz#bfc55c1ab467732a5fc6fd507037d49f79fb7211"
+  integrity sha512-qf/XV87C74VGjQvPiXy8TdEU6OUcyCEpqEdcsdBv1dEWsEIMzEp+HIL21L3AsFFE9o/vlCSSx67rKhiWrVlAIQ==
   dependencies:
     d3 "^6.7.0"
     lodash "^4.17.21"

@@ -13,7 +13,7 @@
 		"@popperjs/core": "^2.9.2",
 		"@tailwindcss/typography": "^0.4.0",
 		"@transentis/bptk-connector": "^0.0.6",
-		"@transentis/bptk-widgets": "^0.0.26",
+		"@transentis/bptk-widgets": "^0.0.27",
 		"autoprefixer": "^10.2.5",
 		"lodash": "^4.17.21",
 		"next": "10.0.6",

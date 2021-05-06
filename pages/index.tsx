@@ -16,10 +16,10 @@ import {
 	DragComponent,
 	StandardGridLayout,
 	Tabs,
+	DefaultGraphColors,
 } from '@transentis/bptk-widgets'
 
 import { theme } from '../lib/constants/covid.dashboard.theme'
-import { transentisColors as tc } from '../lib/constants/colors'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -174,14 +174,7 @@ const Home = (props: Props) => {
 						<Chart
 							type={'AREA'}
 							theme={theme}
-							colorPalette={[
-								tc.cyan.default,
-								tc.orange.default,
-								tc.cyan.light,
-								tc.orange.light,
-								tc.cyan.dark,
-								tc.orange.dark,
-							]}
+							colorPalette={DefaultGraphColors}
 							chartProps={{
 								animate: {
 									duration: 2000,
@@ -347,10 +340,7 @@ const Home = (props: Props) => {
 									<div className='w-11/12'>
 										<DragComponent
 											data={dragChartData}
-											colorTheme={[
-												tc.cyan.default,
-												tc.orange.default,
-											]}
+											colorTheme={DefaultGraphColors}
 											onChangeData={(
 												newData,
 												tupleData,

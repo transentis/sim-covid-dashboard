@@ -8,6 +8,7 @@ import BPTKApi from '@transentis/bptk-connector'
 import {
 	ButtonGroup,
 	Chart,
+	DefaultGraphColors,
 	Dropdown,
 	DropdownItem,
 	RadioButton,
@@ -15,7 +16,6 @@ import {
 	Tabs,
 } from '@transentis/bptk-widgets'
 import { theme } from '../lib/constants/covid.dashboard.theme'
-import { transentisColors as tc } from '../lib/constants/colors'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -123,14 +123,7 @@ const Scenarios = (props: Props) => {
 							<Chart
 								type={'AREA'}
 								theme={theme}
-								colorPalette={[
-									tc.cyan.default,
-									tc.orange.default,
-									tc.cyan.light,
-									tc.orange.light,
-									tc.cyan.dark,
-									tc.orange.dark,
-								]}
+								colorPalette={DefaultGraphColors}
 								chartProps={{
 									animate: {
 										duration: 2000,
