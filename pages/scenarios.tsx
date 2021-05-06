@@ -13,10 +13,10 @@ import {
 	DropdownItem,
 	RadioButton,
 	StandardGridLayout,
-	Tabs,
 } from '@transentis/bptk-widgets'
 
 import { theme } from '../lib/covid.dashboard.theme'
+import { ScenarioMap } from '@transentis/bptk-connector/dist/types'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -224,62 +224,11 @@ const Scenarios = (props: Props) => {
 	)
 }
 
-export interface DashboardConfig {
-	scenarios: Equations
-}
-export interface Equations {
-	blacklist?: string[] | null
-	whitelist?: WhitelistEntity[] | null
-}
-export interface WhitelistEntity {
-	name: string
-	displayName: string
-	description: string
-}
-
-export interface ScenarioMap {
-	name: string
-	displayName: string
-	description: string
-}
-
-const scenarioEncoder = (
-	scenarios: string[],
-	config: DashboardConfig,
-): ScenarioMap[] => {
-	const map = scenarios
-		.filter((scenario) => {
-			if (
-				config.scenarios.blacklist &&
-				config.scenarios.blacklist.includes(scenario)
-			) {
-				return false
-			}
-
-			return true
-		})
-		.map((scenario) => {
-			return {
-				name: scenario,
-				displayName:
-					config.scenarios.whitelist?.find(
-						(item) => item.name === scenario,
-					)?.displayName || scenario,
-				description:
-					config.scenarios.whitelist?.find(
-						(item) => item.name === scenario,
-					)?.description || 'This Scenario has no Description',
-			}
-		}) as ScenarioMap[]
-	console.log(map)
-	return map
-}
-
 export const getStaticProps = async () => {
 	const dashboardConfig = await import('../lib/dashboard.config.json')
 
 	const scenarios = await bptkApi.getScenarios()
-	const mappedScenarios = scenarioEncoder(scenarios, dashboardConfig)
+	const mappedScenarios = bptkApi.scenarioEncoder(scenarios, dashboardConfig)
 	const requestedData = await bptkApi.requestModel(defaultModel(scenarios[0]))
 
 	if (!requestedData) {
