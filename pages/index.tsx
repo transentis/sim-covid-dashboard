@@ -103,7 +103,6 @@ const Home = (props: Props) => {
 		['contact_rate'],
 	]
 
-	const [selectedTab, setSelectedTab] = useState(0)
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
 		0,
 		1499,
@@ -135,12 +134,6 @@ const Home = (props: Props) => {
 	const handleGraphChange = (index: number) => {
 		setSelectedGraph(graphs[index])
 	}
-
-	const handleSelectTab = (event: any, index: number): void => {
-		setSelectedTab(index)
-	}
-
-	// console.log(data)
 
 	return (
 		<div className='min-h-screen w-full bg-bg'>
