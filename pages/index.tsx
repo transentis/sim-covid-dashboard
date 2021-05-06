@@ -16,10 +16,10 @@ import {
 	DragComponent,
 	StandardGridLayout,
 	Tabs,
+	DefaultGraphColors,
 } from '@transentis/bptk-widgets'
 
-import { theme } from '../lib/constants/covid.dashboard.theme'
-import { transentisColors as tc } from '../lib/constants/colors'
+import { theme } from '../lib/covid.dashboard.theme'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -103,7 +103,6 @@ const Home = (props: Props) => {
 		['contact_rate'],
 	]
 
-	const [selectedTab, setSelectedTab] = useState(0)
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
 		0,
 		1499,
@@ -135,12 +134,6 @@ const Home = (props: Props) => {
 	const handleGraphChange = (index: number) => {
 		setSelectedGraph(graphs[index])
 	}
-
-	const handleSelectTab = (event: any, index: number): void => {
-		setSelectedTab(index)
-	}
-
-	// console.log(data)
 
 	return (
 		<div className='min-h-screen w-full bg-bg'>
@@ -174,14 +167,7 @@ const Home = (props: Props) => {
 						<Chart
 							type={'AREA'}
 							theme={theme}
-							colorPalette={[
-								tc.cyan.default,
-								tc.orange.default,
-								tc.cyan.light,
-								tc.orange.light,
-								tc.cyan.dark,
-								tc.orange.dark,
-							]}
+							colorPalette={DefaultGraphColors}
 							chartProps={{
 								animate: {
 									duration: 2000,
@@ -347,10 +333,7 @@ const Home = (props: Props) => {
 									<div className='w-11/12'>
 										<DragComponent
 											data={dragChartData}
-											colorTheme={[
-												tc.cyan.default,
-												tc.orange.default,
-											]}
+											colorTheme={DefaultGraphColors}
 											onChangeData={(
 												newData,
 												tupleData,

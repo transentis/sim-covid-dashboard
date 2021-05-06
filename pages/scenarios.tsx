@@ -1,20 +1,22 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 
-import { Slider, Tabs, Tab } from '@material-ui/core/'
+import { Slider } from '@material-ui/core/'
 import { NavigationButtons } from '../components'
 
 import BPTKApi from '@transentis/bptk-connector'
 import {
 	ButtonGroup,
 	Chart,
+	DefaultGraphColors,
 	Dropdown,
 	DropdownItem,
 	RadioButton,
 	StandardGridLayout,
 } from '@transentis/bptk-widgets'
-import { theme } from '../lib/constants/covid.dashboard.theme'
-import { transentisColors as tc } from '../lib/constants/colors'
+
+import { theme } from '../lib/covid.dashboard.theme'
+import { ScenarioMap } from '@transentis/bptk-connector/dist/types'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -65,7 +67,7 @@ interface Props {
 		reproduction_rate: [{ x: number; y: number }]
 		total_population: [{ x: number; y: number }]
 	}
-	scenarios: Array<string>
+	scenarios: Array<ScenarioMap>
 }
 
 const Scenarios = (props: Props) => {
@@ -73,12 +75,11 @@ const Scenarios = (props: Props) => {
 
 	const graphs = [['contact_rate'], ['recovered', 'deceased', 'infectious']]
 
-	const [selectedTab, setSelectedTab] = useState(0)
-	const [loading, setLoading] = useState(false)
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
 		0,
 		1499,
 	])
+
 	const [selectedGraph, setSelectedGraph] = useState<Array<string>>(graphs[0])
 	const [graphData, setGraphData] = useState<any>(data)
 
@@ -89,7 +90,9 @@ const Scenarios = (props: Props) => {
 	}, [scenario])
 
 	const requestData = async () => {
-		const requestedData = await bptkApi.requestModel(defaultModel(scenario))
+		const requestedData = await bptkApi.requestModel(
+			defaultModel(scenario.name),
+		)
 
 		if (!requestedData) {
 			return
@@ -106,31 +109,6 @@ const Scenarios = (props: Props) => {
 		setSelectedGraph(graphs[index])
 	}
 
-	const handleSelectTab = (event: any, index: number): void => {
-		setSelectedTab(index)
-	}
-
-	const TabPanel = (props: {
-		children?: ReactNode
-		index: any
-		value: any
-	}) => {
-		const { children, value, index, ...other } = props
-
-		return (
-			<div
-				className='p-4'
-				role='tabpanel'
-				hidden={value !== index}
-				id={`simple-tabpanel-${index}`}
-				aria-labelledby={`simple-tab-${index}`}
-				{...other}
-			>
-				{value === index && <p className='text-base'>{children}</p>}
-			</div>
-		)
-	}
-
 	return (
 		<div className='min-h-screen w-full bg-bg'>
 			<Head>
@@ -139,7 +117,7 @@ const Scenarios = (props: Props) => {
 			</Head>
 			<div className='overflow-hidden h-full'>
 				<StandardGridLayout
-					dashboardTitle={`COVID-19 Scenarios: ${scenario}`}
+					dashboardTitle={`COVID-19 Scenarios: ${scenario.displayName}`}
 					graphTitle={selectedGraph[0]
 						.toUpperCase()
 						.replace('_', ' ')}
@@ -148,14 +126,7 @@ const Scenarios = (props: Props) => {
 							<Chart
 								type={'AREA'}
 								theme={theme}
-								colorPalette={[
-									tc.cyan.default,
-									tc.orange.default,
-									tc.cyan.light,
-									tc.orange.light,
-									tc.cyan.dark,
-									tc.orange.dark,
-								]}
+								colorPalette={DefaultGraphColors}
 								chartProps={{
 									animate: {
 										duration: 2000,
@@ -209,11 +180,11 @@ const Scenarios = (props: Props) => {
 						</>
 					}
 					graphTabsComponent={
-						<div className='flex flex-row justify-center items-center'>
-							<Dropdown color='accent' name='Scenarios'>
+						<div className='flex flex-row justify-center items-center text-cyan-dark'>
+							<Dropdown color='accent' name='Scenarios' hover>
 								{scenarios.map((scenario, index) => (
 									<DropdownItem
-										name={scenario}
+										name={scenario.displayName}
 										onClick={() => setScenario(scenario)}
 										key={index}
 									></DropdownItem>
@@ -236,76 +207,15 @@ const Scenarios = (props: Props) => {
 							</div>
 						</div>
 					}
+					titleSidePanelComponent={
+						<div className='prose flex items-center text-center'>
+							<h1>Description</h1>
+						</div>
+					}
 					sidePanelComponent={
-						<>
-							<Tabs
-								value={selectedTab}
-								onChange={handleSelectTab}
-								indicatorColor='primary'
-								textColor='inherit'
-								className='m-3'
-								centered
-							>
-								<Tab label='intro' id='intro' />
-								<Tab label='assumptions' id='assumptions' />
-							</Tabs>
-							<TabPanel value={selectedTab} index={0}>
-								Whenever you need to make predictions about
-								complex situations you have little prior
-								experience with, models and simulations are a
-								good starting point to explore the situation and
-								to make qualitative and quantitative predictions
-								about how the situation may develop. Play with
-								our COVID-19 simulation and see how social
-								distancing can slow the spreading of the virus.
-							</TabPanel>
-							<TabPanel value={selectedTab} index={1}>
-								The implementation here is roughly calibrated to
-								the situation in Germany at the beginning of the
-								pandemic, around the end of March 2020. It
-								illustrates the effects of social distancing in
-								achieving the objective of keeping the strain on
-								the health care system as small as possible.
-								<br />
-								<ul>
-									<li>
-										<b>Contact Rate:</b> 20 persons. Defines
-										how many people a person encounters per
-										day in average.
-									</li>
-									<li>
-										<b>Infectivity:</b> 2%. Defines the
-										probability that a person becomes
-										infected after contact with an
-										infectious person.
-									</li>
-									<li>
-										<b>Duration.</b> Defines how long an
-										infective person remains contagious
-									</li>
-									<li>
-										<b>Population.</b> The susceptible
-										population starts at 80 Mio., the
-										infectious population starts at 120
-										persons.
-									</li>
-									<li>
-										<b>Intensive Care Needed:</b> 0.2%.
-										Measures the number of infected people
-										who need intensive care.
-									</li>
-									<li>
-										<b>Intensive Care Available:</b> 30,000
-										units. The number of intensive care
-										units available.
-									</li>
-								</ul>
-								With the above settings, this means we have a
-								contact number of 8 in the base settings. The
-								contact number is the product of contact rate,
-								infectivity and duration.
-							</TabPanel>
-						</>
+						<div className='prose'>
+							<p>{scenario.description}</p>
+						</div>
 					}
 				></StandardGridLayout>
 			</div>
@@ -315,7 +225,10 @@ const Scenarios = (props: Props) => {
 }
 
 export const getStaticProps = async () => {
+	const dashboardConfig = await import('../lib/dashboard.config.json')
+
 	const scenarios = await bptkApi.getScenarios()
+	const mappedScenarios = bptkApi.scenarioEncoder(scenarios, dashboardConfig)
 	const requestedData = await bptkApi.requestModel(defaultModel(scenarios[0]))
 
 	if (!requestedData) {
@@ -329,7 +242,7 @@ export const getStaticProps = async () => {
 	return {
 		props: {
 			data: data,
-			scenarios: scenarios,
+			scenarios: mappedScenarios,
 		},
 	}
 }
