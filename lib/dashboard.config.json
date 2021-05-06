@@ -1,0 +1,22 @@
+{
+	"scenarios": {
+		"blacklist": ["smCovid simulation model_base", "smSir_dashboard"],
+		"whitelist": [
+			{
+				"name": "smSir_base",
+				"displayName": "Base Case",
+				"description": "Sample Description of the Strong Social Distancing Scenario"
+			},
+			{
+				"name": "smSir_strong_social_distancing",
+				"displayName": "Strong Social Distancing",
+				"description": "Sample Description of the Strong Social Distancing Scenario"
+			},
+			{
+				"name": "smSir_weak_social_distancing",
+				"displayName": "Weak Social Distancing",
+				"description": "Sample Description of the Weak Social Distancing Model"
+			}
+		]
+	}
+}

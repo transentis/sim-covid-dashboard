@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import { Slider } from '@material-ui/core/'
@@ -15,7 +15,8 @@ import {
 	StandardGridLayout,
 	Tabs,
 } from '@transentis/bptk-widgets'
-import { theme } from '../lib/constants/covid.dashboard.theme'
+
+import { theme } from '../lib/covid.dashboard.theme'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -66,7 +67,7 @@ interface Props {
 		reproduction_rate: [{ x: number; y: number }]
 		total_population: [{ x: number; y: number }]
 	}
-	scenarios: Array<string>
+	scenarios: Array<ScenarioMap>
 }
 
 const Scenarios = (props: Props) => {
@@ -89,7 +90,9 @@ const Scenarios = (props: Props) => {
 	}, [scenario])
 
 	const requestData = async () => {
-		const requestedData = await bptkApi.requestModel(defaultModel(scenario))
+		const requestedData = await bptkApi.requestModel(
+			defaultModel(scenario.name),
+		)
 
 		if (!requestedData) {
 			return
@@ -114,7 +117,7 @@ const Scenarios = (props: Props) => {
 			</Head>
 			<div className='overflow-hidden h-full'>
 				<StandardGridLayout
-					dashboardTitle={`COVID-19 Scenarios: ${scenario}`}
+					dashboardTitle={`COVID-19 Scenarios: ${scenario.displayName}`}
 					graphTitle={selectedGraph[0]
 						.toUpperCase()
 						.replace('_', ' ')}
@@ -177,11 +180,11 @@ const Scenarios = (props: Props) => {
 						</>
 					}
 					graphTabsComponent={
-						<div className='flex flex-row justify-center items-center'>
-							<Dropdown color='accent' name='Scenarios'>
+						<div className='flex flex-row justify-center items-center text-cyan-dark'>
+							<Dropdown color='accent' name='Scenarios' hover>
 								{scenarios.map((scenario, index) => (
 									<DropdownItem
-										name={scenario}
+										name={scenario.displayName}
 										onClick={() => setScenario(scenario)}
 										key={index}
 									></DropdownItem>
@@ -204,76 +207,15 @@ const Scenarios = (props: Props) => {
 							</div>
 						</div>
 					}
+					titleSidePanelComponent={
+						<div className='prose flex items-center text-center'>
+							<h1>Description</h1>
+						</div>
+					}
 					sidePanelComponent={
-						<Tabs
-							buttonProps={'btn-accent'}
-							buttonGroupProps={'flex justify-center'}
-							titles={['intro', 'assumptions']}
-						>
-							<div className='m-3'>
-								<p>
-									Whenever you need to make predictions about
-									complex situations you have little prior
-									experience with, models and simulations are
-									a good starting point to explore the
-									situation and to make qualitative and
-									quantitative predictions about how the
-									situation may develop. Play with our
-									COVID-19 simulation and see how social
-									distancing can slow the spreading of the
-									virus.
-								</p>
-							</div>
-							<div className='m-3'>
-								<p>
-									The implementation here is roughly
-									calibrated to the situation in Germany at
-									the beginning of the pandemic, around the
-									end of March 2020. It illustrates the
-									effects of social distancing in achieving
-									the objective of keeping the strain on the
-									health care system as small as possible.
-									<br />
-									<ul>
-										<li>
-											<b>Contact Rate:</b> 20 persons.
-											Defines how many people a person
-											encounters per day in average.
-										</li>
-										<li>
-											<b>Infectivity:</b> 2%. Defines the
-											probability that a person becomes
-											infected after contact with an
-											infectious person.
-										</li>
-										<li>
-											<b>Duration.</b> Defines how long an
-											infective person remains contagious
-										</li>
-										<li>
-											<b>Population.</b> The susceptible
-											population starts at 80 Mio., the
-											infectious population starts at 120
-											persons.
-										</li>
-										<li>
-											<b>Intensive Care Needed:</b> 0.2%.
-											Measures the number of infected
-											people who need intensive care.
-										</li>
-										<li>
-											<b>Intensive Care Available:</b>{' '}
-											30,000 units. The number of
-											intensive care units available.
-										</li>
-									</ul>
-									With the above settings, this means we have
-									a contact number of 8 in the base settings.
-									The contact number is the product of contact
-									rate, infectivity and duration.
-								</p>
-							</div>
-						</Tabs>
+						<div className='prose'>
+							<p>{scenario.description}</p>
+						</div>
 					}
 				></StandardGridLayout>
 			</div>
@@ -282,8 +224,62 @@ const Scenarios = (props: Props) => {
 	)
 }
 
+export interface DashboardConfig {
+	scenarios: Equations
+}
+export interface Equations {
+	blacklist?: string[] | null
+	whitelist?: WhitelistEntity[] | null
+}
+export interface WhitelistEntity {
+	name: string
+	displayName: string
+	description: string
+}
+
+export interface ScenarioMap {
+	name: string
+	displayName: string
+	description: string
+}
+
+const scenarioEncoder = (
+	scenarios: string[],
+	config: DashboardConfig,
+): ScenarioMap[] => {
+	const map = scenarios
+		.filter((scenario) => {
+			if (
+				config.scenarios.blacklist &&
+				config.scenarios.blacklist.includes(scenario)
+			) {
+				return false
+			}
+
+			return true
+		})
+		.map((scenario) => {
+			return {
+				name: scenario,
+				displayName:
+					config.scenarios.whitelist?.find(
+						(item) => item.name === scenario,
+					)?.displayName || scenario,
+				description:
+					config.scenarios.whitelist?.find(
+						(item) => item.name === scenario,
+					)?.description || 'This Scenario has no Description',
+			}
+		}) as ScenarioMap[]
+	console.log(map)
+	return map
+}
+
 export const getStaticProps = async () => {
+	const dashboardConfig = await import('../lib/dashboard.config.json')
+
 	const scenarios = await bptkApi.getScenarios()
+	const mappedScenarios = scenarioEncoder(scenarios, dashboardConfig)
 	const requestedData = await bptkApi.requestModel(defaultModel(scenarios[0]))
 
 	if (!requestedData) {
@@ -297,7 +293,7 @@ export const getStaticProps = async () => {
 	return {
 		props: {
 			data: data,
-			scenarios: scenarios,
+			scenarios: mappedScenarios,
 		},
 	}
 }

@@ -19,7 +19,7 @@ import {
 	DefaultGraphColors,
 } from '@transentis/bptk-widgets'
 
-import { theme } from '../lib/constants/covid.dashboard.theme'
+import { theme } from '../lib/covid.dashboard.theme'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
