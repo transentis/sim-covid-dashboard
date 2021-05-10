@@ -1,20 +1,22 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 
-import { Slider, Tabs, Tab } from '@material-ui/core/'
+import { Slider } from '@material-ui/core/'
 import { NavigationButtons } from '../components'
 
 import BPTKApi from '@transentis/bptk-connector'
 import {
 	ButtonGroup,
-	Card,
 	Chart,
+	DefaultGraphColors,
 	Dropdown,
 	DropdownItem,
 	RadioButton,
+	StandardGridLayout,
 } from '@transentis/bptk-widgets'
-import { theme } from '../lib/constants/covid.dashboard.theme'
-import { transentisColors as tc } from '../lib/constants/colors'
+
+import { theme } from '../lib/covid.dashboard.theme'
+import { ScenarioMap } from '@transentis/bptk-connector/dist/types'
 
 const bptkApi = new BPTKApi('MY API KEY')
 
@@ -65,7 +67,7 @@ interface Props {
 		reproduction_rate: [{ x: number; y: number }]
 		total_population: [{ x: number; y: number }]
 	}
-	scenarios: Array<string>
+	scenarios: Array<ScenarioMap>
 }
 
 const Scenarios = (props: Props) => {
@@ -73,12 +75,11 @@ const Scenarios = (props: Props) => {
 
 	const graphs = [['contact_rate'], ['recovered', 'deceased', 'infectious']]
 
-	const [selectedTab, setSelectedTab] = useState(0)
-	const [loading, setLoading] = useState(false)
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
 		0,
 		1499,
 	])
+
 	const [selectedGraph, setSelectedGraph] = useState<Array<string>>(graphs[0])
 	const [graphData, setGraphData] = useState<any>(data)
 
@@ -89,7 +90,9 @@ const Scenarios = (props: Props) => {
 	}, [scenario])
 
 	const requestData = async () => {
-		const requestedData = await bptkApi.requestModel(defaultModel(scenario))
+		const requestedData = await bptkApi.requestModel(
+			defaultModel(scenario.name),
+		)
 
 		if (!requestedData) {
 			return
@@ -106,246 +109,115 @@ const Scenarios = (props: Props) => {
 		setSelectedGraph(graphs[index])
 	}
 
-	const handleSelectTab = (event: any, index: number): void => {
-		setSelectedTab(index)
-	}
-
-	const TabPanel = (props: {
-		children?: ReactNode
-		index: any
-		value: any
-	}) => {
-		const { children, value, index, ...other } = props
-
-		return (
-			<div
-				className='p-4'
-				role='tabpanel'
-				hidden={value !== index}
-				id={`simple-tabpanel-${index}`}
-				aria-labelledby={`simple-tab-${index}`}
-				{...other}
-			>
-				{value === index && <p className='text-base'>{children}</p>}
-			</div>
-		)
-	}
-
 	return (
 		<div className='min-h-screen w-full bg-bg'>
 			<Head>
 				<title>COVID-19 Scenarios</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<div className='overflow-hidden bg-bg h-full'>
-				<div className='grid gap-4 p-3 grid-cols-2 lg:grid-cols-3 h-full'>
-					<div className='col-span-2 lg:col-span-3'>
-						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center items-center'>
-							<div className=''>
-								<p className='text-5xl p-4'>{`COVID-19 Scenarios: ${scenario}`}</p>
-							</div>
-						</Card>
-					</div>
-					<div className='col-span-2'>
-						<div className='bg-bg-paper w-full h-full'>
-							<div className='flex flex-row justify-center items-center'>
-								<Dropdown color='accent' name='Scenarios'>
-									{scenarios.map((scenario, index) => (
-										<DropdownItem
-											name={scenario}
-											onClick={() =>
-												setScenario(scenario)
+			<div className='overflow-hidden h-full'>
+				<StandardGridLayout
+					dashboardTitle={`COVID-19 Scenarios: ${scenario.displayName}`}
+					graphTitle={selectedGraph[0]
+						.toUpperCase()
+						.replace('_', ' ')}
+					graphComponent={
+						<div className='p-2'>
+							<Chart
+								type={'AREA'}
+								theme={theme}
+								colorPalette={DefaultGraphColors}
+								chartProps={{
+									animate: {
+										duration: 2000,
+										onLoad: {
+											duration: 1000,
+										},
+									},
+									data: [
+										...selectedGraph.map((graphName) =>
+											graphData[graphName].slice(
+												rangeSliderRange[0],
+												rangeSliderRange[1],
+											),
+										),
+									],
+								}}
+								size={{
+									width: 1200,
+									height: 450,
+								}}
+								labeling={{
+									x: 'days after pandemic outbreak',
+									y: 'population',
+								}}
+								legend={{
+									outline: 'none',
+									names: [
+										...selectedGraph.map((graphName) => {
+											return {
+												name: graphName,
+												color: 'green',
 											}
-											key={index}
-										></DropdownItem>
-									))}
-								</Dropdown>
-								<div className='p-4'>
-									<ButtonGroup>
-										<RadioButton
-											onClick={() => handleGraphChange(0)}
-										>
-											Contact Rate
-										</RadioButton>
-										<RadioButton
-											onClick={() => handleGraphChange(1)}
-										>
-											Indicators
-										</RadioButton>
-									</ButtonGroup>
-								</div>
+										}),
+									],
+									x: 900,
+									y: 250,
+								}}
+							></Chart>
+						</div>
+					}
+					graphSettingComponent={
+						<>
+							<p>Visualization Range</p>
+							<Slider
+								value={rangeSliderRange}
+								onChange={handleSliderChange}
+								valueLabelDisplay='auto'
+								min={0}
+								max={1499}
+							/>
+						</>
+					}
+					graphTabsComponent={
+						<div className='flex flex-row justify-center items-center text-cyan-dark'>
+							<Dropdown color='accent' name='Scenarios' hover>
+								{scenarios.map((scenario, index) => (
+									<DropdownItem
+										name={scenario.displayName}
+										onClick={() => setScenario(scenario)}
+										key={index}
+									></DropdownItem>
+								))}
+							</Dropdown>
+							<div className='p-4'>
+								<ButtonGroup>
+									<RadioButton
+										onClick={() => handleGraphChange(0)}
+										checked={true}
+									>
+										Contact Rate
+									</RadioButton>
+									<RadioButton
+										onClick={() => handleGraphChange(1)}
+									>
+										Indicators
+									</RadioButton>
+								</ButtonGroup>
 							</div>
 						</div>
-					</div>
-					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
-						<Card className='bg-bg-paper w-full h-full'>
-							<div></div>
-						</Card>
-					</div>
-					<div className='col-span-2'>
-						<Card className=' bg-bg-paper w-full h-full'>
-							<div className='flex flex-col justify-center items-center'>
-								<p className='text-4xl p-4'>
-									{selectedGraph[0]
-										.toUpperCase()
-										.replace('_', ' ')}
-								</p>
-								<div className='p-2'>
-									<Chart
-										type={'AREA'}
-										theme={theme}
-										colorPalette={[
-											tc.cyan.default,
-											tc.orange.default,
-											tc.cyan.light,
-											tc.orange.light,
-											tc.cyan.dark,
-											tc.orange.dark,
-										]}
-										chartProps={{
-											animate: {
-												duration: 2000,
-												onLoad: {
-													duration: 1000,
-												},
-											},
-											data: [
-												...selectedGraph.map(
-													(graphName) =>
-														graphData[
-															graphName
-														].slice(
-															rangeSliderRange[0],
-															rangeSliderRange[1],
-														),
-												),
-											],
-										}}
-										size={{
-											width: 1200,
-											height: 450,
-										}}
-										labeling={{
-											x: 'days after pandemic outbreak',
-											y: 'population',
-										}}
-										legend={{
-											outline: 'none',
-											names: [
-												...selectedGraph.map(
-													(graphName) => {
-														return {
-															name: graphName,
-															color: 'green',
-														}
-													},
-												),
-											],
-											x: 900,
-											y: 250,
-										}}
-									></Chart>
-								</div>
-								<div className='w-11/12 p-2'>
-									<p>Visualization Range</p>
-									<Slider
-										value={rangeSliderRange}
-										onChange={handleSliderChange}
-										valueLabelDisplay='auto'
-										min={0}
-										max={1499}
-									/>
-								</div>
-							</div>
-						</Card>
-					</div>
-					<div className='col-span-2 lg:col-span-1'>
-						<Card className='bg-bg-paper w-full h-full'>
-							<div className='p-3'>
-								<Tabs
-									value={selectedTab}
-									onChange={handleSelectTab}
-									indicatorColor='primary'
-									textColor='inherit'
-									className='m-3'
-									centered
-								>
-									<Tab label='intro' id='intro' />
-									<Tab label='assumptions' id='assumptions' />
-								</Tabs>
-								<TabPanel value={selectedTab} index={0}>
-									Whenever you need to make predictions about
-									complex situations you have little prior
-									experience with, models and simulations are
-									a good starting point to explore the
-									situation and to make qualitative and
-									quantitative predictions about how the
-									situation may develop. Play with our
-									COVID-19 simulation and see how social
-									distancing can slow the spreading of the
-									virus.
-								</TabPanel>
-								<TabPanel value={selectedTab} index={1}>
-									The implementation here is roughly
-									calibrated to the situation in Germany at
-									the beginning of the pandemic, around the
-									end of March 2020. It illustrates the
-									effects of social distancing in achieving
-									the objective of keeping the strain on the
-									health care system as small as possible.
-									<br />
-									<ul>
-										<li>
-											<b>Contact Rate:</b> 20 persons.
-											Defines how many people a person
-											encounters per day in average.
-										</li>
-										<li>
-											<b>Infectivity:</b> 2%. Defines the
-											probability that a person becomes
-											infected after contact with an
-											infectious person.
-										</li>
-										<li>
-											<b>Duration.</b> Defines how long an
-											infective person remains contagious
-										</li>
-										<li>
-											<b>Population.</b> The susceptible
-											population starts at 80 Mio., the
-											infectious population starts at 120
-											persons.
-										</li>
-										<li>
-											<b>Intensive Care Needed:</b> 0.2%.
-											Measures the number of infected
-											people who need intensive care.
-										</li>
-										<li>
-											<b>Intensive Care Available:</b>{' '}
-											30,000 units. The number of
-											intensive care units available.
-										</li>
-									</ul>
-									With the above settings, this means we have
-									a contact number of 8 in the base settings.
-									The contact number is the product of contact
-									rate, infectivity and duration.
-								</TabPanel>
-							</div>
-						</Card>
-					</div>
-					<div className='col-span-2'>
-						<Card className='bg-bg-paper w-full h-full flex flex-col justify-center'>
-							<div></div>
-						</Card>
-					</div>
-					<div className='col-span-2 hidden lg:flex lg:col-span-1'>
-						<Card className='bg-bg-paper w-full h-full'>
-							<div></div>
-						</Card>
-					</div>
-				</div>
+					}
+					titleSidePanelComponent={
+						<div className='prose flex items-center text-center'>
+							<h1>Description</h1>
+						</div>
+					}
+					sidePanelComponent={
+						<div className='prose'>
+							<p>{scenario.description}</p>
+						</div>
+					}
+				></StandardGridLayout>
 			</div>
 			<NavigationButtons page={1}></NavigationButtons>
 		</div>
@@ -353,7 +225,10 @@ const Scenarios = (props: Props) => {
 }
 
 export const getStaticProps = async () => {
+	const dashboardConfig = await import('../lib/dashboard.config.json')
+
 	const scenarios = await bptkApi.getScenarios()
+	const mappedScenarios = bptkApi.scenarioEncoder(scenarios, dashboardConfig)
 	const requestedData = await bptkApi.requestModel(defaultModel(scenarios[0]))
 
 	if (!requestedData) {
@@ -367,7 +242,7 @@ export const getStaticProps = async () => {
 	return {
 		props: {
 			data: data,
-			scenarios: scenarios,
+			scenarios: mappedScenarios,
 		},
 	}
 }
