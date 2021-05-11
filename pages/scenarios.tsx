@@ -18,7 +18,10 @@ import {
 import { theme } from '../lib/covid.dashboard.theme'
 import { ScenarioMap } from '@transentis/bptk-connector/dist/types'
 
-const bptkApi = new BPTKApi('MY API KEY')
+const bptkApi = new BPTKApi({
+	backendUrl: 'https://api.transentis.com/bptk/transentis/covid-sim',
+	apiKey: 'MY API KEY',
+})
 
 const defaultModel = (scenario: string) => ({
 	scenario_managers: ['smSir'],
