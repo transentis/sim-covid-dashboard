@@ -35,33 +35,7 @@ const defaultModel = (scenario: string) => ({
 		'intensive_needed',
 		'intensive_available',
 	],
-	settings: {
-		smSir: {
-			dashboard: {
-				constants: {},
-				points: {
-					contact_rate_table: [
-						[0, 20],
-						[100, 20],
-						[200, 20],
-						[300, 20],
-						[400, 20],
-						[500, 20],
-						[600, 20],
-						[700, 20],
-						[800, 20],
-						[900, 20],
-						[1000, 20],
-						[1100, 20],
-						[1200, 20],
-						[1300, 20],
-						[1400, 20],
-						[1500, 20],
-					],
-				},
-			},
-		},
-	},
+	settings: {},
 })
 
 interface Props {
@@ -79,8 +53,7 @@ const Scenarios = (props: Props) => {
 	const graphs = [['contact_rate'], ['recovered', 'deceased', 'infectious']]
 
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
-		0,
-		1499,
+		0, 1499,
 	])
 
 	const [selectedGraph, setSelectedGraph] = useState<Array<string>>(graphs[0])
@@ -96,6 +69,8 @@ const Scenarios = (props: Props) => {
 		const requestedData = await bptkApi.requestModel(
 			defaultModel(scenario.name),
 		)
+
+		console.log(requestedData)
 
 		if (!requestedData) {
 			return
