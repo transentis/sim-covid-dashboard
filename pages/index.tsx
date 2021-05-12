@@ -72,22 +72,7 @@ const defaultModel = {
 }
 
 const defaultDragComponentState = [
-	20,
-	20,
-	20,
-	20,
-	20,
-	20,
-	20,
-	20,
-	20,
-	20,
-	20,
-	20,
-	20,
-	20,
-	20,
-	20,
+	20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
 ]
 
 interface Props {
@@ -109,8 +94,7 @@ const Home = (props: Props) => {
 	]
 
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
-		0,
-		1499,
+		0, 1499,
 	])
 	const [selectedGraph, setSelectedGraph] = useState<Array<string>>(graphs[0])
 	const [graphData, setGraphData] = useState<any>(data)
@@ -141,7 +125,7 @@ const Home = (props: Props) => {
 	}
 
 	return (
-		<div className='min-h-screen w-full bg-bg'>
+		<div>
 			<Head>
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
@@ -365,7 +349,8 @@ const Home = (props: Props) => {
 																		.constants,
 																},
 																points: {
-																	contact_rate_table: tupleData,
+																	contact_rate_table:
+																		tupleData,
 																},
 															},
 														},
@@ -391,7 +376,6 @@ const Home = (props: Props) => {
 					}
 				></StandardGridLayout>
 			</div>
-			<NavigationButtons page={0} />
 		</div>
 	)
 }

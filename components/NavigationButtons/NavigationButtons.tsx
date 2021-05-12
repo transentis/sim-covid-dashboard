@@ -1,23 +1,34 @@
 import React, { FC } from 'react'
-import Link from 'next/link'
-import { ButtonGroup, RadioButton } from '@transentis/bptk-widgets'
+import { useRouter } from 'next/router'
+import {
+	ButtonGroup,
+	RadioButton,
+	HoverMenu,
+	HoverMenuItem,
+} from '@transentis/bptk-widgets'
 
 interface Props {
 	page?: number
 }
 
 const NavigationButtons: FC<Props> = ({ page }) => {
+	const router = useRouter()
+
+	const handleChange = (index: number) => {
+		if (index === 0) {
+			router.push('/')
+		} else {
+			router.push('/scenarios')
+		}
+	}
 	return (
-		<div className='prose fixed left-1/2 bottom-5 inline-flex transform -translate-x-1/2'>
-			<ButtonGroup>
-				<Link href='/'>
-					<RadioButton checked={page === 0}>Dashboard</RadioButton>
-				</Link>
-				<Link href='/scenarios'>
-					<RadioButton checked={page === 1}>Scenarios</RadioButton>
-				</Link>
-			</ButtonGroup>
-		</div>
+		<HoverMenu
+			className={'fixed left-1/2 bottom-12 transform -translate-x-1/2'}
+			onChange={handleChange}
+		>
+			<HoverMenuItem name={'Dashboard'}></HoverMenuItem>
+			<HoverMenuItem name={'Scenarios'}></HoverMenuItem>
+		</HoverMenu>
 	)
 }
 
