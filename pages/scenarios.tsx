@@ -197,7 +197,6 @@ const Scenarios = (props: Props) => {
 					}
 				></StandardGridLayout>
 			</div>
-			<NavigationButtons page={1}></NavigationButtons>
 		</div>
 	)
 }
