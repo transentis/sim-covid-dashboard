@@ -8,6 +8,7 @@ import BPTKApi from '@transentis/bptk-connector'
 import {
 	ButtonGroup,
 	Chart,
+	DefaultChartTheme,
 	DefaultGraphColors,
 	Dropdown,
 	DropdownItem,
@@ -16,7 +17,6 @@ import {
 	ThemeSwitcher,
 } from '@transentis/bptk-widgets'
 
-import { theme } from '../lib/covid.dashboard.theme'
 import { ScenarioMap } from '@transentis/bptk-connector/dist/types'
 
 const bptkApi = new BPTKApi({
@@ -111,7 +111,7 @@ const Scenarios = (props: Props) => {
 						<div className='p-2'>
 							<Chart
 								type={'AREA'}
-								theme={theme}
+								theme={DefaultChartTheme}
 								colorPalette={DefaultGraphColors}
 								chartProps={{
 									animate: {

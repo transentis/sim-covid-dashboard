@@ -18,9 +18,8 @@ import {
 	DefaultGraphColors,
 	DoubleRangeSlider as Slider,
 	ThemeSwitcher,
+	DefaultChartTheme,
 } from '@transentis/bptk-widgets'
-
-import { theme } from '../lib/covid.dashboard.theme'
 
 const bptkApi = new BPTKApi({
 	backendUrl: 'https://api.transentis.com/bptk/transentis/covid-sim',
@@ -161,7 +160,7 @@ const Home = (props: Props) => {
 					graphComponent={
 						<Chart
 							type={'AREA'}
-							theme={theme}
+							theme={DefaultChartTheme}
 							colorPalette={DefaultGraphColors}
 							chartProps={{
 								animate: {
