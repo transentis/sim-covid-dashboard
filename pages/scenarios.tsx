@@ -78,8 +78,6 @@ const Scenarios = (props: Props) => {
 			defaultModel(scenario.name),
 		)
 
-		console.log(requestedData)
-
 		if (!requestedData) {
 			return
 		}
