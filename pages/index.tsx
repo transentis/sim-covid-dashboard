@@ -128,7 +128,7 @@ const Home = (props: Props) => {
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<div className='overflow-hidden bg-bg h-full'>
+			<div className='overflow-hidden h-full'>
 				<StandardGridLayout
 					dashboardTitle={'COVID-19 Simulation'}
 					graphTabsComponent={

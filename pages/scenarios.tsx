@@ -96,7 +96,7 @@ const Scenarios = (props: Props) => {
 	}
 
 	return (
-		<div className='min-h-screen w-full bg-bg'>
+		<div className='min-h-screen w-full'>
 			<Head>
 				<title>COVID-19 Scenarios</title>
 				<link rel='icon' href='/favicon.ico' />
