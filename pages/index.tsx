@@ -55,9 +55,10 @@ const Home = (props: Props) => {
 	])
 
 	// Selected Graph
-	const [selectedGraph, setSelectedGraph] = useState<Array<string>>(
-		graphs[0].equations,
-	)
+	const [selectedGraph, setSelectedGraph] = useState<{
+		name: string
+		equations: Array<string>
+	}>(graphs[0])
 	const [graphData, setGraphData] = useState<any>(data)
 
 	const [requestBody, setRequestBody] = useState(defaultModel())
@@ -78,7 +79,7 @@ const Home = (props: Props) => {
 	}
 
 	const handleGraphChange = (index: number) => {
-		setSelectedGraph(graphs[index].equations)
+		setSelectedGraph(graphs[index])
 	}
 
 	return (
@@ -92,18 +93,14 @@ const Home = (props: Props) => {
 					dashboardTitle={'COVID-19 Simulation'}
 					graphTabsComponent={
 						<ButtonGroup>
-							<RadioButton onClick={() => handleGraphChange(0)}>
-								Population
-							</RadioButton>
-							<RadioButton onClick={() => handleGraphChange(1)}>
-								Intensive Care
-							</RadioButton>
-							<RadioButton onClick={() => handleGraphChange(2)}>
-								Indicators
-							</RadioButton>
-							<RadioButton onClick={() => handleGraphChange(3)}>
-								Contact Rate
-							</RadioButton>
+							{graphs.map((mapEquatios, index) => (
+								<RadioButton
+									onClick={() => handleGraphChange(index)}
+									checked={index === 0}
+								>
+									{mapEquatios.name}
+								</RadioButton>
+							))}
 						</ButtonGroup>
 					}
 					titleSidePanelComponent={
@@ -113,7 +110,7 @@ const Home = (props: Props) => {
 							/>
 						</div>
 					}
-					graphTitle={selectedGraph[0]
+					graphTitle={selectedGraph.name
 						.toUpperCase()
 						.replace('_', ' ')}
 					graphComponent={
@@ -129,11 +126,12 @@ const Home = (props: Props) => {
 									},
 								},
 								data: [
-									...selectedGraph.map((graphName) =>
-										graphData[graphName].slice(
-											rangeSliderRange[0],
-											rangeSliderRange[1],
-										),
+									...selectedGraph.equations.map(
+										(graphName) =>
+											graphData[graphName].slice(
+												rangeSliderRange[0],
+												rangeSliderRange[1],
+											),
 									),
 								],
 							}}
@@ -148,11 +146,13 @@ const Home = (props: Props) => {
 							legend={{
 								outline: 'none',
 								names: [
-									...selectedGraph.map((graphName) => {
-										return {
-											name: graphName,
-										}
-									}),
+									...selectedGraph.equations.map(
+										(graphName) => {
+											return {
+												name: graphName,
+											}
+										},
+									),
 								],
 								x: 900,
 								y: 250,
