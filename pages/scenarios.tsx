@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
 
 import { Slider } from '@material-ui/core/'
@@ -8,6 +8,7 @@ import BPTKApi from '@transentis/bptk-connector'
 import {
 	ButtonGroup,
 	Chart,
+	DefaultChartTheme,
 	DefaultGraphColors,
 	Dropdown,
 	DropdownItem,
@@ -16,28 +17,21 @@ import {
 	ThemeSwitcher,
 } from '@transentis/bptk-widgets'
 
-import { theme } from '../lib/covid.dashboard.theme'
 import { ScenarioMap } from '@transentis/bptk-connector/dist/types'
+import { equations } from '../lib/equations.tabs.map'
+import { defaultModel } from '../lib/btpk.models'
 
 const bptkApi = new BPTKApi({
 	backendUrl: 'https://api.transentis.com/bptk/transentis/covid-sim',
 	apiKey: 'MY API KEY',
 })
 
-const defaultModel = (scenario: string) => ({
-	scenario_managers: ['smSir'],
-	scenarios: [scenario],
-	equations: [
-		'total_population',
-		'contact_rate',
-		'infectious',
-		'recovered',
-		'deceased',
-		'intensive_needed',
-		'intensive_available',
-	],
-	settings: {},
-})
+const graphs = [
+	equations.population,
+	equations.intensiveCare,
+	equations.indicators,
+	equations.contact_rate,
+]
 
 interface Props {
 	data: {
@@ -51,27 +45,32 @@ interface Props {
 const Scenarios = (props: Props) => {
 	const { data, scenarios } = props
 
-	const graphs = [['contact_rate'], ['recovered', 'deceased', 'infectious']]
+	const isFirstRun = useRef(true)
 
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
 		0, 1499,
 	])
 
-	const [selectedGraph, setSelectedGraph] = useState<Array<string>>(graphs[0])
+	const [selectedGraph, setSelectedGraph] = useState<{
+		name: string
+		equations: Array<string>
+	}>(graphs[0])
 	const [graphData, setGraphData] = useState<any>(data)
 
 	const [scenario, setScenario] = useState(scenarios[0])
 
 	useEffect(() => {
+		if (isFirstRun.current) {
+			isFirstRun.current = false
+			return
+		}
 		requestData()
 	}, [scenario])
 
 	const requestData = async () => {
 		const requestedData = await bptkApi.requestModel(
-			defaultModel(scenario.name),
+			defaultModel(scenario.manager, scenario.name),
 		)
-
-		console.log(requestedData)
 
 		if (!requestedData) {
 			return
@@ -89,7 +88,7 @@ const Scenarios = (props: Props) => {
 	}
 
 	return (
-		<div className='min-h-screen w-full bg-bg'>
+		<div className='min-h-screen w-full'>
 			<Head>
 				<title>COVID-19 Scenarios</title>
 				<link rel='icon' href='/favicon.ico' />
@@ -97,14 +96,14 @@ const Scenarios = (props: Props) => {
 			<div className='overflow-hidden h-full'>
 				<StandardGridLayout
 					dashboardTitle={`COVID-19 Scenarios: ${scenario.displayName}`}
-					graphTitle={selectedGraph[0]
+					graphTitle={selectedGraph.name
 						.toUpperCase()
 						.replace('_', ' ')}
 					graphComponent={
 						<div className='p-2'>
 							<Chart
 								type={'AREA'}
-								theme={theme}
+								theme={DefaultChartTheme}
 								colorPalette={DefaultGraphColors}
 								chartProps={{
 									animate: {
@@ -114,11 +113,12 @@ const Scenarios = (props: Props) => {
 										},
 									},
 									data: [
-										...selectedGraph.map((graphName) =>
-											graphData[graphName].slice(
-												rangeSliderRange[0],
-												rangeSliderRange[1],
-											),
+										...selectedGraph.equations.map(
+											(graphName) =>
+												graphData[graphName].slice(
+													rangeSliderRange[0],
+													rangeSliderRange[1],
+												),
 										),
 									],
 								}}
@@ -133,12 +133,13 @@ const Scenarios = (props: Props) => {
 								legend={{
 									outline: 'none',
 									names: [
-										...selectedGraph.map((graphName) => {
-											return {
-												name: graphName,
-												color: 'green',
-											}
-										}),
+										...selectedGraph.equations.map(
+											(graphName) => {
+												return {
+													name: graphName,
+												}
+											},
+										),
 									],
 									x: 900,
 									y: 250,
@@ -171,17 +172,16 @@ const Scenarios = (props: Props) => {
 							</Dropdown>
 							<div className='p-4'>
 								<ButtonGroup>
-									<RadioButton
-										onClick={() => handleGraphChange(0)}
-										checked={true}
-									>
-										Contact Rate
-									</RadioButton>
-									<RadioButton
-										onClick={() => handleGraphChange(1)}
-									>
-										Indicators
-									</RadioButton>
+									{graphs.map((mapEquatios, index) => (
+										<RadioButton
+											onClick={() =>
+												handleGraphChange(index)
+											}
+											checked={index === 0}
+										>
+											{mapEquatios.name}
+										</RadioButton>
+									))}
 								</ButtonGroup>
 							</div>
 						</div>
@@ -209,7 +209,10 @@ export const getStaticProps = async () => {
 
 	const scenarios = await bptkApi.getScenarios()
 	const mappedScenarios = bptkApi.scenarioEncoder(scenarios, dashboardConfig)
-	const requestedData = await bptkApi.requestModel(defaultModel(scenarios[0]))
+
+	const requestedData = await bptkApi.requestModel(
+		defaultModel(mappedScenarios[0].manager, mappedScenarios[0].name),
+	)
 
 	if (!requestedData) {
 		return {

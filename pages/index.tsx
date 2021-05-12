@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Head from 'next/head'
 
 import { IconButton, Tooltip } from '@material-ui/core/'
-import { NavigationButtons } from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
 
@@ -19,91 +18,49 @@ import {
 	DefaultGraphColors,
 	DoubleRangeSlider as Slider,
 	ThemeSwitcher,
+	DefaultChartTheme,
 } from '@transentis/bptk-widgets'
 
-import { theme } from '../lib/covid.dashboard.theme'
+import { equations } from '../lib/equations.tabs.map'
+import { defaultModel } from '../lib/btpk.models'
 
 const bptkApi = new BPTKApi({
 	backendUrl: 'https://api.transentis.com/bptk/transentis/covid-sim',
 	apiKey: 'MY API KEY',
 })
 
-const defaultModel = {
-	scenario_managers: ['smSir'],
-	scenarios: ['dashboard'],
-	equations: [
-		'total_population',
-		'contact_rate',
-		'contact_number',
-		'reproduction_rate',
-		'infectious',
-		'recovered',
-		'deceased',
-		'intensive_needed',
-		'intensive_available',
-	],
-	settings: {
-		smSir: {
-			dashboard: {
-				constants: {},
-				points: {
-					contact_rate_table: [
-						[0, 20],
-						[100, 20],
-						[200, 20],
-						[300, 20],
-						[400, 20],
-						[500, 20],
-						[600, 20],
-						[700, 20],
-						[800, 20],
-						[900, 20],
-						[1000, 20],
-						[1100, 20],
-						[1200, 20],
-						[1300, 20],
-						[1400, 20],
-						[1500, 20],
-					],
-				},
-			},
-		},
-	},
-}
-
 const defaultDragComponentState = [
 	20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
 ]
 
 interface Props {
-	data: {
-		contact_rate: [{ x: number; y: number }]
-		reproduction_rate: [{ x: number; y: number }]
-		total_population: [{ x: number; y: number }]
-	}
+	data: any
 }
 
 const Home = (props: Props) => {
 	const { data } = props
 
+	console.log(data)
+
 	const graphs = [
-		['infectious', 'recovered', 'deceased'],
-		['intensive_needed', 'intensive_available'],
-		['contact_number', 'reproduction_rate'],
-		['contact_rate'],
+		equations.population,
+		equations.intensiveCare,
+		equations.indicators,
+		equations.contact_rate,
 	]
 
+	// Range for the slider for the graph
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
 		0, 1499,
 	])
-	const [selectedGraph, setSelectedGraph] = useState<Array<string>>(graphs[0])
+
+	// Selected Graph
+	const [selectedGraph, setSelectedGraph] = useState<Array<string>>(
+		graphs[0].equations,
+	)
 	const [graphData, setGraphData] = useState<any>(data)
 
-	const [dragChartData, setDragChartData] = useState(
-		defaultDragComponentState,
-	)
-
-	const [requestBody, setRequestBody] = useState(defaultModel)
+	const [requestBody, setRequestBody] = useState(defaultModel())
 
 	const requestData = async () => {
 		let requestedData: any
@@ -121,7 +78,7 @@ const Home = (props: Props) => {
 	}
 
 	const handleGraphChange = (index: number) => {
-		setSelectedGraph(graphs[index])
+		setSelectedGraph(graphs[index].equations)
 	}
 
 	return (
@@ -130,7 +87,7 @@ const Home = (props: Props) => {
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<div className='overflow-hidden bg-bg h-full'>
+			<div className='overflow-hidden h-full'>
 				<StandardGridLayout
 					dashboardTitle={'COVID-19 Simulation'}
 					graphTabsComponent={
@@ -162,7 +119,7 @@ const Home = (props: Props) => {
 					graphComponent={
 						<Chart
 							type={'AREA'}
-							theme={theme}
+							theme={DefaultChartTheme}
 							colorPalette={DefaultGraphColors}
 							chartProps={{
 								animate: {
@@ -300,8 +257,8 @@ const Home = (props: Props) => {
 								<Tooltip title={'Resets the dragchart'}>
 									<IconButton
 										onClick={() =>
-											setDragChartData(
-												defaultDragComponentState,
+											console.error(
+												'Implement new version',
 											)
 										}
 										aria-label='reset'
@@ -325,12 +282,12 @@ const Home = (props: Props) => {
 									</IconButton>
 								</Tooltip>
 							</div>
-							<p className=''>Contact Rate</p>
+							<p>Contact Rate</p>
 							<ReactResizeDetector handleWidth>
 								{({ width }) => (
 									<div className='w-11/12'>
 										<DragComponent
-											data={dragChartData}
+											data={defaultDragComponentState}
 											colorTheme={DefaultGraphColors}
 											onChangeData={(
 												newData,
@@ -356,7 +313,6 @@ const Home = (props: Props) => {
 														},
 													},
 												})
-												setDragChartData(newData)
 											}}
 											width={width ? width - 50 : 100}
 											height={100}
@@ -382,7 +338,7 @@ const Home = (props: Props) => {
 
 export const getStaticProps = async () => {
 	// Request Model Data for the Dashboard
-	const requestedData = await bptkApi.requestModel(defaultModel)
+	const requestedData = await bptkApi.requestModel(defaultModel())
 
 	// If there was a problem retreiving the Data show a not found/error page
 	if (!requestedData) {
