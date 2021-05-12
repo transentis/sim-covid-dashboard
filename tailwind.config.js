@@ -7,21 +7,6 @@ module.exports = {
 	],
 	darkMode: 'media',
 	theme: {
-		extend: {
-			typography: {
-				DEFAULT: {
-					css: {
-						color: 'white',
-						a: {
-							color: '#009696',
-							'&:hover': {
-								color: '#004b4b',
-							},
-						},
-					},
-				},
-			},
-		},
 		fontFamily: {
 			transentis: ['franklin-gothic-urw', 'sans-serif'],
 		},
