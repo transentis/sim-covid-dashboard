@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Head from 'next/head'
 
 import { IconButton, Tooltip } from '@material-ui/core/'
-import { NavigationButtons } from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
 

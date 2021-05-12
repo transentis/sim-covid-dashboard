@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
 
 import { Slider } from '@material-ui/core/'
@@ -51,6 +51,8 @@ interface Props {
 const Scenarios = (props: Props) => {
 	const { data, scenarios } = props
 
+	const isFirstRun = useRef(true)
+
 	const graphs = [['contact_rate'], ['recovered', 'deceased', 'infectious']]
 
 	const [rangeSliderRange, setRangeSliderRange] = useState<number[]>([
@@ -63,6 +65,11 @@ const Scenarios = (props: Props) => {
 	const [scenario, setScenario] = useState(scenarios[0])
 
 	useEffect(() => {
+		console.log(scenario)
+		if (isFirstRun.current) {
+			isFirstRun.current = false
+			return
+		}
 		requestData()
 	}, [scenario])
 
@@ -209,7 +216,10 @@ export const getStaticProps = async () => {
 
 	const scenarios = await bptkApi.getScenarios()
 	const mappedScenarios = bptkApi.scenarioEncoder(scenarios, dashboardConfig)
-	const requestedData = await bptkApi.requestModel(defaultModel(scenarios[0]))
+
+	const requestedData = await bptkApi.requestModel(
+		defaultModel(mappedScenarios[0].name),
+	)
 
 	if (!requestedData) {
 		return {
