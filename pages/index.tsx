@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
 
-import { IconButton, Slider, Tooltip } from '@material-ui/core/'
+import { IconButton, Tooltip } from '@material-ui/core/'
 import { NavigationButtons } from '../components'
 
 import ReactResizeDetector from 'react-resize-detector'
@@ -17,6 +17,8 @@ import {
 	StandardGridLayout,
 	Tabs,
 	DefaultGraphColors,
+	DoubleRangeSlider as Slider,
+	ThemeSwitcher,
 } from '@transentis/bptk-widgets'
 
 import { theme } from '../lib/covid.dashboard.theme'
@@ -114,7 +116,7 @@ const Home = (props: Props) => {
 		setGraphData(bptkApi.chartifyData(requestedData))
 	}
 
-	const handleSliderChange = (event: any, newValue: number | number[]) => {
+	const handleSliderChange = (newValue: number[]) => {
 		setRangeSliderRange(newValue as number[])
 	}
 
@@ -146,6 +148,13 @@ const Home = (props: Props) => {
 								Contact Rate
 							</RadioButton>
 						</ButtonGroup>
+					}
+					titleSidePanelComponent={
+						<div>
+							<ThemeSwitcher
+								themes={['transentisDark', 'transentisLight']}
+							/>
+						</div>
 					}
 					graphTitle={selectedGraph[0]
 						.toUpperCase()
@@ -196,19 +205,21 @@ const Home = (props: Props) => {
 					graphSettingComponent={
 						<>
 							<p className=''>Visualization Range</p>
-							<Slider
-								value={rangeSliderRange}
-								onChange={handleSliderChange}
-								valueLabelDisplay='auto'
-								min={0}
-								max={1499}
-							/>
+							<div className='p-4'>
+								<Slider
+									onChange={handleSliderChange}
+									min={0}
+									max={1499}
+									startMin={0}
+									startMax={1499}
+								/>
+							</div>
 						</>
 					}
 					sidePanelComponent={
 						<div className='p-3'>
 							<Tabs
-								buttonProps={'btn-accent'}
+								buttonProps={'btn-primary'}
 								buttonGroupProps={'flex justify-center'}
 								titles={['intro', 'assumptions']}
 							>

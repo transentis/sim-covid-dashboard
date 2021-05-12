@@ -13,6 +13,7 @@ import {
 	DropdownItem,
 	RadioButton,
 	StandardGridLayout,
+	ThemeSwitcher,
 } from '@transentis/bptk-widgets'
 
 import { theme } from '../lib/covid.dashboard.theme'
@@ -159,7 +160,7 @@ const Scenarios = (props: Props) => {
 					}
 					graphTabsComponent={
 						<div className='flex flex-row justify-center items-center text-cyan-dark'>
-							<Dropdown color='accent' name='Scenarios' hover>
+							<Dropdown color='primary' name='Scenarios' hover>
 								{scenarios.map((scenario, index) => (
 									<DropdownItem
 										name={scenario.displayName}
@@ -186,8 +187,10 @@ const Scenarios = (props: Props) => {
 						</div>
 					}
 					titleSidePanelComponent={
-						<div className='prose flex items-center text-center'>
-							<h1>Description</h1>
+						<div>
+							<ThemeSwitcher
+								themes={['transentisDark', 'transentisLight']}
+							/>
 						</div>
 					}
 					sidePanelComponent={
