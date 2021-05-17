@@ -161,7 +161,7 @@ const Scenarios = (props: Props) => {
 					}
 					graphTabsComponent={
 						<div className='flex flex-row justify-center items-center text-cyan-dark'>
-							<Dropdown color='primary' name='Scenarios' hover>
+							<Dropdown variant='primary' name='Scenarios' hover>
 								{scenarios.map((scenario, index) => (
 									<DropdownItem
 										name={scenario.displayName}
