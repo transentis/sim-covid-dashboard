@@ -40,8 +40,6 @@ interface Props {
 const Home = (props: Props) => {
 	const { data } = props
 
-	console.log(data)
-
 	const graphs = [
 		equations.population,
 		equations.intensiveCare,
