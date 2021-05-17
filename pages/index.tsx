@@ -27,6 +27,7 @@ import { defaultModel } from '../lib/btpk.models'
 const bptkApi = new BPTKApi({
 	backendUrl: 'https://api.transentis.com/bptk/transentis/covid-sim',
 	apiKey: 'MY API KEY',
+	trailingSlash: false,
 })
 
 const defaultDragComponentState = [
