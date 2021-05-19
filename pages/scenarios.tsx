@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
 
-import { Slider } from '@material-ui/core/'
 import { NavigationButtons } from '../components'
 
 import BPTKApi from '@transentis/bptk-connector'
@@ -15,6 +14,7 @@ import {
 	RadioButton,
 	StandardGridLayout,
 	ThemeSwitcher,
+	DoubleRangeSlider as Slider,
 } from '@transentis/bptk-widgets'
 
 import { ScenarioMap } from '@transentis/bptk-connector/dist/types'
@@ -80,7 +80,7 @@ const Scenarios = (props: Props) => {
 		setGraphData(bptkApi.chartifyData(requestedData))
 	}
 
-	const handleSliderChange = (event: any, newValue: number | number[]) => {
+	const handleSliderChange = (newValue: number[]) => {
 		setRangeSliderRange(newValue as number[])
 	}
 
@@ -150,13 +150,13 @@ const Scenarios = (props: Props) => {
 					}
 					graphSettingComponent={
 						<>
-							<p>Visualization Range</p>
+							<p className=''>Visualization Range</p>
 							<Slider
-								value={rangeSliderRange}
 								onChange={handleSliderChange}
-								valueLabelDisplay='auto'
 								min={0}
 								max={1499}
+								startMin={0}
+								startMax={1499}
 							/>
 						</>
 					}

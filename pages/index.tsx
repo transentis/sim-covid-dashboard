@@ -161,15 +161,13 @@ const Home = (props: Props) => {
 					graphSettingComponent={
 						<>
 							<p className=''>Visualization Range</p>
-							<div className='p-4'>
-								<Slider
-									onChange={handleSliderChange}
-									min={0}
-									max={1499}
-									startMin={0}
-									startMax={1499}
-								/>
-							</div>
+							<Slider
+								onChange={handleSliderChange}
+								min={0}
+								max={1499}
+								startMin={0}
+								startMax={1499}
+							/>
 						</>
 					}
 					sidePanelComponent={
@@ -255,6 +253,7 @@ const Home = (props: Props) => {
 							<div className='absolute right-2 top-2'>
 								<Tooltip title={'Resets the dragchart'}>
 									<IconButton
+										style={{ color: '#009696' }}
 										onClick={() =>
 											console.error(
 												'Implement new version',
@@ -272,6 +271,7 @@ const Home = (props: Props) => {
 									}
 								>
 									<IconButton
+										style={{ color: '#009696' }}
 										onClick={() => {
 											requestData()
 										}}
@@ -282,51 +282,42 @@ const Home = (props: Props) => {
 								</Tooltip>
 							</div>
 							<p>Contact Rate</p>
-							<ReactResizeDetector handleWidth>
-								{({ width }) => (
-									<div className='w-11/12'>
-										<DragComponent
-											data={defaultDragComponentState}
-											colorTheme={DefaultGraphColors}
-											onChangeData={(
-												newData,
-												tupleData,
-											) => {
-												setRequestBody({
-													...requestBody,
-													settings: {
-														smSir: {
-															dashboard: {
-																constants: {
-																	...requestBody
-																		.settings
-																		.smSir
-																		.dashboard
-																		.constants,
-																},
-																points: {
-																	contact_rate_table:
-																		tupleData,
-																},
-															},
+
+							<div className='w-11/12'>
+								<DragComponent
+									data={defaultDragComponentState}
+									colorTheme={DefaultGraphColors}
+									onChangeData={(newData, tupleData) => {
+										setRequestBody({
+											...requestBody,
+											settings: {
+												smSir: {
+													dashboard: {
+														constants: {
+															...requestBody
+																.settings.smSir
+																.dashboard
+																.constants,
+														},
+														points: {
+															contact_rate_table:
+																tupleData,
 														},
 													},
-												})
-											}}
-											width={width ? width - 50 : 100}
-											height={100}
-											margin={{
-												top: 20,
-												right: 20,
-												bottom: -20,
-												left: 20,
-											}}
-											maxValue={40}
-											xSteps={100}
-										/>
-									</div>
-								)}
-							</ReactResizeDetector>
+												},
+											},
+										})
+									}}
+									margin={{
+										top: 20,
+										right: 20,
+										bottom: -20,
+										left: 20,
+									}}
+									maxValue={40}
+									xSteps={100}
+								/>
+							</div>
 						</div>
 					}
 				></StandardGridLayout>
