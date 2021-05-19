@@ -23,7 +23,7 @@ import { equations } from '../lib/equations.tabs.map'
 import { defaultModel } from '../lib/btpk.models'
 
 const bptkApi = new BPTKApi({
-	backendUrl: process.env.BACKEND_URL,
+	backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
 	apiKey: 'MY API KEY',
 	trailingSlash: false,
 })
@@ -37,6 +37,8 @@ interface Props {
 }
 
 const Home = (props: Props) => {
+	console.log(process.env.NEXT_PUBLIC_BACKEND_URL)
+
 	const { data } = props
 
 	const graphs = [
