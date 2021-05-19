@@ -22,7 +22,7 @@ import { equations } from '../lib/equations.tabs.map'
 import { defaultModel } from '../lib/btpk.models'
 
 const bptkApi = new BPTKApi({
-	backendUrl: 'https://api.transentis.com/bptk/transentis/covid-sim',
+	backendUrl: process.env.BACKEND_URL,
 	apiKey: 'MY API KEY',
 	trailingSlash: false,
 })

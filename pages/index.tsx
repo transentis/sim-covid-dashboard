@@ -3,8 +3,6 @@ import Head from 'next/head'
 
 import { IconButton, Tooltip } from '@material-ui/core/'
 
-import ReactResizeDetector from 'react-resize-detector'
-
 import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
@@ -25,7 +23,7 @@ import { equations } from '../lib/equations.tabs.map'
 import { defaultModel } from '../lib/btpk.models'
 
 const bptkApi = new BPTKApi({
-	backendUrl: 'https://api.transentis.com/bptk/transentis/covid-sim',
+	backendUrl: process.env.BACKEND_URL,
 	apiKey: 'MY API KEY',
 	trailingSlash: false,
 })
