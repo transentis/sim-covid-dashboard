@@ -80,7 +80,7 @@ const Scenarios = (props: Props) => {
 		setGraphData(bptkApi.chartifyData(requestedData))
 	}
 
-	const handleSliderChange = (event: any, newValue: number | number[]) => {
+	const handleSliderChange = (newValue: number[]) => {
 		setRangeSliderRange(newValue as number[])
 	}
 
