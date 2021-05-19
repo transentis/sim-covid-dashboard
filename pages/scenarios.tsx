@@ -196,6 +196,7 @@ const Scenarios = (props: Props) => {
 					}
 					sidePanelComponent={
 						<div className='prose'>
+							<h1>{scenario.displayName}</h1>
 							<p>{scenario.description}</p>
 						</div>
 					}
