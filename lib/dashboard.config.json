@@ -5,17 +5,22 @@
 			{
 				"name": "base",
 				"displayName": "Base Case",
-				"description": "Sample Description of the Strong Social Distancing Scenario"
+				"description": "The base case assumes an average daily contact rate of 20 persons - the typical behaviour we saw in pre-pandemic times. In this case, the pandemic spreads very quickly and the entire population is infected in under 100 days. The health system reaches its limits, because there are not enough intensive care units available."
 			},
 			{
 				"name": "strong_social_distancing",
 				"displayName": "Strong Social Distancing",
-				"description": "Sample Description of the Strong Social Distancing Scenario"
+				"description": "In this scenario, social distancing is implemented fast and reduced just to 2 person a day for a long period of time. But again this just delays the pandemic and we see a peak similar to the base case, but much later. The health system reaches its limits, because there are not enough intensive care units available."
 			},
 			{
 				"name": "weak_social_distancing",
 				"displayName": "Weak Social Distancing",
-				"description": "Sample Description of the Weak Social Distancing Model"
+				"description": "In this scenario, social distancing measures are set up but are only held for a short period of time - though this reduces the outbreak in the short run, the pandemic is only delayed and we see the same peak as in the base case … but a few months later. The health system reaches its limits, because there are not enough intensive care units available"
+			},
+			{
+				"name": "avoid_the_peak",
+				"displayName": "Avoid the Peak",
+				"description": "In this scenario we introduce strong social distancing initially, but then slowly easy the measures, allowing more and more contacts. Although we don’t avoid the pandemic, we ensure that the health care system is not overburdened by flattening the peak."
 			}
 		]
 	}
