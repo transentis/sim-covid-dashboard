@@ -253,6 +253,7 @@ const Home = (props: Props) => {
 							<div className='absolute right-2 top-2'>
 								<Tooltip title={'Resets the dragchart'}>
 									<IconButton
+										style={{ color: '#009696' }}
 										onClick={() =>
 											console.error(
 												'Implement new version',
@@ -270,6 +271,7 @@ const Home = (props: Props) => {
 									}
 								>
 									<IconButton
+										style={{ color: '#009696' }}
 										onClick={() => {
 											requestData()
 										}}
