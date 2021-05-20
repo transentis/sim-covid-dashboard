@@ -82,7 +82,7 @@ const Home = (props: Props) => {
 	}
 
 	return (
-		<div>
+		<div className='text-base-content'>
 			<Head>
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
