@@ -23,7 +23,6 @@ import {
 
 import { equations } from '../lib/equations.tabs.map'
 import { defaultModel } from '../lib/btpk.models'
-import { hsl } from 'd3-color'
 
 const bptkApi = new BPTKApi({
 	backendUrl: 'https://api.transentis.com/bptk/transentis/covid-sim',
@@ -189,28 +188,43 @@ const Home = (props: Props) => {
 										about how the situation may develop.
 										This COVID-19 simulation presented here
 										was developed by{' '}
-										<a href='https://www.transentis.com'>
+										<a
+											href='https://www.transentis.com'
+											target='_blank'
+										>
 											transentis labs
 										</a>{' '}
 										based on the now very well known{' '}
-										<a href='https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology'>
+										<a
+											href='https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology'
+											target='_blank'
+										>
 											SIR modell
 										</a>
 										. Please read the companion blog post{' '}
-										<a href='https://www.transentis.com/covid-19-and-the-sir-model/en/'>
+										<a
+											href='https://www.transentis.com/covid-19-and-the-sir-model/en/'
+											target='_blank'
+										>
 											Covid 19 and the SIR Model
 										</a>{' '}
 										for details on the model and a
 										discussion of COVID-19 scenarios. The
 										simulation was built entirely using the{' '}
-										<a href='http://bptk.transentis.com'>
+										<a
+											href='http://bptk.transentis.com'
+											target='_blank'
+										>
 											BPTK framework
 										</a>
 										: BPTK-Py for the backend and the BPTK
 										Widget Library for the dashboard itself.
 										You can find the complete source code
 										for both frontend and backend on{' '}
-										<a href='transentis/sim-covid-19'>
+										<a
+											href='https://github.com/transentis/sim-covid-19'
+											target='_blank'
+										>
 											GitHub
 										</a>
 										.
