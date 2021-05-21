@@ -23,6 +23,7 @@ import {
 
 import { equations } from '../lib/equations.tabs.map'
 import { defaultModel } from '../lib/btpk.models'
+import { hsl } from 'd3-color'
 
 const bptkApi = new BPTKApi({
 	backendUrl: 'https://api.transentis.com/bptk/transentis/covid-sim',
@@ -177,7 +178,7 @@ const Home = (props: Props) => {
 								buttonGroupProps={'flex justify-center'}
 								titles={['intro', 'assumptions']}
 							>
-								<div className='m-3'>
+								<div className='m-3 p-1 prose'>
 									<p>
 										Whenever you need to make predictions
 										about complex situations you have little
@@ -186,9 +187,33 @@ const Home = (props: Props) => {
 										explore the situation and to make
 										qualitative and quantitative predictions
 										about how the situation may develop.
-										Play with our COVID-19 simulation and
-										see how social distancing can slow the
-										spreading of the virus.
+										This COVID-19 simulation presented here
+										was developed by{' '}
+										<a href='https://www.transentis.com'>
+											transentis labs
+										</a>{' '}
+										based on the now very well known{' '}
+										<a href='https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology'>
+											SIR modell
+										</a>
+										. Please read the companion blog post{' '}
+										<a href='https://www.transentis.com/covid-19-and-the-sir-model/en/'>
+											Covid 19 and the SIR Model
+										</a>{' '}
+										for details on the model and a
+										discussion of COVID-19 scenarios. The
+										simulation was built entirely using the{' '}
+										<a href='http://bptk.transentis.com'>
+											BPTK framework
+										</a>
+										: BPTK-Py for the backend and the BPTK
+										Widget Library for the dashboard itself.
+										You can find the complete source code
+										for both frontend and backend on{' '}
+										<a href='transentis/sim-covid-19'>
+											GitHub
+										</a>
+										.
 									</p>
 								</div>
 								<div className='m-3'>
