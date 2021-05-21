@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
 
-import { NavigationButtons } from '../components'
-
 import BPTKApi from '@transentis/bptk-connector'
 import {
 	ButtonGroup,
@@ -22,7 +20,7 @@ import { equations } from '../lib/equations.tabs.map'
 import { defaultModel } from '../lib/btpk.models'
 
 const bptkApi = new BPTKApi({
-	backendUrl: 'https://api.transentis.com/bptk/transentis/covid-sim',
+	backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
 	apiKey: 'MY API KEY',
 	trailingSlash: false,
 })
