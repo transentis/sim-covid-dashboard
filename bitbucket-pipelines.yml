@@ -51,6 +51,5 @@ pipelines:
                         AWS_APPLICATION_NAME: '$PROD_AWS_APPLICATION_NAME'
                         NPM_TOKEN: '$NPM_TOKEN'
                         ENVIRONMENT_NAME: '$PROD_AWS_ENVIRONMENT_NAME'
-                        S3_BUCKET: '$PROD_AWS_S3_BUCKET'
                         ZIP_FILE: 'application.zip'
                         WAIT: 'true'
