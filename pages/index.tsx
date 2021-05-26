@@ -10,11 +10,11 @@ import {
 	RadioButton,
 	ButtonGroup,
 	Chart,
-	DragComponent,
+	ResponsiveDragComponent as DragComponent,
 	StandardGridLayout,
 	Tabs,
 	DefaultGraphColors,
-	DoubleRangeSlider as Slider,
+	ResponsiveDoubleRangeSlider as Slider,
 	ThemeSwitcher,
 	DefaultChartTheme,
 } from '@transentis/bptk-widgets'
