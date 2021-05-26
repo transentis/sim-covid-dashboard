@@ -127,7 +127,7 @@ const Home = (props: Props) => {
 									max: 'auto',
 									reverse: false,
 								}}
-								data={reduceDataWithEquationsInRange(
+								data={bptkApi.reduceDataWithEquationsInRange(
 									graphData,
 									selectedGraph.equations,
 									rangeSliderRange[0],
