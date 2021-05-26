@@ -15,7 +15,6 @@ pipelines:
                   - application.zip
         - step:
               name: 'Deploy to Test'
-              # Track production environments builds using deployments.
               deployment: test
               script:
                   - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.0
@@ -27,5 +26,31 @@ pipelines:
                         NPM_TOKEN: '$NPM_TOKEN'
                         ENVIRONMENT_NAME: 'Bptk-dashboard-showcase-env'
                         S3_BUCKET: 'elasticbeanstalk-eu-central-1-729621526906'
+                        ZIP_FILE: 'application.zip'
+                        WAIT: 'true'
+    release/prod:
+        - step:
+              name: 'Build and Test'
+              script:
+                  - yarn
+                  - yarn build
+                  - apt-get update && apt-get install -y
+                  - apt-get install zip
+                  - zip -r application.zip .next package.json
+              artifacts:
+                  - application.zip
+        - step:
+              name: 'Deploy to Prod'
+              deployment: prod
+              script:
+                  - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.0
+                    variables:
+                        AWS_ACCESS_KEY_ID: $PROD_AWS_ACCESS_KEY_ID
+                        AWS_SECRET_ACCESS_KEY: $PROD_AWS_SECRET_ACCESS_KEY
+                        AWS_DEFAULT_REGION: '$PROD_AWS_DEFAULT_REGION'
+                        APPLICATION_NAME: '$PROD_APPLICATION_NAME'
+                        NPM_TOKEN: '$NPM_TOKEN'
+                        ENVIRONMENT_NAME: 'Bptk-dashboard-showcase-env'
+                        S3_BUCKET: '$PROD_AWS_S3_BUCKET'
                         ZIP_FILE: 'application.zip'
                         WAIT: 'true'
