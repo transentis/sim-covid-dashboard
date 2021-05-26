@@ -50,6 +50,6 @@ pipelines:
                         AWS_DEFAULT_REGION: '$PROD_AWS_DEFAULT_REGION'
                         APPLICATION_NAME: '$PROD_APPLICATION_NAME'
                         NPM_TOKEN: '$NPM_TOKEN'
-                        ENVIRONMENT_NAME: 'covid-dashboard-showcase-env'
+                        ENVIRONMENT_NAME: '$PROD_ENVIRONMENT_NAME'
                         ZIP_FILE: 'application.zip'
                         WAIT: 'true'
