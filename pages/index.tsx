@@ -119,7 +119,10 @@ const Home = (props: Props) => {
 						<div style={{ width: '1200px', height: '400px' }}>
 							<AreaChart
 								enablePoints={false}
+								enableGridX={false}
+								enableGridY={false}
 								data={data}
+								enableSlices={'x'}
 								// data={[
 								// 	...selectedGraph.equations.map((graphName) =>
 								// 		graphData[graphName].slice(

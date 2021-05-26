@@ -4,11 +4,11 @@ import Head from 'next/head'
 import BPTKApi from '@transentis/bptk-connector'
 import {
 	ButtonGroup,
-	Chart,
 	DefaultChartTheme,
 	DefaultGraphColors,
 	Dropdown,
 	DropdownItem,
+	AreaChart,
 	RadioButton,
 	StandardGridLayout,
 	ThemeSwitcher,
@@ -33,11 +33,7 @@ const graphs = [
 ]
 
 interface Props {
-	data: {
-		contact_rate: [{ x: number; y: number }]
-		reproduction_rate: [{ x: number; y: number }]
-		total_population: [{ x: number; y: number }]
-	}
+	data: any
 	scenarios: Array<ScenarioMap>
 }
 
@@ -100,50 +96,7 @@ const Scenarios = (props: Props) => {
 						.replace('_', ' ')}
 					graphComponent={
 						<div className='p-2'>
-							<Chart
-								type={'AREA'}
-								theme={DefaultChartTheme}
-								colorPalette={DefaultGraphColors}
-								chartProps={{
-									animate: {
-										duration: 2000,
-										onLoad: {
-											duration: 1000,
-										},
-									},
-									data: [
-										...selectedGraph.equations.map(
-											(graphName) =>
-												graphData[graphName].slice(
-													rangeSliderRange[0],
-													rangeSliderRange[1],
-												),
-										),
-									],
-								}}
-								size={{
-									width: 1200,
-									height: 450,
-								}}
-								labeling={{
-									x: 'days after pandemic outbreak',
-									y: 'population',
-								}}
-								legend={{
-									outline: 'none',
-									names: [
-										...selectedGraph.equations.map(
-											(graphName) => {
-												return {
-													name: graphName,
-												}
-											},
-										),
-									],
-									x: 900,
-									y: 250,
-								}}
-							></Chart>
+							<AreaChart data={data}></AreaChart>
 						</div>
 					}
 					graphSettingComponent={
