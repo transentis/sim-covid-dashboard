@@ -21,26 +21,6 @@ import {
 import { equations } from '../lib/equations.tabs.map'
 import { defaultModel } from '../lib/btpk.models'
 
-const reduceDataWithEquationsInRange = (
-	data: any,
-	equations: string[],
-	startIndex: number,
-	endIndex: number,
-) => {
-	const mappedData = [
-		...data.map((data: any) => {
-			if (equations.includes(data.id)) {
-				return {
-					id: data.id,
-					data: data.data.slice(startIndex, endIndex),
-				}
-			}
-		}),
-	]
-
-	return mappedData.filter((datum) => datum)
-}
-
 const bptkApi = new BPTKApi({
 	backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
 	apiKey: 'MY API KEY',
@@ -148,7 +128,7 @@ const Home = (props: Props) => {
 									reverse: false,
 								}}
 								data={reduceDataWithEquationsInRange(
-									data,
+									graphData,
 									selectedGraph.equations,
 									rangeSliderRange[0],
 									rangeSliderRange[1],
@@ -385,3 +365,11 @@ export const getStaticProps = async () => {
 }
 
 export default Home
+function reduceDataWithEquationsInRange(
+	data: any,
+	equations: string[],
+	arg2: number,
+	arg3: number,
+): import('@nivo/line').Serie[] {
+	throw new Error('Function not implemented.')
+}

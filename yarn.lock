@@ -416,10 +416,10 @@
     lodash.merge "^4.6.2"
     lodash.uniq "^4.5.0"
 
-"@transentis/bptk-connector@^0.0.20":
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/@transentis/bptk-connector/-/bptk-connector-0.0.20.tgz#073fa7d36df02d3ee37fa80d71e1c723d619a516"
-  integrity sha512-td/yT/Bkb+cV/f+/d+ZARkOqTmoaqGq4KcUuRMVKhkfY9si73Cqc96GpqHBC0C1zcGnAA2Aca/MpANvlAuVEVA==
+"@transentis/bptk-connector@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@transentis/bptk-connector/-/bptk-connector-0.0.21.tgz#ec20e884bf2a42619f9b629e170ac89c1b791f10"
+  integrity sha512-O2FTj7kgrDN0axJKpAL3CsM3K4BJ0U8XgsDHaJyzq+OVw3HIz7fCrKRo7+ZRCY445MpkbkXRxgB+HrbgrC7bBQ==
   dependencies:
     axios "^0.21.1"
     axios-cache-adapter "^2.7.3"
