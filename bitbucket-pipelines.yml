@@ -3,9 +3,9 @@ image: node:14.16.0
 pipelines:
   branches:
     release/test:
-        - step:
+        deployment: test
+          - step:
               name: 'Build and Test'
-              deployment: test
               script:
                   - echo $NEXT_PUBLIC_BACKEND_URL
                   - yarn
@@ -15,9 +15,8 @@ pipelines:
                   - zip -r application.zip .next package.json
               artifacts:
                   - application.zip
-        - step:
+          - step:
               name: 'Deploy to Test'
-              deployment: test
               script:
                   - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.0
                     variables:
@@ -31,9 +30,9 @@ pipelines:
                         ZIP_FILE: 'application.zip'
                         WAIT: 'true'
     release/prod:
-        - step:
+        deployment: production
+          - step:
               name: 'Build and Test'
-              deployment: production
               script:
                   - echo $NEXT_PUBLIC_BACKEND_URL
                   - yarn
@@ -43,9 +42,8 @@ pipelines:
                   - zip -r application.zip .next package.json
               artifacts:
                   - application.zip
-        - step:
+          - step:
               name: 'Deploy to Prod'
-              deployment: production
               script:
                   - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.0
                     variables:
