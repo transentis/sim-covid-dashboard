@@ -12,7 +12,7 @@ import {
 	RadioButton,
 	StandardGridLayout,
 	ThemeSwitcher,
-	DoubleRangeSlider as Slider,
+	ResponsiveDoubleRangeSlider as Slider,
 } from '@transentis/bptk-widgets'
 
 import { ScenarioMap } from '@transentis/bptk-connector/dist/types'
