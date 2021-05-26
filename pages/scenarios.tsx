@@ -95,8 +95,26 @@ const Scenarios = (props: Props) => {
 						.toUpperCase()
 						.replace('_', ' ')}
 					graphComponent={
-						<div className='p-2'>
-							<AreaChart data={data}></AreaChart>
+						<div style={{ width: '1200px', height: '400px' }}>
+							<AreaChart
+								curve={'cardinal'}
+								enablePoints={false}
+								enableGridX={false}
+								enableGridY={false}
+								enableSlices={'x'}
+								xScale={{
+									type: 'linear',
+									min: 'auto',
+									max: 'auto',
+									reverse: false,
+								}}
+								data={bptkApi.reduceDataWithEquationsInRange(
+									graphData,
+									selectedGraph.equations,
+									rangeSliderRange[0],
+									rangeSliderRange[1],
+								)}
+							></AreaChart>
 						</div>
 					}
 					graphSettingComponent={

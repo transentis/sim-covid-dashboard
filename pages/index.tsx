@@ -115,7 +115,6 @@ const Home = (props: Props) => {
 					graphComponent={
 						<div style={{ width: '1200px', height: '400px' }}>
 							<AreaChart
-								// data={data}
 								curve={'cardinal'}
 								enablePoints={false}
 								enableGridX={false}
