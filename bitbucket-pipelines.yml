@@ -41,7 +41,7 @@ pipelines:
                   - application.zip
         - step:
               name: 'Deploy to Prod'
-              deployment: prod
+              deployment: production
               script:
                   - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.0
                     variables:
