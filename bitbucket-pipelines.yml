@@ -5,7 +5,9 @@ pipelines:
     release/test:
         - step:
               name: 'Build and Test'
+              deployment: test
               script:
+                  - echo $NEXT_PUBLIC_BACKEND_URL
                   - yarn
                   - yarn build
                   - apt-get update && apt-get install -y
@@ -31,7 +33,9 @@ pipelines:
     release/prod:
         - step:
               name: 'Build and Test'
+              deployment: production
               script:
+                  - echo $NEXT_PUBLIC_BACKEND_URL
                   - yarn
                   - yarn build
                   - apt-get update && apt-get install -y
