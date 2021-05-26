@@ -3,9 +3,9 @@ image: node:14.16.0
 pipelines:
   branches:
     release/test:
-        deployment: test
           - step:
               name: 'Build and Test'
+              deployment: test
               script:
                   - echo $NEXT_PUBLIC_BACKEND_URL
                   - yarn
@@ -30,9 +30,9 @@ pipelines:
                         ZIP_FILE: 'application.zip'
                         WAIT: 'true'
     release/prod:
-        deployment: production
           - step:
               name: 'Build and Test'
+              deployment: production
               script:
                   - echo $NEXT_PUBLIC_BACKEND_URL
                   - yarn
