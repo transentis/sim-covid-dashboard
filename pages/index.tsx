@@ -9,7 +9,7 @@ import BPTKApi from '@transentis/bptk-connector'
 import {
 	RadioButton,
 	ButtonGroup,
-	Chart,
+	AreaChart,
 	ResponsiveDragComponent as DragComponent,
 	StandardGridLayout,
 	Tabs,
@@ -37,9 +37,9 @@ interface Props {
 }
 
 const Home = (props: Props) => {
-	console.log(process.env.NEXT_PUBLIC_BACKEND_URL)
-
 	const { data } = props
+
+	console.log(data)
 
 	const graphs = [
 		equations.population,
@@ -82,12 +82,15 @@ const Home = (props: Props) => {
 	}
 
 	return (
-		<div className='text-base-content'>
+		<div
+			className='text-base-content'
+			style={{ width: '100vw', height: '100vh' }}
+		>
 			<Head>
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<div className='overflow-hidden h-full'>
+			<div className='overflow-hidden h-full' style={{ width: '100%' }}>
 				<StandardGridLayout
 					dashboardTitle={'COVID-19 Simulation'}
 					graphTabsComponent={
@@ -113,50 +116,20 @@ const Home = (props: Props) => {
 						.toUpperCase()
 						.replace('_', ' ')}
 					graphComponent={
-						<Chart
-							type={'AREA'}
-							theme={DefaultChartTheme}
-							colorPalette={DefaultGraphColors}
-							chartProps={{
-								animate: {
-									duration: 2000,
-									onLoad: {
-										duration: 1000,
-									},
-								},
-								data: [
-									...selectedGraph.equations.map(
-										(graphName) =>
-											graphData[graphName].slice(
-												rangeSliderRange[0],
-												rangeSliderRange[1],
-											),
-									),
-								],
-							}}
-							size={{
-								width: 1200,
-								height: 450,
-							}}
-							labeling={{
-								x: 'days after pandemic outbreak',
-								y: 'population',
-							}}
-							legend={{
-								outline: 'none',
-								names: [
-									...selectedGraph.equations.map(
-										(graphName) => {
-											return {
-												name: graphName,
-											}
-										},
-									),
-								],
-								x: 900,
-								y: 250,
-							}}
-						></Chart>
+						<div style={{ width: '1200px', height: '400px' }}>
+							<AreaChart
+								enablePoints={false}
+								data={data}
+								// data={[
+								// 	...selectedGraph.equations.map((graphName) =>
+								// 		graphData[graphName].slice(
+								// 			rangeSliderRange[0],
+								// 			rangeSliderRange[1],
+								// 		),
+								// 	),
+								// ]}
+							></AreaChart>
+						</div>
 					}
 					graphSettingComponent={
 						<>
