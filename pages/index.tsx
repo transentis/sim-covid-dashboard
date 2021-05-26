@@ -16,11 +16,30 @@ import {
 	DefaultGraphColors,
 	ResponsiveDoubleRangeSlider as Slider,
 	ThemeSwitcher,
-	DefaultChartTheme,
 } from '@transentis/bptk-widgets'
 
 import { equations } from '../lib/equations.tabs.map'
 import { defaultModel } from '../lib/btpk.models'
+
+const reduceDataWithEquationsInRange = (
+	data: any,
+	equations: string[],
+	startIndex: number,
+	endIndex: number,
+) => {
+	const mappedData = [
+		...data.map((data: any) => {
+			if (equations.includes(data.id)) {
+				return {
+					id: data.id,
+					data: data.data.slice(startIndex, endIndex),
+				}
+			}
+		}),
+	]
+
+	return mappedData.filter((datum) => datum)
+}
 
 const bptkApi = new BPTKApi({
 	backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
@@ -38,8 +57,6 @@ interface Props {
 
 const Home = (props: Props) => {
 	const { data } = props
-
-	console.log(data)
 
 	const graphs = [
 		equations.population,
@@ -118,19 +135,24 @@ const Home = (props: Props) => {
 					graphComponent={
 						<div style={{ width: '1200px', height: '400px' }}>
 							<AreaChart
+								// data={data}
+								curve={'cardinal'}
 								enablePoints={false}
 								enableGridX={false}
 								enableGridY={false}
-								data={data}
 								enableSlices={'x'}
-								// data={[
-								// 	...selectedGraph.equations.map((graphName) =>
-								// 		graphData[graphName].slice(
-								// 			rangeSliderRange[0],
-								// 			rangeSliderRange[1],
-								// 		),
-								// 	),
-								// ]}
+								xScale={{
+									type: 'linear',
+									min: 'auto',
+									max: 'auto',
+									reverse: false,
+								}}
+								data={reduceDataWithEquationsInRange(
+									data,
+									selectedGraph.equations,
+									rangeSliderRange[0],
+									rangeSliderRange[1],
+								)}
 							></AreaChart>
 						</div>
 					}
