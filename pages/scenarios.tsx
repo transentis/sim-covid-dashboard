@@ -4,8 +4,6 @@ import Head from 'next/head'
 import BPTKApi from '@transentis/bptk-connector'
 import {
 	ButtonGroup,
-	DefaultChartTheme,
-	DefaultGraphColors,
 	Dropdown,
 	DropdownItem,
 	AreaChart,

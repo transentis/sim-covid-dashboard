@@ -87,7 +87,7 @@ const Home = (props: Props) => {
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<div className='overflow-hidden h-full' style={{ width: '100%' }}>
+			<div className='h-full' style={{ width: '100%' }}>
 				<StandardGridLayout
 					dashboardTitle={'COVID-19 Simulation'}
 					graphTabsComponent={
@@ -364,11 +364,3 @@ export const getStaticProps = async () => {
 }
 
 export default Home
-function reduceDataWithEquationsInRange(
-	data: any,
-	equations: string[],
-	arg2: number,
-	arg3: number,
-): import('@nivo/line').Serie[] {
-	throw new Error('Function not implemented.')
-}
