@@ -10,3 +10,24 @@
 		@apply outline-none shadow-none;
 	}
 }
+
+:root {
+--logoSrc: url('./static/images/logoLight.svg');
+}
+
+.logoDiv {
+	background-image: var(--logoSrc);
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	width: 173px;
+	height: 55px;
+}
+
+[data-theme='transentisDark'] {
+	--logoSrc: url('./static/images/logoDark.svg');
+}
+
+[data-theme='transentisLight'] {
+	--logoSrc: url('./static/images/logoLight.svg');
+}
