@@ -113,6 +113,14 @@ const Home = (props: Props) => {
 					graphComponent={
 						<div style={{ width: '1200px', height: '400px' }}>
 							<AreaChart
+								theme={{
+									textColor:
+										typeof window !== 'undefined'
+											? `hsl(
+													${window.getComputedStyle(document.body).getPropertyValue('--bc')}
+											  )`
+											: 'black',
+								}}
 								curve={'cardinal'}
 								enablePoints={false}
 								enableGridX={false}
