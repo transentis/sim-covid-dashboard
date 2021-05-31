@@ -80,14 +80,13 @@ const Home = (props: Props) => {
 
 	return (
 		<div
-			className='text-base-content'
-			style={{ width: '100vw', height: '100vh' }}
+			className='text-base-content min-h-screen'
 		>
 			<Head>
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<div className='overflow-hidden h-full' style={{ width: '100%' }}>
+			<div className='overflow-hidden h-full w-full'>
 				<StandardGridLayout
 					dashboardTitle={'COVID-19 Simulation'}
 					graphTabsComponent={
