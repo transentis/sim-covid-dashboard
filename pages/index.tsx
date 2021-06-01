@@ -11,8 +11,8 @@ import {
 	ButtonGroup,
 	AreaChart,
 	ResponsiveDragComponent as DragComponent,
-	StandardGridLayout,
 	Tabs,
+	StandardGridLayout,
 	DefaultGraphColors,
 	ResponsiveDoubleRangeSlider as Slider,
 	ThemeSwitcher,
@@ -79,17 +79,15 @@ const Home = (props: Props) => {
 	}
 
 	return (
-		<div
-			className='text-base-content'
-			style={{ width: '100vw', height: '100vh' }}
-		>
+		<div className='text-base-content min-h-screen'>
 			<Head>
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<div className='h-full' style={{ width: '100%' }}>
+			<div className='overflow-hidden h-full w-full'>
 				<StandardGridLayout
 					dashboardTitle={'COVID-19 Simulation'}
+					// logoDivCSS='logoDiv'
 					graphTabsComponent={
 						<ButtonGroup>
 							{graphs.map((mapEquatios, index) => (
@@ -115,6 +113,14 @@ const Home = (props: Props) => {
 					graphComponent={
 						<div style={{ width: '1200px', height: '400px' }}>
 							<AreaChart
+								theme={{
+									textColor:
+										typeof window !== 'undefined'
+											? `hsl(
+													${window.getComputedStyle(document.body).getPropertyValue('--bc')}
+											  )`
+											: 'black',
+								}}
 								curve={'cardinal'}
 								enablePoints={false}
 								enableGridX={false}
@@ -176,7 +182,7 @@ const Home = (props: Props) => {
 											href='https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology'
 											target='_blank'
 										>
-											SIR modell
+											SIR model
 										</a>
 										. Please read the companion blog post{' '}
 										<a

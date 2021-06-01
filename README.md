@@ -14,7 +14,7 @@ Here are the steps to follow to create your BPTK Dashboard Widgets Showcase:
 
 4. Change directory: cd bptk-widgets-showcase
 
-5. Run these two commands in that directory: “yarn install & yarn dev” (alternatively: "npm install & npm run dev "
+5. Run these two commands in that directory: “yarn install && yarn dev” (alternatively: "npm install && npm run dev "
 
 6. Add a new file in the root folder called .env.local and add the Environment Variabel Called NEXT_PUBLIC_BACKEND_URL with your backend url
 
