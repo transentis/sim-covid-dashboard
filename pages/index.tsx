@@ -87,7 +87,7 @@ const Home = (props: Props) => {
 			<div className='overflow-hidden h-full w-full'>
 				<StandardGridLayout
 					dashboardTitle={'COVID-19 Simulation'}
-					logoDivCSS='logoDiv'
+					// logoDivCSS='logoDiv'
 					graphTabsComponent={
 						<ButtonGroup>
 							{graphs.map((mapEquatios, index) => (
@@ -370,11 +370,3 @@ export const getStaticProps = async () => {
 }
 
 export default Home
-function reduceDataWithEquationsInRange(
-	data: any,
-	equations: string[],
-	arg2: number,
-	arg3: number,
-): import('@nivo/line').Serie[] {
-	throw new Error('Function not implemented.')
-}

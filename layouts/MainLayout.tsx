@@ -3,7 +3,7 @@ import { NavigationButtons } from '../components'
 
 const MainLayout: FC = ({ children }) => {
 	return (
-		<div className='min-h-screen w-full bg-base-300'>
+		<div className='h-full w-full'>
 			{children}
 			<NavigationButtons page={0} />
 		</div>
