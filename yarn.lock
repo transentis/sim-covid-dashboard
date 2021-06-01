@@ -383,10 +383,10 @@
     axios "^0.21.1"
     axios-cache-adapter "^2.7.3"
 
-"@transentis/bptk-widgets@^0.1.37":
-  version "0.1.37"
-  resolved "https://registry.yarnpkg.com/@transentis/bptk-widgets/-/bptk-widgets-0.1.37.tgz#165756b87f4fa015159f3ce9f2e9706802be4186"
-  integrity sha512-zjpdQcQd8854NIj0LQVi8HXToKzHFISOhfLB5y+qmlxbFKTaDv/BH/4RKMgvzxiN2PFDIjFoZ/m0h2BtV07Jaw==
+"@transentis/bptk-widgets@^0.1.38":
+  version "0.1.38"
+  resolved "https://registry.yarnpkg.com/@transentis/bptk-widgets/-/bptk-widgets-0.1.38.tgz#5137f3b95a514ad26be17d0607fa2394a7ae09ac"
+  integrity sha512-rtRRBKyOVFWzeHZR9BYKUWvXIQGzFSVlExqUoGjPS2ddIs53yG5ExkJx145+nftSvNHVbNFZYtKcqvpbrom5Uw==
   dependencies:
     "@nivo/core" "^0.70.1"
     "@nivo/line" "^0.70.1"
