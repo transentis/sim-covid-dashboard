@@ -157,7 +157,16 @@ const Scenarios = (props: Props) => {
 					titleSidePanelComponent={
 						<div>
 							<ThemeSwitcher
-								themes={['transentisDark', 'transentisLight']}
+								themes={[
+									{
+										internalName: 'transentisDark',
+										displayName: 'dark mode',
+									},
+									{
+										internalName: 'transentisLight',
+										displayName: 'light mode',
+									},
+								]}
 							/>
 						</div>
 					}

@@ -87,7 +87,7 @@ const Home = (props: Props) => {
 			<div className='overflow-hidden h-full w-full'>
 				<StandardGridLayout
 					dashboardTitle={'COVID-19 Simulation'}
-					// logoDivCSS='logoDiv'
+					logoDivCSS='logoDiv'
 					graphTabsComponent={
 						<ButtonGroup>
 							{graphs.map((mapEquatios, index) => (
@@ -103,7 +103,16 @@ const Home = (props: Props) => {
 					titleSidePanelComponent={
 						<div>
 							<ThemeSwitcher
-								themes={['transentisDark', 'transentisLight']}
+								themes={[
+									{
+										internalName: 'transentisDark',
+										displayName: 'dark mode',
+									},
+									{
+										internalName: 'transentisLight',
+										displayName: 'light mode',
+									},
+								]}
 							/>
 						</div>
 					}
