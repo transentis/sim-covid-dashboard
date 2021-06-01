@@ -132,6 +132,9 @@ const Home = (props: Props) => {
 									max: 'auto',
 									reverse: false,
 								}}
+								axisLeft={{
+									tickSize: 2,
+								}}
 								data={bptkApi.reduceDataWithEquationsInRange(
 									graphData,
 									selectedGraph.equations,
