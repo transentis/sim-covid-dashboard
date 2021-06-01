@@ -182,7 +182,7 @@ const Home = (props: Props) => {
 											href='https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology'
 											target='_blank'
 										>
-											SIR modell
+											SIR model
 										</a>
 										. Please read the companion blog post{' '}
 										<a
