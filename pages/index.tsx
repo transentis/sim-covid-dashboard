@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Head from 'next/head'
 
 import { IconButton, Tooltip } from '@material-ui/core/'
@@ -106,11 +106,11 @@ const Home = (props: Props) => {
 								themes={[
 									{
 										internalName: 'transentisDark',
-										displayName: 'dark mode',
+										displayName: 'Dark',
 									},
 									{
 										internalName: 'transentisLight',
-										displayName: 'light mode',
+										displayName: 'Light',
 									},
 								]}
 							/>
@@ -129,6 +129,11 @@ const Home = (props: Props) => {
 													${window.getComputedStyle(document.body).getPropertyValue('--bc')}
 											  )`
 											: 'black',
+									tooltip: {
+										container: {
+											background: '#b5b4e5',
+										},
+									},
 								}}
 								curve={'cardinal'}
 								enablePoints={false}
