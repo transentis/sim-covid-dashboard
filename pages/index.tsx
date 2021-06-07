@@ -120,30 +120,28 @@ const Home = (props: Props) => {
 						.toUpperCase()
 						.replace('_', ' ')}
 					graphComponent={
-						<div style={{ width: '1200px', height: '400px' }}>
-							<AreaChart
-								curve={'cardinal'}
-								enablePoints={false}
-								enableGridX={false}
-								enableGridY={false}
-								enableSlices={'x'}
-								xScale={{
-									type: 'linear',
-									min: 'auto',
-									max: 'auto',
-									reverse: false,
-								}}
-								axisLeft={{
-									tickSize: 2,
-								}}
-								data={bptkApi.reduceDataWithEquationsInRange(
-									graphData,
-									selectedGraph.equations,
-									rangeSliderRange[0],
-									rangeSliderRange[1],
-								)}
-							></AreaChart>
-						</div>
+						<AreaChart
+							curve={'cardinal'}
+							enablePoints={false}
+							enableGridX={false}
+							enableGridY={false}
+							enableSlices={'x'}
+							xScale={{
+								type: 'linear',
+								min: 'auto',
+								max: 'auto',
+								reverse: false,
+							}}
+							axisLeft={{
+								tickSize: 2,
+							}}
+							data={bptkApi.reduceDataWithEquationsInRange(
+								graphData,
+								selectedGraph.equations,
+								rangeSliderRange[0],
+								rangeSliderRange[1],
+							)}
+						></AreaChart>
 					}
 					graphSettingComponent={
 						<>
