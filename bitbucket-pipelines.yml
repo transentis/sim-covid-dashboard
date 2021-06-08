@@ -5,11 +5,10 @@ pipelines:
   branches:
     release/test:
           - step:
-              name: 'Build and Test'
+              name: 'Build and Deploy'
               deployment: Test
               script:
-                  - echo $NEXT_PUBLIC_BACKEND_URL 
-                  - yarn
+                  - yarn install
                   - yarn build
                   - zip -r application.zip .next package.json
                   - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.0
@@ -28,8 +27,7 @@ pipelines:
               name: 'Build and Test'
               deployment: Production
               script:
-                  - echo $NEXT_PUBLIC_BACKEND_URL
-                  - yarn
+                  - yarn install
                   - yarn build
                   - zip -r application.zip .next package.json
               artifacts:
