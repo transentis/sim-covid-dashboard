@@ -3,7 +3,7 @@
 
 This is a small showcase we create to illustrate the use of our [BPTK Widgets library](https://bptk.transentis.com) The BPTK Widgets library is a collection of React-Widgets that let you build dashboards for simulations created with the BPTK Framework quickly and easily. You can download the [BPKTK Widgets Package](https://www.npmjs.com/package/@transentis/bptk-widgets) from NPM.
 
-Visit a live version of this dashboard at [www.covid-sim.com](https://www.covid-sim.com).
+Visit a live version of this dashboard at [www.covid-sim.com](http://www.covid-sim.com).
 
 ## Getting Started
 
