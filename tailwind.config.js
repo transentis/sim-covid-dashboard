@@ -8,7 +8,7 @@ module.exports = {
 	darkMode: 'media',
 	theme: {
 		fontFamily: {
-			transentis: ['franklin-gothic-urw', 'sans-serif'],
+			transentis: ['Open Sans'],
 		},
 		extend: {
 			typography: (theme) => ({

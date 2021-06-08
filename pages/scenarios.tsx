@@ -89,31 +89,30 @@ const Scenarios = (props: Props) => {
 			<div className='overflow-hidden h-full'>
 				<StandardGridLayout
 					dashboardTitle={`COVID-19 Scenarios: ${scenario.displayName}`}
+					logoDivCSS='logoDiv'
 					graphTitle={selectedGraph.name
 						.toUpperCase()
 						.replace('_', ' ')}
 					graphComponent={
-						<div style={{ width: '1200px', height: '400px' }}>
-							<AreaChart
-								curve={'cardinal'}
-								enablePoints={false}
-								enableGridX={false}
-								enableGridY={false}
-								enableSlices={'x'}
-								xScale={{
-									type: 'linear',
-									min: 'auto',
-									max: 'auto',
-									reverse: false,
-								}}
-								data={bptkApi.reduceDataWithEquationsInRange(
-									graphData,
-									selectedGraph.equations,
-									rangeSliderRange[0],
-									rangeSliderRange[1],
-								)}
-							></AreaChart>
-						</div>
+						<AreaChart
+							curve={'cardinal'}
+							enablePoints={false}
+							enableGridX={false}
+							enableGridY={false}
+							enableSlices={'x'}
+							xScale={{
+								type: 'linear',
+								min: 'auto',
+								max: 'auto',
+								reverse: false,
+							}}
+							data={bptkApi.reduceDataWithEquationsInRange(
+								graphData,
+								selectedGraph.equations,
+								rangeSliderRange[0],
+								rangeSliderRange[1],
+							)}
+						></AreaChart>
 					}
 					graphSettingComponent={
 						<>
