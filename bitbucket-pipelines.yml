@@ -5,7 +5,7 @@ pipelines:
   branches:
     release/test:
           - step:
-              name: 'Build and Deploy'
+              name: 'Build and Deploy to Test'
               deployment: Test
               script:
                   - node -v
@@ -25,17 +25,12 @@ pipelines:
                         WAIT: 'true'
     release/prod:
           - step:
-              name: 'Build and Test'
+              name: 'Build and Deploy to Production'
               deployment: Production
               script:
                   - yarn install
                   - yarn build
                   - zip -r application.zip .next package.json
-              artifacts:
-                  - application.zip
-          - step:
-              name: 'Deploy to Prod'
-              script:
                   - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.0
                     variables:
                         AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
