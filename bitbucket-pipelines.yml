@@ -1,4 +1,5 @@
-image: node:14.16.0
+docker: true
+image: transentis/buildenv
 
 pipelines:
   branches:
@@ -10,8 +11,6 @@ pipelines:
                   - echo $NEXT_PUBLIC_BACKEND_URL 
                   - yarn
                   - yarn build
-                  - apt-get update && apt-get install -y
-                  - apt-get install zip
                   - zip -r application.zip .next package.json
               artifacts:
                   - application.zip
@@ -25,9 +24,9 @@ pipelines:
                         AWS_DEFAULT_REGION: '$AWS_DEFAULT_REGION'
                         APPLICATION_NAME: '$APPLICATION_NAME'
                         NPM_TOKEN: '$NPM_TOKEN'
-                        ENVIRONMENT_NAME: 'Bptk-dashboard-showcase-env'
-                        S3_BUCKET: 'elasticbeanstalk-eu-central-1-729621526906'
-                        ZIP_FILE: 'application.zip'
+                        ENVIRONMENT_NAME: '$AWS_ENVIRONMENT_NAME'
+                        S3_BUCKET: '$AWS_S3_BUCKET'
+                        ZIP_FILE: application.zip
                         WAIT: 'true'
     release/prod:
           - step:
@@ -37,8 +36,6 @@ pipelines:
                   - echo $NEXT_PUBLIC_BACKEND_URL
                   - yarn
                   - yarn build
-                  - apt-get update && apt-get install -y
-                  - apt-get install zip
                   - zip -r application.zip .next package.json
               artifacts:
                   - application.zip
@@ -47,11 +44,12 @@ pipelines:
               script:
                   - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.0
                     variables:
-                        AWS_ACCESS_KEY_ID: $PROD_AWS_ACCESS_KEY_ID
-                        AWS_SECRET_ACCESS_KEY: $PROD_AWS_SECRET_ACCESS_KEY
-                        AWS_DEFAULT_REGION: '$PROD_AWS_DEFAULT_REGION'
-                        APPLICATION_NAME: '$PROD_AWS_APPLICATION_NAME'
+                        AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                        AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                        AWS_DEFAULT_REGION: '$AWS_DEFAULT_REGION'
+                        APPLICATION_NAME: '$AWS_APPLICATION_NAME'
                         NPM_TOKEN: '$NPM_TOKEN'
-                        ENVIRONMENT_NAME: '$PROD_AWS_ENVIRONMENT_NAME'
-                        ZIP_FILE: 'application.zip'
+                        ENVIRONMENT_NAME: '$AWS_ENVIRONMENT_NAME'
+                        S3_BUCKET: '$AWS_S3_BUCKET'
+                        ZIP_FILE: application.zip
                         WAIT: 'true'
