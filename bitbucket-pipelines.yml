@@ -8,6 +8,7 @@ pipelines:
               name: 'Build and Deploy'
               deployment: Test
               script:
+                  - node -v
                   - yarn install
                   - yarn build
                   - zip -r application.zip .next package.json
