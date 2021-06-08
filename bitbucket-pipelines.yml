@@ -12,11 +12,6 @@ pipelines:
                   - yarn
                   - yarn build
                   - zip -r application.zip .next package.json
-              artifacts:
-                  - application.zip
-          - step:
-              name: 'Deploy to Test'
-              script:
                   - pipe: atlassian/aws-elasticbeanstalk-deploy:0.5.0
                     variables:
                         AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
