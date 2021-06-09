@@ -17,8 +17,11 @@ import { ScenarioMap } from '@transentis/bptk-connector/dist/types'
 import { equations } from '../lib/equations.tabs.map'
 import { defaultModel } from '../lib/btpk.models'
 
+
+var nextPublicBackendUrl = process.env.NEXT_PUBLIC_BACKEND_URL==undefined ? "http://localhost:5000" : process.env.NEXT_PUBLIC_BACKEND_URL
+
 const bptkApi = new BPTKApi({
-	backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
+	backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL==undefined ? "http://localhost:5000" : process.env.NEXT_PUBLIC_BACKEND_URL,
 	apiKey: 'MY API KEY',
 	trailingSlash: false,
 })
