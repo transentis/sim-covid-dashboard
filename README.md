@@ -23,7 +23,7 @@ Here are the steps to follow to run the COVID dashboard locally on your machine:
 
 5. Run these two commands in that directory: `yarn install && yarn build` 
 
-6. Start the dashboard server: `yarn start`
+6. Start the dashboard server: `yarn start-local`
 
 7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the dashboard.
 
