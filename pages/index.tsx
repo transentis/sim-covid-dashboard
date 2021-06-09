@@ -12,7 +12,7 @@ import {
 	AreaChart,
 	ResponsiveDragComponent as DragComponent,
 	Tabs,
-	StandardGridLayout,
+	FullScreenGridLayout,
 	DefaultGraphColors,
 	ResponsiveDoubleRangeSlider as Slider,
 	ThemeSwitcher,
@@ -84,8 +84,8 @@ const Home = (props: Props) => {
 				<title>COVID-19 Simulation</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<div className='overflow-hidden h-full w-full'>
-				<StandardGridLayout
+			<div className='h-full w-full'>
+				<FullScreenGridLayout
 					dashboardTitle={'COVID-19 Simulation'}
 					logoDivCSS='logoDiv'
 					graphTabsComponent={
@@ -156,13 +156,13 @@ const Home = (props: Props) => {
 						</>
 					}
 					sidePanelComponent={
-						<div className='p-3'>
+						<div className='p-2'>
 							<Tabs
 								buttonProps={'btn-primary'}
 								buttonGroupProps={'flex justify-center'}
 								titles={['intro', 'assumptions']}
 							>
-								<div className='m-3 p-1 prose'>
+								<div className='m-3 prose'>
 									<p>
 										Whenever you need to make predictions
 										about complex situations you have little
@@ -273,7 +273,7 @@ const Home = (props: Props) => {
 						</div>
 					}
 					graphSettingsBox={
-						<div className='relative m-2 p-3'>
+						<div className='w-full h-full relative m-2 p-2'>
 							<div className='absolute right-2 top-2'>
 								<Tooltip title={'Resets the dragchart'}>
 									<IconButton
@@ -307,8 +307,9 @@ const Home = (props: Props) => {
 							</div>
 							<p>Contact Rate</p>
 
-							<div className='w-11/12'>
+							<div className='w-11/12 h-full'>
 								<DragComponent
+									className='w-full h-full'
 									data={defaultDragComponentState}
 									colorTheme={DefaultGraphColors}
 									onChangeData={(newData, tupleData) => {
@@ -344,7 +345,7 @@ const Home = (props: Props) => {
 							</div>
 						</div>
 					}
-				></StandardGridLayout>
+				></FullScreenGridLayout>
 			</div>
 		</div>
 	)

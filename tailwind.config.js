@@ -1,10 +1,13 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-	purge: [
-		'./pages/**/*.{js,ts,jsx,tsx}',
-		'./components/**/*.{js,ts,jsx,tsx}',
-	],
+	purge: {
+		content: [
+			'./pages/**/*.{js,ts,jsx,tsx}',
+			'./components/**/*.{js,ts,jsx,tsx}',
+			'./node_modules/@transentis/bptk-widgets/build/**/*.{js,ts,jsx,tsx}',
+		],
+	},
 	darkMode: 'media',
 	theme: {
 		fontFamily: {

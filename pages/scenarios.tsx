@@ -8,7 +8,7 @@ import {
 	DropdownItem,
 	AreaChart,
 	RadioButton,
-	StandardGridLayout,
+	FullScreenGridLayout,
 	ThemeSwitcher,
 	ResponsiveDoubleRangeSlider as Slider,
 } from '@transentis/bptk-widgets'
@@ -86,8 +86,8 @@ const Scenarios = (props: Props) => {
 				<title>COVID-19 Scenarios</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<div className='overflow-hidden h-full'>
-				<StandardGridLayout
+			<div className='h-full w-full'>
+				<FullScreenGridLayout
 					dashboardTitle={`COVID-19 Scenarios: ${scenario.displayName}`}
 					logoDivCSS='logoDiv'
 					graphTitle={selectedGraph.name
@@ -175,7 +175,7 @@ const Scenarios = (props: Props) => {
 							<p>{scenario.description}</p>
 						</div>
 					}
-				></StandardGridLayout>
+				></FullScreenGridLayout>
 			</div>
 		</div>
 	)
