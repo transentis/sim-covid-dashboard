@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { useRouter } from 'next/router'
-import { HoverMenu, HoverMenuItem } from '@transentis/bptk-widgets'
+import { TabsButtonMenu, TabsButtonMenuItem } from '@transentis/bptk-widgets'
 
 interface Props {
 	page?: number
@@ -18,15 +18,15 @@ const NavigationButtons: FC<Props> = ({ page }) => {
 	}
 	return (
 		<div className='text-base-content'>
-			<HoverMenu
-				className={
-					'fixed left-1/2 bottom-12 transform -translate-x-1/2'
-				}
+			<TabsButtonMenu
+				style='bordered'
+				listClassName=''
 				onChange={handleChange}
+				defaultSelectedIndex={page}
 			>
-				<HoverMenuItem name={'Dashboard'}></HoverMenuItem>
-				<HoverMenuItem name={'Scenarios'}></HoverMenuItem>
-			</HoverMenu>
+				<TabsButtonMenuItem name={'Dashboard'}></TabsButtonMenuItem>
+				<TabsButtonMenuItem name={'Scenarios'}></TabsButtonMenuItem>
+			</TabsButtonMenu>
 		</div>
 	)
 }

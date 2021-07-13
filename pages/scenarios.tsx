@@ -3,23 +3,27 @@ import Head from 'next/head'
 
 import BPTKApi from '@transentis/bptk-connector'
 import {
-	ButtonGroup,
 	Dropdown,
 	DropdownItem,
 	AreaChart,
-	RadioButton,
 	FullScreenGridLayout,
-	ThemeSwitcher,
+	ThemeToggle,
 	ResponsiveDoubleRangeSlider as Slider,
+	TabsButtonMenu,
+	TabsButtonMenuItem,
 } from '@transentis/bptk-widgets'
 
 import { ScenarioMap } from '@transentis/bptk-connector/dist/types'
 import { equations } from '../lib/equations.tabs.map'
 import { defaultModel } from '../lib/btpk.models'
-
+import { NavigationButtons } from '../components'
+import { useRouter } from 'next/router'
 
 const bptkApi = new BPTKApi({
-	backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL==undefined ? "http://localhost:5000" : process.env.NEXT_PUBLIC_BACKEND_URL,
+	backendUrl:
+		process.env.NEXT_PUBLIC_BACKEND_URL == undefined
+			? 'http://localhost:5000'
+			: process.env.NEXT_PUBLIC_BACKEND_URL,
 	apiKey: 'MY API KEY',
 	trailingSlash: false,
 })
@@ -38,6 +42,8 @@ interface Props {
 
 const Scenarios = (props: Props) => {
 	const { data, scenarios } = props
+
+	const router = useRouter()
 
 	const isFirstRun = useRef(true)
 
@@ -62,15 +68,19 @@ const Scenarios = (props: Props) => {
 	}, [scenario])
 
 	const requestData = async () => {
-		const requestedData = await bptkApi.requestModel(
-			defaultModel(scenario.manager, scenario.name),
-		)
+		const model = defaultModel(scenario.manager, scenario.name)
+		const requestedData = await bptkApi.requestModel(model)
 
 		if (!requestedData) {
 			return
 		}
 
-		setGraphData(bptkApi.chartifyData(requestedData))
+		setGraphData(
+			bptkApi.chartifyData(
+				requestedData[model.scenario_managers[0]][model.scenarios[0]]
+					.equations,
+			),
+		)
 	}
 
 	const handleSliderChange = (newValue: number[]) => {
@@ -91,6 +101,28 @@ const Scenarios = (props: Props) => {
 				<FullScreenGridLayout
 					dashboardTitle={`COVID-19 Scenarios: ${scenario.displayName}`}
 					logoDivCSS='logoDiv'
+					navigation={{
+						pages: [
+							{
+								name: 'Dashboard',
+								link: '/',
+							},
+							{
+								name: 'Scenarios',
+								link: '/scenarios',
+							},
+						],
+						currentPage: 1,
+						navigateFunction: (link: string) => {
+							router.push(link)
+						},
+					}}
+					themeComponent={
+						<ThemeToggle
+							lightTheme='transentisLight'
+							darkTheme='transentisDark'
+						/>
+					}
 					graphTitle={selectedGraph.name
 						.toUpperCase()
 						.replace('_', ' ')}
@@ -139,35 +171,19 @@ const Scenarios = (props: Props) => {
 								))}
 							</Dropdown>
 							<div className='p-4'>
-								<ButtonGroup>
+								<TabsButtonMenu
+									className=''
+									style='boxed'
+									defaultSelectedIndex={0}
+									onChange={(num) => handleGraphChange(num)}
+								>
 									{graphs.map((mapEquatios, index) => (
-										<RadioButton
-											onClick={() =>
-												handleGraphChange(index)
-											}
-											checked={index === 0}
-										>
-											{mapEquatios.name}
-										</RadioButton>
+										<TabsButtonMenuItem
+											name={mapEquatios.name.toLocaleUpperCase()}
+										/>
 									))}
-								</ButtonGroup>
+								</TabsButtonMenu>
 							</div>
-						</div>
-					}
-					titleSidePanelComponent={
-						<div>
-							<ThemeSwitcher
-								themes={[
-									{
-										internalName: 'transentisDark',
-										displayName: 'dark mode',
-									},
-									{
-										internalName: 'transentisLight',
-										displayName: 'light mode',
-									},
-								]}
-							/>
 						</div>
 					}
 					sidePanelComponent={
@@ -186,11 +202,17 @@ export const getStaticProps = async () => {
 	const dashboardConfig = await import('../lib/dashboard.config.json')
 
 	const scenarios = await bptkApi.getScenarios()
-	const mappedScenarios = bptkApi.scenarioEncoder(scenarios, dashboardConfig)
-
-	const requestedData = await bptkApi.requestModel(
-		defaultModel(mappedScenarios[0].manager, mappedScenarios[0].name),
+	const mappedScenarios = bptkApi.scenarioEncoder(
+		// @ts-ignore
+		scenarios.smSir,
+		dashboardConfig,
 	)
+
+	const model = defaultModel(
+		mappedScenarios[0].manager,
+		mappedScenarios[0].name,
+	)
+	const requestedData = await bptkApi.requestModel(model)
 
 	if (!requestedData) {
 		return {
@@ -198,7 +220,9 @@ export const getStaticProps = async () => {
 		}
 	}
 
-	const data = bptkApi.chartifyData(requestedData)
+	const data = bptkApi.chartifyData(
+		requestedData[model.scenario_managers[0]][model.scenarios[0]].equations,
+	)
 
 	return {
 		props: {

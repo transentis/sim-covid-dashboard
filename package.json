@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build && next export",
-        "start-local": "next start",
+		"start-local": "next start",
 		"start": "next start -p $PORT"
 	},
 	"dependencies": {
@@ -13,7 +13,7 @@
 		"@material-ui/icons": "^4.11.2",
 		"@tailwindcss/typography": "^0.4.0",
 		"@transentis/bptk-connector": "^0.0.24",
-		"@transentis/bptk-widgets": "^0.1.50",
+		"@transentis/bptk-widgets": "^0.1.76",
 		"autoprefixer": "^10.2.5",
 		"lodash": "^4.17.21",
 		"next": "^10.2.3",

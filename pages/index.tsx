@@ -7,29 +7,30 @@ import { PlayArrow, Refresh } from '@material-ui/icons'
 
 import BPTKApi from '@transentis/bptk-connector'
 import {
-	RadioButton,
-	ButtonGroup,
+	TabsButtonMenu,
+	TabsButtonMenuItem,
 	AreaChart,
 	ResponsiveDragComponent as DragComponent,
 	Tabs,
 	FullScreenGridLayout,
 	DefaultGraphColors,
 	ResponsiveDoubleRangeSlider as Slider,
-	ThemeSwitcher,
+	ThemeToggle,
 } from '@transentis/bptk-widgets'
 
 import { equations } from '../lib/equations.tabs.map'
 import { defaultModel } from '../lib/btpk.models'
+import { NavigationButtons } from '../components'
+import { useRouter } from 'next/router'
 
 const bptkApi = new BPTKApi({
-	backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL==undefined ? "http://localhost:5000" : process.env.NEXT_PUBLIC_BACKEND_URL,
+	backendUrl:
+		process.env.NEXT_PUBLIC_BACKEND_URL == undefined
+			? 'http://localhost:5000'
+			: process.env.NEXT_PUBLIC_BACKEND_URL,
 	apiKey: 'MY API KEY',
 	trailingSlash: false,
 })
-
-const defaultDragComponentState = [
-	20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-]
 
 interface Props {
 	data: any
@@ -37,6 +38,8 @@ interface Props {
 
 const Home = (props: Props) => {
 	const { data } = props
+
+	const router = useRouter()
 
 	const graphs = [
 		equations.population,
@@ -59,15 +62,37 @@ const Home = (props: Props) => {
 
 	const [requestBody, setRequestBody] = useState(defaultModel())
 
+	const defaultContactRate = {
+		// numberArray needed for the dragchart. created out of the default table from the default model
+		numberArray:
+			defaultModel().settings.smSir.dashboard.points.contact_rate_table.map(
+				(element) => {
+					return element[1]
+				},
+			),
+		// request variant needed to set the setting in requestBody. Needed in reset dragchart button
+		requestObject:
+			defaultModel().settings.smSir.dashboard.points.contact_rate_table,
+	}
+
+	const [dragChartData, setDragChartData] = useState(
+		defaultContactRate.numberArray,
+	)
+
 	const requestData = async () => {
-		let requestedData: any
-		requestedData = await bptkApi.requestModel(requestBody)
+		const requestedData = await bptkApi.requestModel(requestBody)
 
 		if (!requestedData) {
 			return
 		}
 
-		setGraphData(bptkApi.chartifyData(requestedData))
+		setGraphData(
+			bptkApi.chartifyData(
+				requestedData[requestBody.scenario_managers[0]][
+					requestBody.scenarios[0]
+				].equations,
+			),
+		)
 	}
 
 	const handleSliderChange = (newValue: number[]) => {
@@ -88,32 +113,43 @@ const Home = (props: Props) => {
 				<FullScreenGridLayout
 					dashboardTitle={'COVID-19 Simulation'}
 					logoDivCSS='logoDiv'
-					graphTabsComponent={
-						<ButtonGroup>
-							{graphs.map((mapEquatios, index) => (
-								<RadioButton
-									onClick={() => handleGraphChange(index)}
-									checked={index === 0}
-								>
-									{mapEquatios.name}
-								</RadioButton>
-							))}
-						</ButtonGroup>
+					navigation={{
+						pages: [
+							{
+								name: 'Dashboard',
+								link: '/',
+							},
+							{
+								name: 'Scenarios',
+								link: '/scenarios',
+							},
+						],
+						navigateFunction: (link: string) => {
+							router.push(link)
+						},
+					}}
+					themeComponent={
+						<ThemeToggle
+							lightTheme='transentisLight'
+							darkTheme='transentisDark'
+						/>
 					}
-					titleSidePanelComponent={
-						<div>
-							<ThemeSwitcher
-								themes={[
-									{
-										internalName: 'transentisDark',
-										displayName: 'Dark',
-									},
-									{
-										internalName: 'transentisLight',
-										displayName: 'Light',
-									},
-								]}
-							/>
+					graphTabsComponent={
+						<div className='flex flex-row justify-center items-center text-cyan-dark'>
+							<div className='p-4'>
+								<TabsButtonMenu
+									className=''
+									style='boxed'
+									defaultSelectedIndex={0}
+									onChange={(num) => handleGraphChange(num)}
+								>
+									{graphs.map((mapEquatios, index) => (
+										<TabsButtonMenuItem
+											name={mapEquatios.name.toLocaleUpperCase()}
+										/>
+									))}
+								</TabsButtonMenu>
+							</div>
 						</div>
 					}
 					graphTitle={selectedGraph.name
@@ -278,11 +314,31 @@ const Home = (props: Props) => {
 								<Tooltip title={'Resets the dragchart'}>
 									<IconButton
 										style={{ color: '#009696' }}
-										onClick={() =>
-											console.error(
-												'Implement new version',
+										onClick={() => {
+											setRequestBody({
+												...requestBody,
+												settings: {
+													smSir: {
+														dashboard: {
+															constants: {
+																...requestBody
+																	.settings
+																	.smSir
+																	.dashboard
+																	.constants,
+															},
+															points: {
+																contact_rate_table:
+																	defaultContactRate.requestObject,
+															},
+														},
+													},
+												},
+											})
+											setDragChartData(
+												defaultContactRate.numberArray,
 											)
-										}
+										}}
 										aria-label='reset'
 									>
 										<Refresh />
@@ -310,7 +366,7 @@ const Home = (props: Props) => {
 							<div className='w-11/12 h-full'>
 								<DragComponent
 									className='w-full h-full'
-									data={defaultDragComponentState}
+									data={dragChartData}
 									colorTheme={DefaultGraphColors}
 									onChangeData={(newData, tupleData) => {
 										setRequestBody({
@@ -352,8 +408,9 @@ const Home = (props: Props) => {
 }
 
 export const getStaticProps = async () => {
+	const model = defaultModel()
 	// Request Model Data for the Dashboard
-	const requestedData = await bptkApi.requestModel(defaultModel())
+	const requestedData = await bptkApi.requestModel(model)
 
 	// If there was a problem retreiving the Data show a not found/error page
 	if (!requestedData) {
@@ -363,7 +420,9 @@ export const getStaticProps = async () => {
 	}
 
 	// Convert the data to be easily used in graphs => set them as props for the page
-	const data = bptkApi.chartifyData(requestedData)
+	const data = bptkApi.chartifyData(
+		requestedData[model.scenario_managers[0]][model.scenarios[0]].equations,
+	)
 
 	return {
 		props: {

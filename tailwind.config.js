@@ -7,6 +7,15 @@ module.exports = {
 			'./components/**/*.{js,ts,jsx,tsx}',
 			'./node_modules/@transentis/bptk-widgets/build/**/*.{js,ts,jsx,tsx}',
 		],
+		options: {
+			safelist: [
+				/data-theme$/,
+				/primary$/,
+				/secondary$/,
+				/accent$/,
+				/link$/,
+			],
+		},
 	},
 	darkMode: 'media',
 	theme: {
@@ -35,6 +44,14 @@ module.exports = {
 					},
 				},
 			}),
+			height: {
+				'10percent': '10%',
+				'55percent': '55%',
+				'90percent': '90%',
+			},
+			opacity: {
+				95: '0.95',
+			},
 		},
 	},
 	variants: {
