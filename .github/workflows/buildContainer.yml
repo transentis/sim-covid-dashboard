@@ -17,11 +17,11 @@ jobs:
               uses: docker/build-push-action@v2
               with:
                   context: .
-                  tags: transentis/sim-covid-dashbiard:${{ steps.get_version.outputs.VERSION  }}
+                  tags: transentis/sim-covid-dashboard:${{ steps.get_version.outputs.VERSION  }}
             - name: Login to DockerHub
               uses: docker/login-action@v1
               with:
                   username: ${{ secrets.DOCKERHUB_USERNAME }}
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
             - name: Push Dockercontainer
-              run: docker push transentis/sim-covid-dashbiard:${{ steps.get_version.outputs.VERSION  }}
+              run: docker push transentis/sim-covid-dashboard:${{ steps.get_version.outputs.VERSION  }}
