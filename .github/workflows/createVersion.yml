@@ -1,0 +1,40 @@
+name: Create new Minor Version
+
+on:
+    pull_request:
+        branches:
+            - main
+        types: [closed]
+
+jobs:
+    build:
+        if: ${{ github.event.pull_request.merged }}
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
+                  persist-credentials: false
+            - name: 'Get Previous tag'
+              id: previoustag
+              uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+              with:
+                  fallback: 1.0.0
+            - name: 'Get next minor version'
+              id: nextVersion
+              uses: 'WyriHaximus/github-action-next-semvers@v1'
+              with:
+                  version: ${{ steps.previoustag.outputs.tag }}
+            - name: Print Version
+              run: echo ${{ steps.nextVersion.outputs.patch }}
+            - name: Commit files
+              run: |
+                  git config --local user.email "minetoaster12@gmail.com"
+                  git config --local user.name "Makisuo"
+            - name: Create new Version
+              run: yarn version --new-version ${{ steps.nextVersion.outputs.patch }}
+            - name: Push changes
+              uses: ad-m/github-push-action@master
+              with:
+                  github_token: ${{ secrets.PERSONAL_GITHUB }}
+                  branch: ${{ github.ref }}
